@@ -1,0 +1,6 @@
+<configuration>
+    <input>
+        <net-file value="maps/prueba1.net.xml"/>
+        <route-files value="maps/prueba1.rou.xml"/>
+    </input>
+</configuration>
