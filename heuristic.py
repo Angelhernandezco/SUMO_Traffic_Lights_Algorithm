@@ -80,5 +80,5 @@ def run_heuristic(steps=500):
 
         step += 1
 
-    print("total_time", total_time)
+    print("Heuristic total waiting time:", total_time)
     traci.close()
