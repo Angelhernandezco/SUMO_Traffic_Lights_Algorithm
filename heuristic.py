@@ -26,25 +26,15 @@ def run_heuristic(steps=500):
     all_junctions = traci.trafficlight.getIDList()
     phase_map = {junction: get_green_phases(junction) for junction in all_junctions}
 
-    min_duration = 30
+    min_duration = 15
     traffic_lights_time = {junction: 0 for junction in all_junctions}
 
     step = 0    # Simulation step counter
     total_time = 0  # Accumulator for total vehicle waiting time
 
     while step <= steps:
-        # Advance the simulation by one step (usually 1 second)
-        traci.simulationStep()
-
         for junction in all_junctions:
-            # Get all lanes controlled by this traffic light
-            controlled_lanes = traci.trafficlight.getControlledLanes(junction)
-            # Compute the total waiting time in those lanes
-            waiting_time = get_waiting_time(controlled_lanes)
-            total_time += waiting_time
-
-            # Check if the traffic light timer reached zero (meaning it can change phase)
-            if traffic_lights_time[junction] == 0:
+            if traffic_lights_time[junction] <= 0:
                 # Get available green phases for this junction
                 junction_phases = phase_map.get(junction, [])
 
@@ -69,13 +59,25 @@ def run_heuristic(steps=500):
                     best_phase = junction_phases[best_phase_idx]["index"]
 
                     # Activate the chosen phase for a fixed duration
-                    set_phase_by_index(junction, best_phase, min_duration + 10)
-                    traffic_lights_time[junction] = min_duration + 10
+                    set_phase_by_index(junction, best_phase, min_duration)
+                    traffic_lights_time[junction] = min_duration
                 else:
                     # Fallback if no phases were detected
                     traffic_lights_time[junction] = 1
-            else:
-                traffic_lights_time[junction] -= 1
+
+        # Advance the simulation by one step (usually 1 second)
+        traci.simulationStep()
+
+        for junction in all_junctions:
+            # Get all lanes controlled by this traffic light
+            controlled_lanes = traci.trafficlight.getControlledLanes(junction)
+            # Compute the total waiting time in those lanes
+            waiting_time = get_waiting_time(controlled_lanes)
+            total_time += waiting_time
+
+            # Consume one second of the active phase timer
+            traffic_lights_time[junction] -= 1
+
         step += 1
 
     print("total_time", total_time)
