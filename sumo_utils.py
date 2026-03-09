@@ -71,18 +71,14 @@ def get_vehicle_numbers(lanes):
 
     vehicle_per_lane = {}
     for lane_id in lanes:
-        vehicle_per_lane[lane_id] = 0
-        for veh_id in traci.lane.getLastStepVehicleIDs(lane_id):
-            # Ignore vehicles very close to the intersection
-            if traci.vehicle.getLanePosition(veh_id) > 10:
-                vehicle_per_lane[lane_id] += 1
+        vehicle_per_lane[lane_id] = traci.lane.getLastStepVehicleNumber(lane_id)
     return vehicle_per_lane
 
 
 def get_waiting_time(lanes):
-    """Compute total waiting time for all vehicles in the given lanes."""
+    """Compute total vehicles waiting in the given lanes."""
 
     waiting_time = 0
     for lane_id in lanes:
-        waiting_time += traci.lane.getWaitingTime(lane_id)
+        waiting_time += traci.lane.getLastStepHaltingNumber(lane_id)
     return waiting_time
