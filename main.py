@@ -1,16 +1,87 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+import optparse
+from plain import run_plain
+# from train import run_dqn
+from heuristic import run_heuristic
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def get_options():
+    opt_parser = optparse.OptionParser()
+    opt_parser.add_option(
+        "-m",
+        dest="model_name",
+        type="string",
+        default="model",
+        help="Name of the model (default: model)",
+    )
+    opt_parser.add_option(
+        "--train",
+        action="store_true",
+        default=False,
+        help="Train a new DQN model",
+    )
+    opt_parser.add_option(
+        "--test",
+        action="store_true",
+        default=False,
+        help="Run a trained DQN model (opens sumo-gui)",
+    )
+    opt_parser.add_option(
+        "--heuristic",
+        action="store_true",
+        default=False,
+        help="Run heuristic mode: green for the lane with the most cars",
+    )
+    opt_parser.add_option(
+        "--plain",
+        action="store_true",
+        default=False,
+        help="Run SUMO config without DQN or heuristic control",
+    )
+    opt_parser.add_option(
+        "-e",
+        dest="epochs",
+        type="int",
+        default=50,
+        help="Number of epochs (default: 50)",
+    )
+    opt_parser.add_option(
+        "-s",
+        dest="steps",
+        type="int",
+        default=500,
+        help="Number of steps per epoch (default: 500)",
+    )
+    options, args = opt_parser.parse_args()
+    return options
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+if __name__ == "__main__":
+    options = get_options()
+
+    if options.plain:
+        run_plain(steps=options.steps)
+    elif options.heuristic:
+        run_heuristic(steps=options.steps)
+    elif options.train:
+        print("Training mode not implemented yet")
+        #run_dqn(
+        #    train=True,
+        #    model_name=options.model_name,
+        #    epochs=options.epochs,
+        #    steps=options.steps,
+        #)
+    elif options.test:
+        print("Test mode not implemented yet")
+        #run_dqn(
+        #    train=False,
+        #    model_name=options.model_name,
+        #    epochs=1,
+        #    steps=options.steps,
+        #)
+    else:
+        print("Please specify a mode: --plain, --train, --test, or --heuristic")
+        print("Examples:")
+        print("  python main.py --plain -s 500")
+        print("  python main.py --train -e 100 -s 500 -m my_model")
+        print("  python main.py --test -m my_model")
+        print("  python main.py --heuristic -s 500")
