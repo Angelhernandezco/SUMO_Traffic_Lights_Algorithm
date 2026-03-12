@@ -25,9 +25,14 @@ def run_heuristic(steps=500):
     # Get the IDs of all traffic lights (junctions) in the simulation
     all_junctions = traci.trafficlight.getIDList()
     phase_map = {junction: get_green_phases(junction) for junction in all_junctions}
+    phase_lanes_map = {
+        junction: {phase["index"]: phase["lanes"] for phase in phase_map.get(junction, [])}
+        for junction in all_junctions
+    }
 
-    min_duration = 15
-    max_seconds_without_green = 90
+    traffic_light_duration = 30
+    min_duration = 10
+    max_seconds_without_green = 180
 
     traffic_lights_time = {junction: 0 for junction in all_junctions}
     current_green_phase = {junction: None for junction in all_junctions}
@@ -41,7 +46,21 @@ def run_heuristic(steps=500):
 
     while step <= steps:
         for junction in all_junctions:
-            if traffic_lights_time[junction] <= 0:
+            should_change_phase = traffic_lights_time[junction] <= 0
+
+            # Change early if the current green phase has no vehicles left.
+            if not should_change_phase and current_green_phase[junction] is not None:
+                active_phase_lanes = phase_lanes_map[junction].get(current_green_phase[junction], [])
+                if active_phase_lanes:
+                    active_phase_vehicles = get_vehicle_numbers(list(set(active_phase_lanes)))
+                    vehicles_in_active_phase = sum(
+                        active_phase_vehicles.get(lane_id, 0) for lane_id in active_phase_lanes
+                    )
+                    elapsed_green_time = traffic_light_duration - traffic_lights_time[junction]
+                    if vehicles_in_active_phase == 0 and elapsed_green_time >= min_duration:
+                        should_change_phase = True
+
+            if should_change_phase:
                 # Get available green phases for this junction
                 junction_phases = phase_map.get(junction, [])
 
@@ -74,9 +93,9 @@ def run_heuristic(steps=500):
                         ):
                             overdue_candidates.append((red_time, waiting_vehicles, phase_index))
 
-                        if overdue_candidates:
-                            # Prioritize the most lasting red phase. [2] is for obtaining the phase index from the tuple.
-                            forced_phase = max(overdue_candidates)[2]
+                    if overdue_candidates:
+                        # Prioritize the most lasting red phase. [2] is for obtaining the phase index from the tuple.
+                        forced_phase = max(overdue_candidates)[2]
 
                     # Choose forced phase (if any) or fallback to highest vehicle count
                     if forced_phase is not None:
@@ -86,14 +105,14 @@ def run_heuristic(steps=500):
                         best_phase = junction_phases[best_phase_idx]["index"]
 
                     # Activate the chosen phase for a fixed duration
-                    set_phase_by_index(junction, best_phase, min_duration)
-                    traffic_lights_time[junction] = min_duration
+                    set_phase_by_index(junction, best_phase, traffic_light_duration)
+                    traffic_lights_time[junction] = traffic_light_duration
                     current_green_phase[junction] = best_phase
                 else:
                     # Fallback if no phases were detected
                     traffic_lights_time[junction] = 1
 
-        # Advance the simulation by one step (usually 1 second)
+        # Advance the simulation by one step (1 second)
         traci.simulationStep()
 
         for junction in all_junctions:
