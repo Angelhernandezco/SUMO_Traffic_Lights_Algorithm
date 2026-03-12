@@ -27,7 +27,14 @@ def run_heuristic(steps=500):
     phase_map = {junction: get_green_phases(junction) for junction in all_junctions}
 
     min_duration = 15
+    max_seconds_without_green = 90
+
     traffic_lights_time = {junction: 0 for junction in all_junctions}
+    current_green_phase = {junction: None for junction in all_junctions}
+    phase_red_time = {
+        junction: {phase["index"]: 0 for phase in phase_map.get(junction, [])}
+        for junction in all_junctions
+    }
 
     step = 0    # Simulation step counter
     total_time = 0  # Accumulator for total vehicle waiting time
@@ -54,13 +61,34 @@ def run_heuristic(steps=500):
                             sum(vehicles_per_lane.get(lane_id, 0) for lane_id in phase["lanes"])
                         )
 
-                    # Choose the phase with the highest vehicle count
-                    best_phase_idx = int(np.argmax(phase_totals))
-                    best_phase = junction_phases[best_phase_idx]["index"]
+                    # Force green phase for red phases lasting beyond the configured threshold
+                    forced_phase = None
+                    overdue_candidates = []
+                    for i, phase in enumerate(junction_phases):
+                        phase_index = phase["index"]
+                        waiting_vehicles = phase_totals[i]
+                        red_time = phase_red_time[junction].get(phase_index, 0)
+                        if (
+                            waiting_vehicles > 0
+                            and red_time >= max_seconds_without_green
+                        ):
+                            overdue_candidates.append((red_time, waiting_vehicles, phase_index))
+
+                        if overdue_candidates:
+                            # Prioritize the most lasting red phase. [2] is for obtaining the phase index from the tuple.
+                            forced_phase = max(overdue_candidates)[2]
+
+                    # Choose forced phase (if any) or fallback to highest vehicle count
+                    if forced_phase is not None:
+                        best_phase = forced_phase
+                    else:
+                        best_phase_idx = int(np.argmax(phase_totals))
+                        best_phase = junction_phases[best_phase_idx]["index"]
 
                     # Activate the chosen phase for a fixed duration
                     set_phase_by_index(junction, best_phase, min_duration)
                     traffic_lights_time[junction] = min_duration
+                    current_green_phase[junction] = best_phase
                 else:
                     # Fallback if no phases were detected
                     traffic_lights_time[junction] = 1
@@ -74,6 +102,14 @@ def run_heuristic(steps=500):
             # Compute the total waiting time in those lanes
             waiting_time = get_waiting_time(controlled_lanes)
             total_time += waiting_time
+
+            # Track how long each phase has remained without green.
+            for phase in phase_map.get(junction, []):
+                phase_index = phase["index"]
+                if current_green_phase[junction] == phase_index:
+                    phase_red_time[junction][phase_index] = 0
+                else:
+                    phase_red_time[junction][phase_index] += 1
 
             # Consume one second of the active phase timer
             traffic_lights_time[junction] -= 1
