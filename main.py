@@ -1,6 +1,6 @@
 import optparse
 from plain import run_plain
-# from train import run_dqn
+from train import run_dqn
 from heuristic import run_heuristic
 
 
@@ -63,25 +63,26 @@ if __name__ == "__main__":
     elif options.heuristic:
         run_heuristic(steps=options.steps)
     elif options.train:
-        print("Training mode not implemented yet")
-        #run_dqn(
-        #    train=True,
-        #    model_name=options.model_name,
-        #    epochs=options.epochs,
-        #    steps=options.steps,
-        #)
+        run_dqn(
+            episodes=options.epochs,
+            steps=options.steps,
+            train=True,
+            model_name=options.model_name,
+            gui=False,
+        )
     elif options.test:
-        print("Test mode not implemented yet")
-        #run_dqn(
-        #    train=False,
-        #    model_name=options.model_name,
-        #    epochs=1,
-        #    steps=options.steps,
-        #)
+        run_dqn(
+            train=False,
+            model_name=options.model_name,
+            episodes=1,
+            steps=options.steps,
+            gui=True,
+        )
     else:
         print("Please specify a mode: --plain, --train, --test, or --heuristic")
         print("Examples:")
         print("  python main.py --plain -s 500")
-        print("  python main.py --train -e 100 -s 500 -m my_model")
-        print("  python main.py --test -m my_model")
         print("  python main.py --heuristic -s 500")
+        print("  python main.py --train -e 50 -s 500 -m my_model")
+        print("  python main.py --test -m my_model")
+
