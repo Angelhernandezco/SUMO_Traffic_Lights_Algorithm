@@ -3,7 +3,7 @@ import os
 import torch
 from sumolib import checkBinary
 from sumo_utils import get_vehicle_numbers, get_waiting_time, get_green_phases, set_phase_by_index
-from agent import DQNAgent
+from .agent import DQNAgent
 import numpy as np
 
 def build_state(vehicles_per_lane, lanes):
@@ -12,7 +12,7 @@ def build_state(vehicles_per_lane, lanes):
 def run_dqn(
     episodes=50,
     steps=500,
-    min_duration=15,
+    min_duration=30,
     batch_size=32,
     train=True,
     model_name="model",
@@ -27,7 +27,7 @@ def run_dqn(
     state_size = len(lanes)
     action_size = len(phases)
     agent = DQNAgent(state_size, action_size)
-    model_path = os.path.join("models", f"{model_name}.pth")
+    model_path = os.path.join(os.path.dirname(__file__), "models", f"{model_name}.pth")
 
     if not train:
         if not os.path.exists(model_path):
