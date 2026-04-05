@@ -31,13 +31,13 @@ def get_options():
         "--policy-train",
         action="store_true",
         default=False,
-        help="Train a policy-gradient model to allocate a fixed cycle time among 4 green phases",
+        help="Train a PPO policy model to optimize traffic light timings in real time",
     )
     opt_parser.add_option(
         "--policy-test",
         action="store_true",
         default=False,
-        help="Run a trained policy-gradient model (opens sumo-gui)",
+        help="Run a trained PPO policy model (opens sumo-gui)",
     )
     opt_parser.add_option(
         "--heuristic",
@@ -67,18 +67,18 @@ def get_options():
     )
 
     opt_parser.add_option(
-        "--cycle-time",
-        dest="cycle_time",
-        type="int",
-        default=120,
-        help="Cycle time (seconds) to distribute among 4 phases in policy mode (default: 120)",
-    )
-    opt_parser.add_option(
         "--min-green",
         dest="min_green",
         type="int",
         default=5,
         help="Minimum green duration per phase in policy mode (default: 5)",
+    )
+    opt_parser.add_option(
+        "--max-green",
+        dest="max_green",
+        type="int",
+        default=30,
+        help="Maximum green duration per phase in policy mode (default: 30)",
     )
     options, args = opt_parser.parse_args()
     return options
@@ -114,8 +114,8 @@ if __name__ == "__main__":
             train=True,
             model_name=options.model_name,
             gui=False,
-            cycle_time=options.cycle_time,
             min_green=options.min_green,
+            max_green=options.max_green,
         )
     elif options.policy_test:
         run_policy(
@@ -124,8 +124,8 @@ if __name__ == "__main__":
             train=False,
             model_name=options.model_name,
             gui=True,
-            cycle_time=options.cycle_time,
             min_green=options.min_green,
+            max_green=options.max_green,
         )
     else:
         print(
@@ -136,6 +136,6 @@ if __name__ == "__main__":
         print("  python main.py --heuristic -s 500")
         print("  python main.py --train -e 50 -s 500 -m my_model")
         print("  python main.py --test -m my_model")
-        print("  python main.py --policy-train -e 50 -s 2000 -m my_policy --cycle-time 120")
-        print("  python main.py --policy-test -m my_policy --cycle-time 120")
+        print("  python main.py --policy-train -e 50 -s 2000 -m my_policy")
+        print("  python main.py --policy-test -m my_policy")
 
