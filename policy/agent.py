@@ -9,7 +9,7 @@ from torch.distributions import Beta, Independent
 
 
 class RunningMeanStd:
-    """Numerically stable running mean/std for observation normalization."""
+    """Running mean/std para normalizar observaciones de forma estable."""
 
     def __init__(self, shape: Tuple[int, ...], epsilon: float = 1e-4):
         self.mean = np.zeros(shape, dtype=np.float64)
@@ -62,13 +62,38 @@ class RunningMeanStd:
         self.count = float(state["count"])
 
 
+def _orthogonal_init(module: nn.Module, gain: float = 1.0) -> None:
+    if isinstance(module, nn.Linear):
+        nn.init.orthogonal_(module.weight, gain=gain)
+        if module.bias is not None:
+            nn.init.constant_(module.bias, 0.0)
+
+
+def _inv_softplus(x: float) -> float:
+    x = float(max(x, 1e-6))
+    return float(np.log(np.expm1(x)))
+
+
 class ActorCritic(nn.Module):
-    def __init__(self, obs_dim: int, action_dim: int, hidden_dim: int = 256):
+    def __init__(
+        self,
+        obs_dim: int,
+        action_dim: int,
+        hidden_dim: int = 256,
+        concentration_floor: float = 1.0,
+        init_concentration: float = 2.0,
+    ):
         super().__init__()
         if obs_dim <= 0:
             raise ValueError(f"obs_dim must be > 0, got {obs_dim}")
         if action_dim <= 0:
             raise ValueError(f"action_dim must be > 0, got {action_dim}")
+        if concentration_floor < 0.0:
+            raise ValueError("concentration_floor must be >= 0")
+        if init_concentration <= concentration_floor:
+            raise ValueError("init_concentration must be > concentration_floor")
+
+        self.concentration_floor = float(concentration_floor)
 
         self.backbone = nn.Sequential(
             nn.Linear(obs_dim, hidden_dim),
@@ -80,13 +105,20 @@ class ActorCritic(nn.Module):
         self.beta_head = nn.Linear(hidden_dim, action_dim)
         self.value_head = nn.Linear(hidden_dim, 1)
 
+        self.backbone.apply(lambda m: _orthogonal_init(m, gain=np.sqrt(2.0)))
+        _orthogonal_init(self.value_head, gain=1.0)
+
+        # Arranque simétrico alrededor de 0.5 para evitar sesgo inicial.
+        nn.init.zeros_(self.alpha_head.weight)
+        nn.init.zeros_(self.beta_head.weight)
+        init_bias = _inv_softplus(init_concentration - self.concentration_floor)
+        nn.init.constant_(self.alpha_head.bias, init_bias)
+        nn.init.constant_(self.beta_head.bias, init_bias)
+
     def forward(self, obs: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         x = self.backbone(obs)
-
-        # Término intermedio: más flexible que +1.0, menos agresivo que +1e-3
-        alpha = F.softplus(self.alpha_head(x)) + 0.5
-        beta = F.softplus(self.beta_head(x)) + 0.5
-
+        alpha = F.softplus(self.alpha_head(x)) + self.concentration_floor
+        beta = F.softplus(self.beta_head(x)) + self.concentration_floor
         value = self.value_head(x).squeeze(-1)
         params = torch.stack([alpha, beta], dim=-1)
         return params, value
@@ -122,7 +154,6 @@ class RolloutBuffer:
         done: bool,
         value: float,
     ) -> None:
-        # state debe ser exactamente el estado usado para action/log_prob/value
         self.states.append(np.asarray(state, dtype=np.float32))
         self.actions.append(np.asarray(action, dtype=np.float32))
         self.log_probs.append(float(log_prob))
@@ -142,19 +173,22 @@ class PPOAgent:
         *,
         hidden_dim: int = 256,
         lr: float = 3e-4,
-        gamma: float = 0.995,
-        gae_lambda: float = 0.97,
+        gamma: float = 0.99,
+        gae_lambda: float = 0.95,
         clip_eps: float = 0.2,
-        entropy_coef: float = 0.003,
+        entropy_coef: float = 0.02,
         value_coef: float = 0.5,
         max_grad_norm: float = 0.5,
-        ppo_epochs: int = 8,
-        minibatch_size: int = 128,
+        ppo_epochs: int = 10,
+        minibatch_size: int = 64,
         device: Optional[torch.device] = None,
         normalize_obs: bool = True,
+        concentration_floor: float = 1.0,
+        init_concentration: float = 2.0,
     ) -> None:
-        self.obs_dim = obs_dim
-        self.action_dim = action_dim
+        self.obs_dim = int(obs_dim)
+        self.action_dim = int(action_dim)
+
         self.gamma = float(gamma)
         self.gae_lambda = float(gae_lambda)
         self.clip_eps = float(clip_eps)
@@ -169,19 +203,25 @@ class PPOAgent:
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.device = device
 
-        self.model = ActorCritic(obs_dim, action_dim, hidden_dim=hidden_dim).to(self.device)
+        self.model = ActorCritic(
+            obs_dim,
+            action_dim,
+            hidden_dim=hidden_dim,
+            concentration_floor=concentration_floor,
+            init_concentration=init_concentration,
+        ).to(self.device)
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=lr)
+
         self.buffer = RolloutBuffer()
-        self.obs_rms = RunningMeanStd((obs_dim,))
+        self.obs_rms = RunningMeanStd((self.obs_dim,))
 
     def _raw_obs(self, obs: np.ndarray) -> np.ndarray:
         arr = np.asarray(obs, dtype=np.float32)
         if arr.ndim != 1:
             arr = arr.reshape(-1)
-        if arr.shape[0] != int(self.obs_dim):
+        if arr.shape[0] != self.obs_dim:
             raise ValueError(
-                f"Observation dim mismatch: got {arr.shape[0]}, expected {self.obs_dim}. "
-                "Rebuild the agent/checkpoint with the current environment observation."
+                f"Observation dim mismatch: got {arr.shape[0]}, expected {self.obs_dim}."
             )
         return arr
 
@@ -204,9 +244,18 @@ class PPOAgent:
         deterministic: bool = False,
         update_rms: bool = False,
     ) -> Tuple[np.ndarray, float, float, np.ndarray]:
-        # Usar exactamente el mismo estado preparado para action/log_prob/value
-        state_np = self.prepare_state(state)
-        state_t = torch.as_tensor(state_np, dtype=torch.float32, device=self.device).unsqueeze(0)
+        """
+        Devuelve:
+        - action
+        - log_prob
+        - value
+        - prepared_state (el estado exacto que vio la red)
+        """
+        if update_rms:
+            self.update_obs_rms(state)
+
+        prepared_state = self.prepare_state(state)
+        state_t = torch.as_tensor(prepared_state, dtype=torch.float32, device=self.device).unsqueeze(0)
 
         params, value = self.model(state_t)
         alpha = params[..., 0].squeeze(0)
@@ -221,24 +270,17 @@ class PPOAgent:
         action = torch.clamp(action, 1e-6, 1.0 - 1e-6)
         log_prob = dist.log_prob(action)
 
-        if update_rms:
-            self.update_obs_rms(state)
-
         return (
             action.cpu().numpy(),
             float(log_prob.item()),
             float(value.item()),
-            state_np.copy(),
+            prepared_state.copy(),
         )
 
     @torch.no_grad()
     def value(self, state: np.ndarray, *, prepared: bool = False) -> float:
-        state_np = np.asarray(state, dtype=np.float32).reshape(-1) if prepared else self.prepare_state(state)
-        if state_np.shape[0] != int(self.obs_dim):
-            raise ValueError(
-                f"Value observation dim mismatch: got {state_np.shape[0]}, expected {self.obs_dim}."
-            )
-        state_t = torch.as_tensor(state_np, dtype=torch.float32, device=self.device).unsqueeze(0)
+        prepared_state = np.asarray(state, dtype=np.float32).reshape(-1) if prepared else self.prepare_state(state)
+        state_t = torch.as_tensor(prepared_state, dtype=torch.float32, device=self.device).unsqueeze(0)
         _, v = self.model(state_t)
         return float(v.item())
 
@@ -272,7 +314,7 @@ class PPOAgent:
         batch_size = states.shape[0]
         indices = torch.randperm(batch_size, device=self.device)
         for start in range(0, batch_size, self.minibatch_size):
-            mb_idx = indices[start : start + self.minibatch_size]
+            mb_idx = indices[start:start + self.minibatch_size]
             yield RolloutBatch(
                 states=states[mb_idx],
                 actions=actions[mb_idx],
@@ -285,16 +327,13 @@ class PPOAgent:
         if len(self.buffer) == 0:
             return {"updated": False}
 
-        # No renormalizar estados del rollout con stats nuevas
         last_state_prepared = self.prepare_state(last_state)
         last_value = self.value(last_state_prepared, prepared=True)
 
         returns_np, advantages_np = self._compute_returns_and_advantages(last_value)
         advantages_np = (advantages_np - advantages_np.mean()) / (advantages_np.std() + 1e-8)
 
-        states_np = np.asarray(self.buffer.states, dtype=np.float32)
-
-        states = torch.as_tensor(states_np, dtype=torch.float32, device=self.device)
+        states = torch.as_tensor(np.asarray(self.buffer.states), dtype=torch.float32, device=self.device)
         actions = torch.as_tensor(np.asarray(self.buffer.actions), dtype=torch.float32, device=self.device)
         old_log_probs = torch.as_tensor(np.asarray(self.buffer.log_probs), dtype=torch.float32, device=self.device)
         returns = torch.as_tensor(returns_np, dtype=torch.float32, device=self.device)
@@ -349,13 +388,14 @@ class PPOAgent:
             "obs_dim": self.obs_dim,
             "action_dim": self.action_dim,
             "metadata": metadata or {},
-            "obs_rms": self.obs_rms.state_dict(),
             "normalize_obs": self.normalize_obs,
+            "obs_rms": self.obs_rms.state_dict(),
         }
         torch.save(payload, path)
 
     def load(self, path: str, map_location: Optional[torch.device] = None) -> dict:
         load_device = map_location or self.device
+
         try:
             ckpt = torch.load(path, map_location=load_device, weights_only=True)
         except Exception:
@@ -369,12 +409,14 @@ class PPOAgent:
 
         ckpt_obs = ckpt.get("obs_dim")
         ckpt_act = ckpt.get("action_dim")
-        if ckpt_obs is not None and int(ckpt_obs) != int(self.obs_dim):
+
+        if ckpt_obs is not None and int(ckpt_obs) != self.obs_dim:
             raise ValueError(
                 f"Checkpoint obs_dim={ckpt_obs} does not match current obs_dim={self.obs_dim}. "
                 "Please retrain with --policy-train."
             )
-        if ckpt_act is not None and int(ckpt_act) != int(self.action_dim):
+
+        if ckpt_act is not None and int(ckpt_act) != self.action_dim:
             raise ValueError(
                 f"Checkpoint action_dim={ckpt_act} does not match current action_dim={self.action_dim}. "
                 "Please retrain with --policy-train."

@@ -77,7 +77,7 @@ def get_options():
         "--max-green",
         dest="max_green",
         type="int",
-        default=30,
+        default=45,
         help="Maximum green duration per phase in policy mode (default: 30)",
     )
     options, args = opt_parser.parse_args()
