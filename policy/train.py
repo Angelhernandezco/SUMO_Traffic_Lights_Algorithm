@@ -12,7 +12,6 @@ from policy.agent import PPOAgent
 
 def _normalized_action_to_duration(action01: np.ndarray, *, min_green: int, max_green: int) -> int:
     a = np.asarray(action01, dtype=np.float32)
-
     if a.ndim == 0:
         a01 = float(a)
     elif a.ndim == 1 and a.shape[0] == 1:
@@ -87,7 +86,6 @@ def _phase_vectors(
     for i, idxs in enumerate(phase_lane_indices):
         veh = float(np.sum(lane_vehicle[idxs]))
         que = float(np.sum(lane_queue[idxs]))
-        # Presión suave: prioriza cola, pero también ve volumen entrante.
         prs = que + 0.35 * veh
         phase_vehicle[i] = veh
         phase_queue[i] = que
@@ -114,18 +112,13 @@ def _state_from_phase_stats(
         raise ValueError(f"phase_idx out of range: {phase_idx} (num_phases={num_phases})")
 
     total_pressure = float(np.sum(phase_pressure))
-    if total_pressure <= 1e-6:
-        phase_share = np.zeros_like(phase_pressure, dtype=np.float32)
-    else:
-        phase_share = phase_pressure / total_pressure
+    denom = total_pressure + 1.0
+    phase_share = phase_pressure / denom
 
     order = _cyclic_order(int(phase_idx), num_phases)
-    current = order[0]
-    next_phase = order[1]
-    rest = order[2:]
 
-    def phase_feat(i: int, include_relative: bool) -> np.ndarray:
-        base = np.asarray(
+    def phase_block(i: int) -> np.ndarray:
+        return np.asarray(
             [
                 np.log1p(float(phase_vehicle[i])),
                 np.log1p(float(phase_queue[i])),
@@ -134,39 +127,40 @@ def _state_from_phase_stats(
             ],
             dtype=np.float32,
         )
-        if not include_relative:
-            return base
 
-        gap_next = (float(phase_pressure[i]) - float(phase_pressure[next_phase])) / (total_pressure + 1.0)
-        others = [j for j in range(num_phases) if j != i]
-        max_other = max(float(phase_pressure[j]) for j in others) if others else 0.0
-        gap_max_other = (float(phase_pressure[i]) - max_other) / (total_pressure + 1.0)
-        rel = np.asarray([gap_next, gap_max_other], dtype=np.float32)
-        return np.concatenate([base, rel], axis=0)
+    blocks = [phase_block(i) for i in order]  # [current, next, next+1, next+2]
 
-    current_feat = phase_feat(current, include_relative=True)
-    next_feat = phase_feat(next_phase, include_relative=True)
+    future_pressures = [float(phase_pressure[i]) for i in order[1:]]
+    weighted_future_pressure = (
+        1.00 * future_pressures[0]
+        + 0.70 * future_pressures[1]
+        + 0.40 * future_pressures[2]
+    )
+    peak_future_pos = int(np.argmax(future_pressures)) + 1
+    max_future_pressure = max(future_pressures)
+    sum_future_pressure = sum(future_pressures)
+    current_pressure = float(phase_pressure[order[0]])
+    gap_current_vs_peak_future = (current_pressure - max_future_pressure) / denom
+    current_vs_next_gap = (current_pressure - float(phase_pressure[order[1]])) / denom
+    current_vs_next2_gap = (current_pressure - float(phase_pressure[order[2]])) / denom
+    current_vs_next3_gap = (current_pressure - float(phase_pressure[order[3]])) / denom
 
-    rest_feats: List[np.ndarray] = []
-    for i in rest:
-        rest_feats.append(phase_feat(i, include_relative=False))
-    rest_flat = np.concatenate(rest_feats, axis=0) if rest_feats else np.zeros((0,), dtype=np.float32)
-
-    max_other_pressure = max(float(phase_pressure[j]) for j in order[1:]) if order[1:] else 0.0
-    max_other_share = max(float(phase_share[j]) for j in order[1:]) if order[1:] else 0.0
     summary = np.asarray(
         [
             np.log1p(total_pressure),
-            float(phase_share[current]),
-            float(phase_share[next_phase]),
-            float(max_other_share),
-            (float(phase_pressure[current]) - float(phase_pressure[next_phase])) / (total_pressure + 1.0),
-            (float(phase_pressure[current]) - max_other_pressure) / (total_pressure + 1.0),
+            np.log1p(weighted_future_pressure),
+            np.log1p(max_future_pressure),
+            np.log1p(sum_future_pressure),
+            float(gap_current_vs_peak_future),
+            float(current_vs_next_gap),
+            float(current_vs_next2_gap),
+            float(current_vs_next3_gap),
+            float(peak_future_pos / 3.0),
         ],
         dtype=np.float32,
     )
 
-    return np.concatenate([current_feat, next_feat, rest_flat, summary], axis=0)
+    return np.concatenate(blocks + [summary], axis=0)
 
 
 def _structured_snapshot(
@@ -184,16 +178,24 @@ def _structured_snapshot(
 
     num_phases = len(phase_lane_indices)
     order = _cyclic_order(int(phase_idx), num_phases)
-    current = order[0]
-    next_phase = order[1]
-    rest = order[2:]
-
     total_pressure = float(np.sum(phase_pressure))
-    shares = phase_pressure / max(total_pressure, 1.0)
-    current_pressure = float(phase_pressure[current])
-    next_pressure = float(phase_pressure[next_phase])
-    max_other_pressure = max(float(phase_pressure[j]) for j in order[1:]) if order[1:] else 0.0
-    other_total = sum(float(phase_pressure[j]) for j in order[1:]) if order[1:] else 0.0
+    denom = total_pressure + 1.0
+    shares = phase_pressure / denom
+
+    future_pressures = [float(phase_pressure[i]) for i in order[1:]]
+    weighted_future_pressure = (
+        1.00 * future_pressures[0]
+        + 0.70 * future_pressures[1]
+        + 0.40 * future_pressures[2]
+    )
+    peak_future_pos = int(np.argmax(future_pressures)) + 1
+    peak_future_idx = int(order[peak_future_pos])
+    max_future_pressure = max(future_pressures)
+    sum_future_pressure = sum(future_pressures)
+    current_pressure = float(phase_pressure[order[0]])
+    next_pressure = float(phase_pressure[order[1]])
+    next2_pressure = float(phase_pressure[order[2]])
+    next3_pressure = float(phase_pressure[order[3]])
 
     state = _state_from_phase_stats(
         phase_vehicle,
@@ -207,18 +209,23 @@ def _structured_snapshot(
         "phase_vehicle": phase_vehicle,
         "phase_queue": phase_queue,
         "phase_pressure": phase_pressure,
+        "phase_share": shares,
+        "order": np.asarray(order, dtype=np.int64),
         "current_pressure": current_pressure,
         "next_pressure": next_pressure,
-        "max_other_pressure": max_other_pressure,
-        "other_total_pressure": float(other_total),
-        "current_share": float(shares[current]),
-        "next_share": float(shares[next_phase]),
-        "max_other_share": max(float(shares[j]) for j in order[1:]) if order[1:] else 0.0,
+        "next2_pressure": next2_pressure,
+        "next3_pressure": next3_pressure,
+        "current_share": float(shares[order[0]]),
+        "next_share": float(shares[order[1]]),
+        "next2_share": float(shares[order[2]]),
+        "next3_share": float(shares[order[3]]),
         "total_pressure": total_pressure,
+        "weighted_future_pressure": float(weighted_future_pressure),
+        "max_future_pressure": float(max_future_pressure),
+        "sum_future_pressure": float(sum_future_pressure),
+        "peak_future_pos": int(peak_future_pos),
+        "peak_future_idx": int(peak_future_idx),
         "phase_idx": int(phase_idx),
-        "current_idx": int(current),
-        "next_idx": int(next_phase),
-        "rest_idx": np.asarray(rest, dtype=np.int64),
     }
 
 
@@ -250,16 +257,12 @@ class SumoTrafficEnv:
         return _structured_snapshot(self.lanes, self.phase_lane_indices, phase_idx=idx)
 
     def _obs(self) -> np.ndarray:
-        snap = self._snapshot()
-        return np.asarray(snap["state"], dtype=np.float32)
+        return np.asarray(self._snapshot()["state"], dtype=np.float32)
 
     def step(self, action01: np.ndarray, *, max_steps: int) -> Tuple[np.ndarray, float, bool, int, float, dict]:
         if int(max_steps) <= 0:
             done = bool(traci.simulation.getMinExpectedNumber() <= 0)
-            return self._obs(), 0.0, done, 0, 0.0, {
-                "requested_duration": 0,
-                "executed_duration": 0,
-            }
+            return self._obs(), 0.0, done, 0, 0.0, {"requested_duration": 0, "executed_duration": 0}
 
         current_phase_idx = int(self.phase_cursor)
         current_phase = self.phases[current_phase_idx]
@@ -277,12 +280,10 @@ class SumoTrafficEnv:
 
         if requested_duration > 0:
             set_phase_by_index(self.junction, current_phase["index"], int(requested_duration))
-
             for _ in range(int(requested_duration)):
                 traci.simulationStep()
                 executed_duration += 1
                 waiting_sum += float(sum(traci.lane.getLastStepHaltingNumber(l) for l in self.lanes))
-
                 if traci.simulation.getMinExpectedNumber() <= 0:
                     break
 
@@ -290,11 +291,11 @@ class SumoTrafficEnv:
 
         mean_wait = waiting_sum / max(1, executed_duration)
         before_curr = float(before["current_pressure"])
-        before_next = float(before["next_pressure"])
         before_total = float(before["total_pressure"])
-        before_share = float(before["current_share"])
-        before_next_share = float(before["next_share"])
-        before_max_other = float(before["max_other_pressure"])
+        before_current_share = float(before["current_share"])
+        before_peak_future = float(before["max_future_pressure"])
+        before_weighted_future = float(before["weighted_future_pressure"])
+        before_peak_future_pos = int(before["peak_future_pos"])
         after_curr = float(after_same_phase["current_pressure"])
         after_total = float(after_same_phase["total_pressure"])
 
@@ -304,30 +305,58 @@ class SumoTrafficEnv:
         extra_green = max(0, int(executed_duration) - int(self.min_green))
         green_span = max(1, int(self.max_green) - int(self.min_green))
         extra_green_ratio = float(extra_green) / float(green_span)
+        extra_green_sq = float(extra_green_ratio * extra_green_ratio)
 
-        dominance_soft = max(
+        denom = before_total + 1.0
+        dominance_soft = max(0.0, (before_curr - before_peak_future) / denom)
+        future_urgency_soft = min(1.0, before_weighted_future / denom)
+        future_peak_gap_soft = max(0.0, (before_peak_future - before_curr) / denom)
+        low_pressure_soft = np.clip(1.0 - before_curr / 8.0, 0.0, 1.0)
+        low_next_soft = np.clip(1.0 - float(before["next_pressure"]) / 8.0, 0.0, 1.0)
+        low_next2_soft = np.clip(1.0 - float(before["next2_pressure"]) / 8.0, 0.0, 1.0)
+        weak_current_soft = max(low_pressure_soft, 1.0 - min(1.0, before_current_share / 0.25))
+        queue_now = float(before["phase_queue"][current_phase_idx])
+        no_queue_soft = np.clip(1.0 - queue_now / 1.5, 0.0, 1.0)
+        waste_soft = max(weak_current_soft, no_queue_soft)
+
+        # Si current y las próximas fases cercanas vienen vacías, conviene atravesarlas rápido.
+        chain_empty_soft = np.clip(
+            low_pressure_soft * (0.65 + 0.35 * low_next_soft) * (0.75 + 0.25 * low_next2_soft),
             0.0,
-            (before_curr - before_max_other) / (before_total + 1.0),
+            1.5,
         )
-        next_stronger_soft = max(
-            0.0,
-            (before_next - before_curr) / (before_total + 1.0),
+
+        # Costo explícito por retrasar una fase fuerte que está más adelante en el ciclo.
+        distance_weight = float(before_peak_future_pos / 3.0)  # 1/3, 2/3 o 1.0
+        bad_delay_cost = extra_green_sq * future_peak_gap_soft * (0.8 + 1.0 * distance_weight)
+        bad_extension_soft = extra_green_sq * (
+            1.00 * waste_soft
+            + 1.70 * future_peak_gap_soft
+            + 0.70 * future_urgency_soft
+            + 0.40 * (1.0 - before_current_share)
         )
-        low_demand_soft = np.clip((0.18 - before_share) / 0.18, 0.0, 1.0)
-        no_queue_soft = np.clip(
-            1.0 - float(before["phase_queue"][current_phase_idx]) / 1.5,
-            0.0,
-            1.0,
+        fast_pass_bonus = (1.0 - extra_green_ratio) * chain_empty_soft * (
+            0.35 + 0.90 * future_peak_gap_soft + 0.55 * future_urgency_soft + 0.25 * distance_weight
         )
-        waste_soft = max(low_demand_soft, no_queue_soft)
+        dominant_extension_soft = extra_green_ratio * max(0.0, served_current) * (
+            0.90 * dominance_soft
+            + 0.90 * before_current_share
+            + 0.35 * min(1.0, before_curr / 12.0)
+        )
+
+        dominant_need_soft = min(1.0, before_curr / 10.0) * max(before_current_share, dominance_soft)
+        under_green_soft = (1.0 - extra_green_ratio) * dominant_need_soft
 
         reward = (
             -mean_wait
             + 5.0 * served_current
-            + 2.5 * global_relief
-            + 4.0 * dominance_soft * served_current * extra_green_ratio
-            - 2.5 * waste_soft * extra_green_ratio
-            - 2.0 * next_stronger_soft * extra_green_ratio
+            + 1.5 * global_relief
+            + 7.5 * fast_pass_bonus
+            + 18.0 * dominant_extension_soft
+            - 4.5 * bad_extension_soft
+            - 7.5 * bad_delay_cost
+            - 1.2 * extra_green_ratio * waste_soft
+            - 5.5 * under_green_soft
         )
 
         self.phase_cursor = (current_phase_idx + 1) % len(self.phases)
@@ -339,16 +368,23 @@ class SumoTrafficEnv:
             "executed_duration": int(executed_duration),
             "mean_wait": float(mean_wait),
             "current_pressure": float(before_curr),
-            "next_pressure": float(before_next),
-            "current_share": float(before_share),
-            "next_share": float(before_next_share),
-            "max_other_pressure": float(before_max_other),
+            "next_pressure": float(before["next_pressure"]),
+            "next2_pressure": float(before["next2_pressure"]),
+            "next3_pressure": float(before["next3_pressure"]),
+            "current_share": float(before_current_share),
+            "peak_future_pos": int(before_peak_future_pos),
+            "weighted_future_pressure": float(before_weighted_future),
             "served_current": float(served_current),
             "global_relief": float(global_relief),
             "extra_green_ratio": float(extra_green_ratio),
             "dominance_soft": float(dominance_soft),
             "waste_soft": float(waste_soft),
-            "next_stronger_soft": float(next_stronger_soft),
+            "bad_delay_cost": float(bad_delay_cost),
+            "bad_extension_soft": float(bad_extension_soft),
+            "fast_pass_bonus": float(fast_pass_bonus),
+            "dominant_extension_soft": float(dominant_extension_soft),
+            "dominant_need_soft": float(dominant_need_soft),
+            "under_green_soft": float(under_green_soft),
             "reward": float(reward),
         }
         return next_obs, float(reward), done, int(executed_duration), float(waiting_sum), info
@@ -392,12 +428,19 @@ def _run_single_episode(
                 f"phase={phase_before} "
                 f"curr_p={info.get('current_pressure', 0.0):.2f} "
                 f"next_p={info.get('next_pressure', 0.0):.2f} "
+                f"next2_p={info.get('next2_pressure', 0.0):.2f} "
+                f"next3_p={info.get('next3_pressure', 0.0):.2f} "
                 f"share={info.get('current_share', 0.0):.3f} "
+                f"peak_pos={int(info.get('peak_future_pos', 0))} "
                 f"action01={np.round(action_dbg, 3).tolist()} "
                 f"req_dur={int(info.get('requested_duration', 0))} "
                 f"exec_dur={int(info.get('executed_duration', phase_seconds))} "
                 f"served={info.get('served_current', 0.0):.3f} "
                 f"waste={info.get('waste_soft', 0.0):.3f} "
+                f"bad_delay={info.get('bad_delay_cost', 0.0):.3f} "
+                f"fast_pass={info.get('fast_pass_bonus', 0.0):.3f} "
+                f"bad_ext={info.get('bad_extension_soft', 0.0):.3f} "
+                f"under_g={info.get('under_green_soft', 0.0):.3f} "
                 f"dom={info.get('dominance_soft', 0.0):.3f} "
                 f"r={info.get('reward', 0.0):.3f}"
             )
@@ -454,9 +497,9 @@ def run_policy(
     traci.start([checkBinary("sumo"), "-c", "configuration.sumocfg"])
     try:
         junction, phases, lanes = _select_junction_phases_and_lanes(max_phases=4)
-        if len(phases) <= 1:
+        if len(phases) != 4:
             raise RuntimeError(
-                f"Need at least 2 green phases to run the algorithm (found {len(phases)})."
+                f"This version expects exactly 4 green phases (found {len(phases)})."
             )
         phase_lane_indices = _build_phase_lane_indices(phases, lanes)
         sample_obs = _structured_snapshot(lanes, phase_lane_indices, phase_idx=0)["state"]
@@ -475,24 +518,23 @@ def run_policy(
         gamma=0.99,
         gae_lambda=0.95,
         clip_eps=0.2,
-        entropy_coef=0.02,
+        entropy_coef=0.07,
         value_coef=0.5,
         max_grad_norm=0.5,
         ppo_epochs=10,
         minibatch_size=64,
         normalize_obs=True,
-        concentration_floor=1.0,
-        init_concentration=2.0,
+        concentration_floor=0.2,
+        init_action_mean=0.08,
+        init_total_concentration=2.8,
     )
 
-    metadata = {}
     if not train:
         if not os.path.exists(model_path):
             raise FileNotFoundError(
                 f"Policy not found: {model_path}. Train first with --policy-train -m {model_name}."
             )
         metadata = agent.load(model_path, map_location=torch.device("cpu"))
-
         saved_min = metadata.get("min_green")
         saved_max = metadata.get("max_green")
         if saved_min is not None and int(saved_min) != int(min_green):
@@ -511,17 +553,24 @@ def run_policy(
     debug_limit = 250
     best_eval_wait = float("inf")
 
+    entropy_start = 0.07
+    entropy_end = 0.010
+    entropy_decay_portion = 0.55
+
     for ep in range(int(episodes)):
         if train:
-            traci.start(
-                [
-                    checkBinary("sumo"),
-                    "-c",
-                    "configuration.sumocfg",
-                    "--tripinfo-output",
-                    "maps/tripinfo.xml",
-                ]
-            )
+            if int(episodes) <= 1:
+                entropy_coef_now = entropy_end
+            else:
+                progress = min(1.0, float(ep) / max(1.0, entropy_decay_portion * (int(episodes) - 1)))
+                entropy_coef_now = entropy_start + (entropy_end - entropy_start) * progress
+            agent.set_entropy_coef(entropy_coef_now)
+
+            traci.start([
+                checkBinary("sumo"),
+                "-c", "configuration.sumocfg",
+                "--tripinfo-output", "maps/tripinfo.xml",
+            ])
             try:
                 train_env = _make_env(
                     lanes=lanes,
@@ -545,15 +594,11 @@ def run_policy(
 
             update_info = agent.update(last_state=train_metrics["last_state"])
 
-            traci.start(
-                [
-                    checkBinary("sumo"),
-                    "-c",
-                    "configuration.sumocfg",
-                    "--tripinfo-output",
-                    "maps/tripinfo.xml",
-                ]
-            )
+            traci.start([
+                checkBinary("sumo"),
+                "-c", "configuration.sumocfg",
+                "--tripinfo-output", "maps/tripinfo.xml",
+            ])
             try:
                 eval_env = _make_env(
                     lanes=lanes,
@@ -583,7 +628,8 @@ def run_policy(
                 f"Eval reward(det): {eval_metrics['total_reward']:.2f} | "
                 f"policy_loss={update_info.get('policy_loss')} | "
                 f"value_loss={update_info.get('value_loss')} | "
-                f"entropy={update_info.get('entropy')}"
+                f"entropy={update_info.get('entropy')} | "
+                f"entropy_coef={agent.entropy_coef:.4f}"
             )
 
             if float(eval_metrics["total_wait"]) < best_eval_wait:
@@ -601,8 +647,14 @@ def run_policy(
                         "obs_dim": int(obs_dim),
                         "action_dim": 1,
                         "normalize_obs": True,
-                        "state_version": "current_next_rest_structured_v1",
-                        "reward_version": "global_wait_plus_useful_extra_green_v1",
+                        "state_version": "current_next_next2_next3_with_future_pressure_v1",
+                        "reward_version": "global_wait_future_delay_cost_v3_extreme_push",
+                        "init_action_mean": 0.08,
+                        "init_total_concentration": 9.0,
+                        "entropy_start": entropy_start,
+                        "entropy_end": entropy_end,
+                        "init_total_concentration": 2.8,
+                        "concentration_floor": 0.2,
                     },
                 )
                 print(
@@ -610,15 +662,11 @@ def run_policy(
                     f"(best_eval_wait={best_eval_wait:.0f})"
                 )
         else:
-            traci.start(
-                [
-                    checkBinary(sim_binary),
-                    "-c",
-                    "configuration.sumocfg",
-                    "--tripinfo-output",
-                    "maps/tripinfo.xml",
-                ]
-            )
+            traci.start([
+                checkBinary(sim_binary),
+                "-c", "configuration.sumocfg",
+                "--tripinfo-output", "maps/tripinfo.xml",
+            ])
             try:
                 env = _make_env(
                     lanes=lanes,

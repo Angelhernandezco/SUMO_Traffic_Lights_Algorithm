@@ -9,7 +9,7 @@ from torch.distributions import Beta, Independent
 
 
 class RunningMeanStd:
-    """Running mean/std para normalizar observaciones de forma estable."""
+    """Running mean/std para normalizar observaciones."""
 
     def __init__(self, shape: Tuple[int, ...], epsilon: float = 1e-4):
         self.mean = np.zeros(shape, dtype=np.float64)
@@ -62,68 +62,6 @@ class RunningMeanStd:
         self.count = float(state["count"])
 
 
-def _orthogonal_init(module: nn.Module, gain: float = 1.0) -> None:
-    if isinstance(module, nn.Linear):
-        nn.init.orthogonal_(module.weight, gain=gain)
-        if module.bias is not None:
-            nn.init.constant_(module.bias, 0.0)
-
-
-def _inv_softplus(x: float) -> float:
-    x = float(max(x, 1e-6))
-    return float(np.log(np.expm1(x)))
-
-
-class ActorCritic(nn.Module):
-    def __init__(
-        self,
-        obs_dim: int,
-        action_dim: int,
-        hidden_dim: int = 256,
-        concentration_floor: float = 1.0,
-        init_concentration: float = 2.0,
-    ):
-        super().__init__()
-        if obs_dim <= 0:
-            raise ValueError(f"obs_dim must be > 0, got {obs_dim}")
-        if action_dim <= 0:
-            raise ValueError(f"action_dim must be > 0, got {action_dim}")
-        if concentration_floor < 0.0:
-            raise ValueError("concentration_floor must be >= 0")
-        if init_concentration <= concentration_floor:
-            raise ValueError("init_concentration must be > concentration_floor")
-
-        self.concentration_floor = float(concentration_floor)
-
-        self.backbone = nn.Sequential(
-            nn.Linear(obs_dim, hidden_dim),
-            nn.Tanh(),
-            nn.Linear(hidden_dim, hidden_dim),
-            nn.Tanh(),
-        )
-        self.alpha_head = nn.Linear(hidden_dim, action_dim)
-        self.beta_head = nn.Linear(hidden_dim, action_dim)
-        self.value_head = nn.Linear(hidden_dim, 1)
-
-        self.backbone.apply(lambda m: _orthogonal_init(m, gain=np.sqrt(2.0)))
-        _orthogonal_init(self.value_head, gain=1.0)
-
-        # Arranque simétrico alrededor de 0.5 para evitar sesgo inicial.
-        nn.init.zeros_(self.alpha_head.weight)
-        nn.init.zeros_(self.beta_head.weight)
-        init_bias = _inv_softplus(init_concentration - self.concentration_floor)
-        nn.init.constant_(self.alpha_head.bias, init_bias)
-        nn.init.constant_(self.beta_head.bias, init_bias)
-
-    def forward(self, obs: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
-        x = self.backbone(obs)
-        alpha = F.softplus(self.alpha_head(x)) + self.concentration_floor
-        beta = F.softplus(self.beta_head(x)) + self.concentration_floor
-        value = self.value_head(x).squeeze(-1)
-        params = torch.stack([alpha, beta], dim=-1)
-        return params, value
-
-
 @dataclass
 class RolloutBatch:
     states: torch.Tensor
@@ -165,6 +103,78 @@ class RolloutBuffer:
         return len(self.rewards)
 
 
+def _orthogonal_init(module: nn.Module, gain: float = 1.0) -> None:
+    if isinstance(module, nn.Linear):
+        nn.init.orthogonal_(module.weight, gain=gain)
+        if module.bias is not None:
+            nn.init.constant_(module.bias, 0.0)
+
+
+def _inv_softplus(x: float) -> float:
+    x = float(max(x, 1e-6))
+    return float(np.log(np.expm1(x)))
+
+
+class ActorCritic(nn.Module):
+    def __init__(
+        self,
+        obs_dim: int,
+        action_dim: int,
+        hidden_dim: int = 256,
+        concentration_floor: float = 0.2,
+        init_action_mean: float = 0.08,
+        init_total_concentration: float = 2.8,
+    ):
+        super().__init__()
+        if obs_dim <= 0:
+            raise ValueError(f"obs_dim must be > 0, got {obs_dim}")
+        if action_dim <= 0:
+            raise ValueError(f"action_dim must be > 0, got {action_dim}")
+        if concentration_floor < 0.0:
+            raise ValueError("concentration_floor must be >= 0")
+        if not (0.01 < init_action_mean < 0.99):
+            raise ValueError("init_action_mean must be in (0.01, 0.99)")
+        if init_total_concentration <= 2.0 * concentration_floor:
+            raise ValueError("init_total_concentration must be > 2 * concentration_floor")
+
+        self.concentration_floor = float(concentration_floor)
+
+        self.backbone = nn.Sequential(
+            nn.Linear(obs_dim, hidden_dim),
+            nn.Tanh(),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.Tanh(),
+        )
+        self.alpha_head = nn.Linear(hidden_dim, action_dim)
+        self.beta_head = nn.Linear(hidden_dim, action_dim)
+        self.value_head = nn.Linear(hidden_dim, 1)
+
+        self.backbone.apply(lambda m: _orthogonal_init(m, gain=np.sqrt(2.0)))
+        _orthogonal_init(self.value_head, gain=1.0)
+
+        # Prior bajo: PPO debe "ganarse" los verdes largos.
+        nn.init.zeros_(self.alpha_head.weight)
+        nn.init.zeros_(self.beta_head.weight)
+        alpha_target = float(init_action_mean * init_total_concentration)
+        beta_target = float((1.0 - init_action_mean) * init_total_concentration)
+        if alpha_target <= self.concentration_floor or beta_target <= self.concentration_floor:
+            raise ValueError(
+                f"init_total_concentration={init_total_concentration} is too small for init_action_mean={init_action_mean} and concentration_floor={self.concentration_floor}. Try a larger concentration or a higher init_action_mean."
+            )
+        alpha_bias = _inv_softplus(alpha_target - self.concentration_floor)
+        beta_bias = _inv_softplus(beta_target - self.concentration_floor)
+        nn.init.constant_(self.alpha_head.bias, alpha_bias)
+        nn.init.constant_(self.beta_head.bias, beta_bias)
+
+    def forward(self, obs: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
+        x = self.backbone(obs)
+        alpha = F.softplus(self.alpha_head(x)) + self.concentration_floor
+        beta = F.softplus(self.beta_head(x)) + self.concentration_floor
+        value = self.value_head(x).squeeze(-1)
+        params = torch.stack([alpha, beta], dim=-1)
+        return params, value
+
+
 class PPOAgent:
     def __init__(
         self,
@@ -176,19 +186,19 @@ class PPOAgent:
         gamma: float = 0.99,
         gae_lambda: float = 0.95,
         clip_eps: float = 0.2,
-        entropy_coef: float = 0.02,
+        entropy_coef: float = 0.05,
         value_coef: float = 0.5,
         max_grad_norm: float = 0.5,
         ppo_epochs: int = 10,
         minibatch_size: int = 64,
         device: Optional[torch.device] = None,
         normalize_obs: bool = True,
-        concentration_floor: float = 1.0,
-        init_concentration: float = 2.0,
+        concentration_floor: float = 0.2,
+        init_action_mean: float = 0.08,
+        init_total_concentration: float = 2.8,
     ) -> None:
         self.obs_dim = int(obs_dim)
         self.action_dim = int(action_dim)
-
         self.gamma = float(gamma)
         self.gae_lambda = float(gae_lambda)
         self.clip_eps = float(clip_eps)
@@ -208,12 +218,16 @@ class PPOAgent:
             action_dim,
             hidden_dim=hidden_dim,
             concentration_floor=concentration_floor,
-            init_concentration=init_concentration,
+            init_action_mean=init_action_mean,
+            init_total_concentration=init_total_concentration,
         ).to(self.device)
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=lr)
 
         self.buffer = RolloutBuffer()
         self.obs_rms = RunningMeanStd((self.obs_dim,))
+
+    def set_entropy_coef(self, value: float) -> None:
+        self.entropy_coef = float(value)
 
     def _raw_obs(self, obs: np.ndarray) -> np.ndarray:
         arr = np.asarray(obs, dtype=np.float32)
@@ -244,13 +258,6 @@ class PPOAgent:
         deterministic: bool = False,
         update_rms: bool = False,
     ) -> Tuple[np.ndarray, float, float, np.ndarray]:
-        """
-        Devuelve:
-        - action
-        - log_prob
-        - value
-        - prepared_state (el estado exacto que vio la red)
-        """
         if update_rms:
             self.update_obs_rms(state)
 
@@ -395,7 +402,6 @@ class PPOAgent:
 
     def load(self, path: str, map_location: Optional[torch.device] = None) -> dict:
         load_device = map_location or self.device
-
         try:
             ckpt = torch.load(path, map_location=load_device, weights_only=True)
         except Exception:
@@ -409,13 +415,11 @@ class PPOAgent:
 
         ckpt_obs = ckpt.get("obs_dim")
         ckpt_act = ckpt.get("action_dim")
-
         if ckpt_obs is not None and int(ckpt_obs) != self.obs_dim:
             raise ValueError(
                 f"Checkpoint obs_dim={ckpt_obs} does not match current obs_dim={self.obs_dim}. "
                 "Please retrain with --policy-train."
             )
-
         if ckpt_act is not None and int(ckpt_act) != self.action_dim:
             raise ValueError(
                 f"Checkpoint action_dim={ckpt_act} does not match current action_dim={self.action_dim}. "
@@ -427,7 +431,6 @@ class PPOAgent:
         ckpt_normalize_obs = ckpt.get("normalize_obs")
         if ckpt_normalize_obs is not None:
             self.normalize_obs = bool(ckpt_normalize_obs)
-
         if self.normalize_obs and isinstance(ckpt.get("obs_rms"), dict):
             self.obs_rms.load_state_dict(ckpt["obs_rms"])
 
