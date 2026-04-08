@@ -270,6 +270,9 @@ class PPOAgent:
         dist = Independent(Beta(alpha, beta), 1)
 
         if deterministic:
+            # Test oficial: usar la media de la Beta mantiene la evaluación
+            # estable y evita que la política parezca mejor solo por extraer
+            # un extremo de la distribución.
             action = alpha / (alpha + beta)
         else:
             action = dist.sample()

@@ -319,44 +319,75 @@ class SumoTrafficEnv:
         no_queue_soft = np.clip(1.0 - queue_now / 1.5, 0.0, 1.0)
         waste_soft = max(weak_current_soft, no_queue_soft)
 
-        # Si current y las próximas fases cercanas vienen vacías, conviene atravesarlas rápido.
+        # Jerarquía buscada:
+        # 1) Servir bien una fase dominante.
+        # 2) No dejar corta una fase que realmente domina.
+        # 3) Fast-pass solo cuando current es débil y sí hay valor en llegar antes
+        #    a una fase más fuerte. Cuando todo está vacío, fast-pass existe pero
+        #    con mucho menos peso.
         chain_empty_soft = np.clip(
             low_pressure_soft * (0.65 + 0.35 * low_next_soft) * (0.75 + 0.25 * low_next2_soft),
             0.0,
             1.5,
         )
 
-        # Costo explícito por retrasar una fase fuerte que está más adelante en el ciclo.
         distance_weight = float(before_peak_future_pos / 3.0)  # 1/3, 2/3 o 1.0
-        bad_delay_cost = extra_green_sq * future_peak_gap_soft * (0.8 + 1.0 * distance_weight)
-        bad_extension_soft = extra_green_sq * (
-            1.00 * waste_soft
-            + 1.70 * future_peak_gap_soft
-            + 0.70 * future_urgency_soft
-            + 0.40 * (1.0 - before_current_share)
-        )
-        fast_pass_bonus = (1.0 - extra_green_ratio) * chain_empty_soft * (
-            0.35 + 0.90 * future_peak_gap_soft + 0.55 * future_urgency_soft + 0.25 * distance_weight
-        )
-        dominant_extension_soft = extra_green_ratio * max(0.0, served_current) * (
-            0.90 * dominance_soft
-            + 0.90 * before_current_share
-            + 0.35 * min(1.0, before_curr / 12.0)
+        dominance_gate = max(before_current_share, dominance_soft)
+
+        # Valor real de "apurar": cuánto más fuerte se ve lo que viene frente a current.
+        future_pull_soft = np.clip(
+            0.70 * future_peak_gap_soft + 0.45 * future_urgency_soft,
+            0.0,
+            1.0,
         )
 
-        dominant_need_soft = min(1.0, before_curr / 10.0) * max(before_current_share, dominance_soft)
-        under_green_soft = (1.0 - extra_green_ratio) * dominant_need_soft
+        # Cuando literalmente casi todo está bajo, fast-pass existe pero vale poco.
+        dead_cycle_soft = np.clip(
+            low_pressure_soft * low_next_soft * low_next2_soft * (1.0 - future_pull_soft),
+            0.0,
+            1.0,
+        )
+
+        fast_pass_context_soft = np.clip(
+            chain_empty_soft
+            * low_pressure_soft
+            * (0.20 * dead_cycle_soft + 1.00 * future_pull_soft * (0.55 + 0.45 * distance_weight))
+            * (1.0 - 0.75 * dominance_gate),
+            0.0,
+            1.5,
+        )
+
+        # Costo por quedarse verde en current mientras lo fuerte está adelante.
+        bad_delay_cost = extra_green_sq * future_pull_soft * (0.75 + 0.95 * distance_weight)
+
+        # Penalización por extensión inútil: más baja si current sí domina y está sirviendo.
+        dominance_relief = 1.0 - 0.40 * dominance_gate * max(0.0, served_current)
+        bad_extension_soft = extra_green_sq * dominance_relief * (
+            1.00 * waste_soft
+            + 1.40 * future_peak_gap_soft
+            + 0.55 * future_urgency_soft
+            + 0.30 * (1.0 - before_current_share)
+        )
+
+        dominant_extension_soft = extra_green_ratio * max(0.0, served_current) * (
+            1.10 * dominance_soft
+            + 1.00 * before_current_share
+            + 0.45 * min(1.0, before_curr / 12.0)
+        )
+
+        dominant_need_soft = min(1.0, before_curr / 10.0) * dominance_gate
+        under_green_soft = (1.0 - extra_green_ratio) * dominant_need_soft * (0.70 + 0.90 * dominance_gate)
 
         reward = (
             -mean_wait
             + 5.0 * served_current
             + 1.5 * global_relief
-            + 7.5 * fast_pass_bonus
-            + 18.0 * dominant_extension_soft
-            - 4.5 * bad_extension_soft
-            - 7.5 * bad_delay_cost
-            - 1.2 * extra_green_ratio * waste_soft
-            - 5.5 * under_green_soft
+            + 5.5 * fast_pass_context_soft
+            + 20.0 * dominant_extension_soft
+            - 4.0 * bad_extension_soft
+            - 8.5 * bad_delay_cost
+            - 1.0 * extra_green_ratio * waste_soft
+            - 8.5 * under_green_soft
         )
 
         self.phase_cursor = (current_phase_idx + 1) % len(self.phases)
@@ -381,7 +412,9 @@ class SumoTrafficEnv:
             "waste_soft": float(waste_soft),
             "bad_delay_cost": float(bad_delay_cost),
             "bad_extension_soft": float(bad_extension_soft),
-            "fast_pass_bonus": float(fast_pass_bonus),
+            "fast_pass_bonus": float(fast_pass_context_soft),
+            "future_pull_soft": float(future_pull_soft),
+            "dominance_gate": float(dominance_gate),
             "dominant_extension_soft": float(dominant_extension_soft),
             "dominant_need_soft": float(dominant_need_soft),
             "under_green_soft": float(under_green_soft),
