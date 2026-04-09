@@ -140,10 +140,22 @@ def _state_from_phase_stats(
     max_future_pressure = max(future_pressures)
     sum_future_pressure = sum(future_pressures)
     current_pressure = float(phase_pressure[order[0]])
+    current_idx = int(order[0])
+    other_pressures = [float(phase_pressure[i]) for i in range(num_phases) if i != current_idx]
+    sum_other_pressure = float(sum(other_pressures))
+    max_other_pressure = float(max(other_pressures)) if other_pressures else 0.0
     gap_current_vs_peak_future = (current_pressure - max_future_pressure) / denom
     current_vs_next_gap = (current_pressure - float(phase_pressure[order[1]])) / denom
     current_vs_next2_gap = (current_pressure - float(phase_pressure[order[2]])) / denom
     current_vs_next3_gap = (current_pressure - float(phase_pressure[order[3]])) / denom
+    dominance_ratio_sum = current_pressure / (sum_other_pressure + 1.0)
+    dominance_ratio_max = current_pressure / (max_other_pressure + 1.0)
+    gap_vs_best_other = (current_pressure - max_other_pressure) / denom
+    sorted_phase_idxs = np.argsort(-phase_pressure)
+    current_rank = int(np.where(sorted_phase_idxs == current_idx)[0][0]) + 1
+    top1_pressure = float(phase_pressure[sorted_phase_idxs[0]])
+    top2_pressure = float(phase_pressure[sorted_phase_idxs[1]]) if num_phases > 1 else 0.0
+    top2_to_top1_ratio = top2_pressure / (top1_pressure + 1.0)
 
     summary = np.asarray(
         [
@@ -156,6 +168,13 @@ def _state_from_phase_stats(
             float(current_vs_next2_gap),
             float(current_vs_next3_gap),
             float(peak_future_pos / 3.0),
+            np.log1p(sum_other_pressure),
+            np.log1p(max_other_pressure),
+            np.log1p(dominance_ratio_sum),
+            np.log1p(dominance_ratio_max),
+            float(gap_vs_best_other),
+            float(top2_to_top1_ratio),
+            float(current_rank / num_phases),
         ],
         dtype=np.float32,
     )
@@ -192,10 +211,22 @@ def _structured_snapshot(
     peak_future_idx = int(order[peak_future_pos])
     max_future_pressure = max(future_pressures)
     sum_future_pressure = sum(future_pressures)
-    current_pressure = float(phase_pressure[order[0]])
+    current_idx = int(order[0])
+    current_pressure = float(phase_pressure[current_idx])
     next_pressure = float(phase_pressure[order[1]])
     next2_pressure = float(phase_pressure[order[2]])
     next3_pressure = float(phase_pressure[order[3]])
+    other_pressures = [float(phase_pressure[i]) for i in range(num_phases) if i != current_idx]
+    sum_other_pressure = float(sum(other_pressures))
+    max_other_pressure = float(max(other_pressures)) if other_pressures else 0.0
+    dominance_ratio_sum = current_pressure / (sum_other_pressure + 1.0)
+    dominance_ratio_max = current_pressure / (max_other_pressure + 1.0)
+    gap_vs_best_other = (current_pressure - max_other_pressure) / denom
+    sorted_phase_idxs = np.argsort(-phase_pressure)
+    current_rank = int(np.where(sorted_phase_idxs == current_idx)[0][0]) + 1
+    top1_pressure = float(phase_pressure[sorted_phase_idxs[0]])
+    top2_pressure = float(phase_pressure[sorted_phase_idxs[1]]) if num_phases > 1 else 0.0
+    top2_to_top1_ratio = top2_pressure / (top1_pressure + 1.0)
 
     state = _state_from_phase_stats(
         phase_vehicle,
@@ -225,6 +256,13 @@ def _structured_snapshot(
         "sum_future_pressure": float(sum_future_pressure),
         "peak_future_pos": int(peak_future_pos),
         "peak_future_idx": int(peak_future_idx),
+        "sum_other_pressure": float(sum_other_pressure),
+        "max_other_pressure": float(max_other_pressure),
+        "dominance_ratio_sum": float(dominance_ratio_sum),
+        "dominance_ratio_max": float(dominance_ratio_max),
+        "gap_vs_best_other": float(gap_vs_best_other),
+        "top2_to_top1_ratio": float(top2_to_top1_ratio),
+        "current_rank": int(current_rank),
         "phase_idx": int(phase_idx),
     }
 
@@ -301,6 +339,9 @@ class SumoTrafficEnv:
 
         served_current = np.clip((before_curr - after_curr) / (before_curr + 1.0), -1.0, 1.0)
         global_relief = np.clip((before_total - after_total) / (before_total + 1.0), -1.0, 1.0)
+        after_total_cost = 0.25 * after_total
+        regrowth_penalty = 0.75 * max(0.0, after_total - before_total) / (before_total + 1.0)
+        phase_cost = mean_wait + after_total_cost + regrowth_penalty
 
         extra_green = max(0, int(executed_duration) - int(self.min_green))
         green_span = max(1, int(self.max_green) - int(self.min_green))
@@ -333,6 +374,11 @@ class SumoTrafficEnv:
 
         distance_weight = float(before_peak_future_pos / 3.0)  # 1/3, 2/3 o 1.0
         dominance_gate = max(before_current_share, dominance_soft)
+        dominance_ratio_sum = float(before["dominance_ratio_sum"])
+        dominance_ratio_max = float(before["dominance_ratio_max"])
+        gap_vs_best_other = float(before["gap_vs_best_other"])
+        top2_to_top1_ratio = float(before["top2_to_top1_ratio"])
+        current_rank = int(before["current_rank"])
 
         # Valor real de "apurar": cuánto más fuerte se ve lo que viene frente a current.
         future_pull_soft = np.clip(
@@ -369,25 +415,78 @@ class SumoTrafficEnv:
             + 0.30 * (1.0 - before_current_share)
         )
 
-        dominant_extension_soft = extra_green_ratio * max(0.0, served_current) * (
-            1.10 * dominance_soft
-            + 1.00 * before_current_share
-            + 0.45 * min(1.0, before_curr / 12.0)
+        rank_gate = 1.0 if current_rank == 1 else 0.0
+        share_clarity = np.clip((before_current_share - 0.48) / 0.30, 0.0, 1.0)
+        separation_clarity = np.clip((1.05 - top2_to_top1_ratio) / 0.45, 0.0, 1.0)
+        gap_clarity = np.clip((gap_vs_best_other + 0.05) / 0.30, 0.0, 1.0)
+
+        dominance_clarity_soft = np.clip(
+            rank_gate * (
+                0.45 * share_clarity
+                + 0.35 * separation_clarity
+                + 0.20 * gap_clarity
+            ),
+            0.0,
+            1.0,
         )
 
-        dominant_need_soft = min(1.0, before_curr / 10.0) * dominance_gate
-        under_green_soft = (1.0 - extra_green_ratio) * dominant_need_soft * (0.70 + 0.90 * dominance_gate)
+        dominance_shape = np.clip(
+            0.65 * dominance_clarity_soft
+            + 0.20 * min(1.0, dominance_ratio_max / 2.0)
+            + 0.10 * min(1.0, dominance_ratio_sum / 1.6)
+            + 0.05 * max(0.0, gap_vs_best_other + 0.15),
+            0.0,
+            1.2,
+        )
+
+        competitive_balance_soft = np.clip(
+            (1.0 - 0.75 * dominance_clarity_soft)
+            * top2_to_top1_ratio
+            * min(1.0, before_current_share / 0.55 + 0.10)
+            * (0.70 + 0.30 * float(current_rank <= 2)),
+            0.0,
+            1.0,
+        )
+
+        dominance_drive_soft = np.clip(
+            dominance_shape * (0.75 + 0.25 * min(1.0, before_curr / 12.0)),
+            0.0,
+            1.5,
+        )
+
+        dominant_extension_soft = (
+            extra_green_ratio
+            * max(0.0, served_current)
+            * (0.80 * dominance_drive_soft + 0.20 * before_current_share)
+            * (1.0 - 0.80 * competitive_balance_soft)
+        )
+
+        mixed_extension_penalty = (
+            extra_green_sq
+            * competitive_balance_soft
+            * (0.55 + 0.45 * future_pull_soft)
+            * (0.60 + 0.40 * max(0.0, served_current))
+        )
+
+        dominant_need_soft = min(1.0, before_curr / 10.0) * dominance_drive_soft
+        under_green_soft = (
+            (1.0 - extra_green_ratio)
+            * dominant_need_soft
+            * (0.45 + 0.65 * dominance_clarity_soft)
+            * (1.0 - 0.60 * competitive_balance_soft)
+        )
 
         reward = (
-            -mean_wait
-            + 5.0 * served_current
-            + 1.5 * global_relief
-            + 5.5 * fast_pass_context_soft
-            + 20.0 * dominant_extension_soft
-            - 4.0 * bad_extension_soft
-            - 8.5 * bad_delay_cost
-            - 1.0 * extra_green_ratio * waste_soft
-            - 8.5 * under_green_soft
+            -phase_cost
+            + 3.8 * served_current
+            + 1.2 * global_relief
+            + 2.3 * fast_pass_context_soft
+            + 7.4 * dominant_extension_soft
+            - 3.8 * bad_extension_soft
+            - 7.2 * bad_delay_cost
+            - 2.2 * mixed_extension_penalty
+            - 0.8 * extra_green_ratio * waste_soft
+            - 5.0 * under_green_soft
         )
 
         self.phase_cursor = (current_phase_idx + 1) % len(self.phases)
@@ -405,8 +504,16 @@ class SumoTrafficEnv:
             "current_share": float(before_current_share),
             "peak_future_pos": int(before_peak_future_pos),
             "weighted_future_pressure": float(before_weighted_future),
+            "dominance_ratio_sum": float(dominance_ratio_sum),
+            "dominance_ratio_max": float(dominance_ratio_max),
+            "gap_vs_best_other": float(gap_vs_best_other),
+            "top2_to_top1_ratio": float(top2_to_top1_ratio),
+            "current_rank": int(current_rank),
             "served_current": float(served_current),
             "global_relief": float(global_relief),
+            "after_total_cost": float(after_total_cost),
+            "regrowth_penalty": float(regrowth_penalty),
+            "phase_cost": float(phase_cost),
             "extra_green_ratio": float(extra_green_ratio),
             "dominance_soft": float(dominance_soft),
             "waste_soft": float(waste_soft),
@@ -415,6 +522,10 @@ class SumoTrafficEnv:
             "fast_pass_bonus": float(fast_pass_context_soft),
             "future_pull_soft": float(future_pull_soft),
             "dominance_gate": float(dominance_gate),
+            "dominance_shape": float(dominance_shape),
+            "dominance_clarity_soft": float(dominance_clarity_soft),
+            "competitive_balance_soft": float(competitive_balance_soft),
+            "mixed_extension_penalty": float(mixed_extension_penalty),
             "dominant_extension_soft": float(dominant_extension_soft),
             "dominant_need_soft": float(dominant_need_soft),
             "under_green_soft": float(under_green_soft),
@@ -464,16 +575,22 @@ def _run_single_episode(
                 f"next2_p={info.get('next2_pressure', 0.0):.2f} "
                 f"next3_p={info.get('next3_pressure', 0.0):.2f} "
                 f"share={info.get('current_share', 0.0):.3f} "
+                f"dom_sum={info.get('dominance_ratio_sum', 0.0):.3f} "
+                f"dom_max={info.get('dominance_ratio_max', 0.0):.3f} "
+                f"rank={int(info.get('current_rank', 0))} "
                 f"peak_pos={int(info.get('peak_future_pos', 0))} "
                 f"action01={np.round(action_dbg, 3).tolist()} "
                 f"req_dur={int(info.get('requested_duration', 0))} "
                 f"exec_dur={int(info.get('executed_duration', phase_seconds))} "
                 f"served={info.get('served_current', 0.0):.3f} "
+                f"cost={info.get('phase_cost', 0.0):.3f} "
                 f"waste={info.get('waste_soft', 0.0):.3f} "
                 f"bad_delay={info.get('bad_delay_cost', 0.0):.3f} "
                 f"fast_pass={info.get('fast_pass_bonus', 0.0):.3f} "
                 f"bad_ext={info.get('bad_extension_soft', 0.0):.3f} "
                 f"under_g={info.get('under_green_soft', 0.0):.3f} "
+                f"comp={info.get('competitive_balance_soft', 0.0):.3f} "
+                f"clar={info.get('dominance_clarity_soft', 0.0):.3f} "
                 f"dom={info.get('dominance_soft', 0.0):.3f} "
                 f"r={info.get('reward', 0.0):.3f}"
             )
@@ -558,8 +675,8 @@ def run_policy(
         minibatch_size=64,
         normalize_obs=True,
         concentration_floor=0.2,
-        init_action_mean=0.08,
-        init_total_concentration=2.8,
+        init_action_mean=0.095,
+        init_total_concentration=2.6,
     )
 
     if not train:
@@ -587,8 +704,8 @@ def run_policy(
     best_eval_wait = float("inf")
 
     entropy_start = 0.07
-    entropy_end = 0.010
-    entropy_decay_portion = 0.55
+    entropy_end = 0.015
+    entropy_decay_portion = 0.70
 
     for ep in range(int(episodes)):
         if train:
@@ -680,13 +797,13 @@ def run_policy(
                         "obs_dim": int(obs_dim),
                         "action_dim": 1,
                         "normalize_obs": True,
-                        "state_version": "current_next_next2_next3_with_future_pressure_v1",
-                        "reward_version": "global_wait_future_delay_cost_v3_extreme_push",
-                        "init_action_mean": 0.08,
-                        "init_total_concentration": 9.0,
+                        "state_version": "current_next_next2_next3_plus_relative_dominance_v38_3",
+                        "reward_version": "phase_cost_anchor_clarity_gate_v38_3",
+                        "init_action_mean": 0.095,
+                        "init_total_concentration": 2.6,
                         "entropy_start": entropy_start,
                         "entropy_end": entropy_end,
-                        "init_total_concentration": 2.8,
+                        "entropy_decay_portion": entropy_decay_portion,
                         "concentration_floor": 0.2,
                     },
                 )
