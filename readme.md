@@ -24,37 +24,80 @@ La meta no es cambiar la secuencia de fases ni meter reglas externas, sino logra
 
 ## Estado actual
 
-### Versión actual
-**v36**  
-Modelo de referencia actual: `model_future_v36`
+### Base consolidada actual
+**v39**
 
-### Mejor resultado observado hasta ahora
-- **Best deterministic waiting:** `6438`
+Modelo/base de referencia actual:
+- `model_future_v39`
+
+### Mejor resultado observado sin amarillo
+- **Best deterministic waiting:** `6211`
 - obtenido en training y reproducido en test determinista
-- comando usado:
-  - train: `python main.py --policy-train -m model_future_v36 -e 15 -s 2000 --min-green 5 --max-green 45`
-  - test: `python main.py --policy-test -m model_future_v36 -s 2000 --min-green 5 --max-green 45`
+- la familia v39 además mostró una banda bastante consistente entre aproximadamente:
+  - `6500`
+  - `6825`
+  - `6850`
+  - `6829`
+  - `6563`
+  - `6920`
+  - `6998`
+  - `6965`
+- lo importante es que v39 ya dejó de depender de un solo pico aislado y pasó a comportarse como una familia razonablemente estable
 
-### Lectura general del comportamiento de v36
+### Rama activa actual
+**v39 con amarillo**
 
-La v36 **sí mejoró** respecto a versiones claramente colapsadas, porque ya muestra algo de estructura útil:
+Esta rama ya no está en estado “roto”.
+Ya implementa amarillo real en simulación y se volvió una línea útil de trabajo.
 
-- las fases débiles tienden a quedarse en valores bajos
-- la fase dominante recibe más tiempo que las demás
-- el controlador ya distingue parcialmente entre presión baja y presión alta
+Su mejor zona observada hasta ahora fue con **30 episodios**, con corridas en:
+- `10926`
+- `12017`
+- `11584`
 
-Pero todavía **no llega al comportamiento deseado**.
+Con **36 episodios** no hubo mejora clara; la mejor tanda quedó en:
+- `11000`
+- `12279`
+- `12649`
 
-Lo que sigue faltando es:
+Por eso, a nivel práctico, la recomendación actual del proyecto es usar:
+- **32 episodios**
 
-- que las fases débiles se acerquen más a **`min_green` real**
-- que la fase dominante se acerque más a **`max_green` real**
-- que el comportamiento sea más claramente **dependiente del estado**
-- que no se quede en una política de compromiso tipo:
-  - fases débiles: `7–8 s`
-  - fase dominante: `17–19 s`
+como protocolo operativo para la rama con amarillo.
 
-Es decir, la v36 ya encontró la **dirección correcta**, pero todavía con **amplitud insuficiente**.
+---
+
+## Lectura general del estado del proyecto
+
+Hoy el proyecto tiene dos capas claras:
+
+### 1. v39 sin amarillo = base consolidada
+La v39 sin amarillo ya probó:
+- mejor pico observado del proyecto (`6211`)
+- consistencia razonable entre corridas
+- alineación suficiente entre train y test
+- protocolo estable de entrenamiento
+
+Esa base ya se considera **válida y consolidada**.
+
+### 2. v39 con amarillo = rama activa de mejora realista
+La rama con amarillo surgió para introducir una transición más realista entre fases.
+
+La primera implementación del amarillo rompía el entorno porque mezclaba el costo del amarillo con el verde útil de la policy.
+Eso generó tiempos de espera enormes y mucha varianza.
+
+La implementación actual corrigió eso separando:
+- verde real
+- amarillo de transición
+- reward del verde
+- costo total del episodio
+
+Con esa corrección, la rama con amarillo:
+- dejó de colapsar
+- volvió a aprender
+- y alcanzó una banda de resultados mucho más útil
+
+Aun así, **todavía no supera a la v39 sin amarillo**.
 
 ---
 
@@ -62,87 +105,88 @@ Es decir, la v36 ya encontró la **dirección correcta**, pero todavía con **am
 
 ## Qué está pasando realmente
 
-El archivo de tráfico tiene una estructura no uniforme:
+El archivo de tráfico sigue teniendo la misma estructura conceptual:
 
 1. **inicio:** domina fuertemente una aproximación
 2. **transición:** empiezan a entrar otras direcciones
 3. **más adelante:** el flujo se vuelve más mixto
 
-Eso significa que el comportamiento óptimo no es dar tiempos parecidos a todas las fases.
+Eso significa que el comportamiento óptimo no es repartir verde de forma pareja.
 
-Lo esperable sería algo como:
+Lo esperable sigue siendo algo como:
 
 - al inicio:
   - fases débiles cerca de `5`
-  - fase dominante cerca de `45`
+  - fase dominante muy cerca de `45`
+- después:
+  - aumentar otras fases solo cuando acumulen presión real
 - más adelante:
-  - aumentar otras fases cuando acumulen presión real
-- al final:
   - reparto más balanceado
 
-## Problema actual del policy
+## Qué ya logra la rama actual con amarillo
 
-Aunque la v36 ya reacciona algo al estado, todavía cae en este patrón:
+La política actual con amarillo ya muestra avances reales:
 
-- “pasar relativamente rápido” por las fases vacías
-- “dar algo más de tiempo” a la dominante
-- pero **sin explotar los extremos**
+- las fases débiles suelen quedarse cerca de valores bajos
+- las fases dominantes ya reciben bastante más tiempo
+- en test determinista ya se observan casos donde la dominante se va a verdes del orden de `31 s`
+- el comportamiento depende más del estado que en versiones planas
 
-Eso produce mejoras, pero no el máximo ahorro posible.
+Eso significa que el agente **sí está entendiendo parcialmente la dominancia relativa**.
 
-## Conclusión del diagnóstico
+## Qué sigue faltando
 
-El sistema **no está roto**, pero sigue atrapado en un **óptimo local intermedio**:
+Aun con esas mejoras, todavía no se alcanza el comportamiento ideal.
 
-- ya aprendió a no tratar todas las fases igual
-- pero todavía no aprendió a usar el rango completo `min_green` ↔ `max_green`
+Sigue faltando que:
 
-En particular:
+- las fases débiles se peguen todavía más a `min_green`
+- la fase dominante se acerque más a `max_green`
+- la dominante “explote” mejor el rango alto en escenarios de ultradominancia
+- el comportamiento medio disminuya todavía más en escenarios claramente mixtos
 
-- el lado bajo del rango está **casi** resuelto
-- el lado alto del rango todavía no está suficientemente aprendido
+En resumen:
+
+- el lado bajo del rango está bastante bien encaminado
+- el lado alto todavía no está completamente aprendido
 
 ---
 
 ## Aprendizajes acumulados de versiones anteriores
 
 ## Base sólida que se conserva
-La base que sigue teniendo más sentido es la de la familia **v3**, porque:
+La base que sigue teniendo más sentido es la familia **v39**, porque:
 
-- mantenía la filosofía PPO pura
-- no dependía de heurísticas duras
-- ya mostraba señales de que el agente sí podía aprender algo útil del patrón del tráfico
+- mantuvo PPO puro
+- no dependió de heurísticas duras externas
+- mostró consistencia real
+- y demostró el mejor pico observado hasta ahora
 
 ## Qué aprendimos y no queremos repetir
 
-### De v3.5
-Se vio que premiar demasiado el **ciclado rápido** puede inducir una solución degenerada:
+### De las versiones sobreajustadas al fast pass
+Se vio que empujar demasiado el ciclado rápido puede inducir una solución degenerada:
 
 - pasar casi todo en mínimo
 - mejorar waiting solo por “dar vueltas rápido”
-- pero **sin servir correctamente la fase dominante**
+- pero sin servir correctamente la fase dominante
 
-Eso no es lo que queremos.
+Eso no es lo que se quiere.
 
-### De v4 y variantes más agresivas
-Cuando se endureció demasiado la reward o se empujó demasiado una idea concreta, el sistema tendió a:
+### De la primera implementación con amarillo
+Se aprendió que **no basta con meter amarillo en SUMO**.
 
-- desestabilizarse
-- degradar el test determinista
-- o romper el balance entre “fast pass” y “servir bien”
+Si el amarillo se mezcla con:
+- `executed_duration`
+- la reward
+- la lógica de extensión útil
+
+entonces el agente paga como si el amarillo fuera verde elegido por la policy, y eso rompe el entrenamiento.
 
 ### Lección importante
-El `fast_pass` **sí debe existir**, pero con esta jerarquía:
-
-1. **servir bien la fase dominante** cuando realmente domina
-2. **fast pass inteligente** cuando la fase actual no merece tiempo
-3. castigar extensiones innecesarias
-
-O sea:
-
-- pasar rápido es bueno
-- pasar rápido cuando otra fase domina es mejor
-- pero **servir correctamente una fase realmente dominante es todavía más importante**
+El amarillo sí puede existir, pero debe tratarse como:
+- **transición del entorno**
+- no como parte del verde útil que la policy decidió dar
 
 ---
 
@@ -155,8 +199,8 @@ Se mantiene sin cambios:
 - single scalar action
 - orden fijo de fases
 - sin early cutoff
-- sin recortes heurísticos del action
-- sin forzar reglas del tipo:
+- sin reglas duras externas
+- sin recortes heurísticos tipo:
   - “si pasa X, entonces duración = Y”
 
 Sí se aceptan:
@@ -165,6 +209,7 @@ Sí se aceptan:
 - mejor reward shaping
 - mejoras de entrenamiento
 - mejor evaluación
+- separación limpia entre verde y amarillo
 - test determinista
 
 ---
@@ -172,107 +217,87 @@ Sí se aceptan:
 ## Estado del controlador actual
 
 ## Lo que ya logra
-- distinguir parcialmente la fase dominante
-- reducir bastante el waiting frente a versiones claramente planas
+- distinguir razonablemente bien la fase dominante
+- reducir bastante el waiting frente a implementaciones amarillas rotas
 - reproducir en test el mejor checkpoint guardado
-- mantener comportamiento consistente entre train y test
+- mantener comportamiento razonablemente consistente entre train y test
+- mantener una banda útil de resultados con amarillo cuando se usa un protocolo adecuado
 
 ## Lo que todavía no logra
-- no se va lo suficiente a los extremos
-- no da a la fase dominante un verde suficientemente largo al inicio
-- no deja a las otras fases suficientemente pegadas al mínimo
-- cuando aparece una buena política, no siempre queda como una regla robusta y estable
+- no llega todavía al nivel de la v39 sin amarillo
+- no se va lo suficiente a los extremos en dominancia brutal
+- no acerca la fase dominante a `max_green` tan a menudo como se quisiera
+- todavía aparece cierto comportamiento conservador en la zona alta del rango
 
 ---
 
 ## Objetivo inmediato
 
-El objetivo de la siguiente iteración no es cambiar de paradigma.
+El objetivo inmediato ya no es cambiar de paradigma.
 
-Es **seguir sobre la base v36 / familia v3**, pero afinarla para que el controlador aprenda mejor esta regla implícita:
+Tampoco es seguir aumentando episodios indiscriminadamente.
 
-- si una fase domina claramente, **estírala mucho**
-- si una fase no tiene presión, **déjala casi en mínimo**
-- si todavía no es su momento, **pásala rápido**
-- cuando el tráfico se balancee, **balancea también el verde**
+El objetivo ahora es:
+
+- tomar **v39 con amarillo** como rama activa
+- usar **32 episodios** como protocolo práctico
+- y afinar el comportamiento para que en casos de ultradominancia:
+  - la dominante reciba todavía más verde
+  - las fases débiles se queden todavía más cerca del mínimo
 
 ---
 
 ## Cambios a futuro cercano (próxima iteración)
 
-Estos son los cambios planeados para continuar mañana.
+## 1. Afinar la respuesta en dominancia extrema
 
-## 1. Mejorar el estado con demanda relativa más clara
+La prioridad principal ya no es “más estabilidad general”, porque esa parte ya mejoró bastante.
 
-La prioridad principal es que el estado deje más explícito cuándo la fase actual es dominante y cuándo no.
+La prioridad ahora es hacer más clara esta regla:
 
-### Features a reforzar o agregar
-- demanda/presión de la fase actual
-- suma de demanda de las otras fases
-- máximo de demanda entre las otras fases
-- razón entre fase actual y resto
-- share de la fase actual respecto al total
-- posición relativa de la fase actual:
-  - dominante
-  - intermedia
-  - débil
-- gap entre:
-  - presión actual
-  - mejor fase alternativa
+- si una fase domina brutalmente, darle todavía más tiempo
+- si una fase está vacía o muy débil, pasarla muy rápido
+- si el tráfico está más balanceado, repartir de forma continua
 
 ### Intención
-Que la red no solo vea “hay vehículos”, sino que vea claramente:
+Que la red no solo vea “hay presión”, sino que identifique mejor:
 
-- “esta fase manda”
-- “esta fase no importa todavía”
-- “todavía conviene pasar rápido para llegar a otra fase más fuerte”
+- dominancia extrema
+- dominancia media
+- escenario mixto
+- fase irrelevante
 
 ---
 
-## 2. Ajustar la reward para empujar más amplitud sin volverla rígida
+## 2. Mantener reward alineada, sin volverla rígida
 
-La reward no debe forzar manualmente mínimos y máximos, pero sí debe alinear mejor el incentivo.
+La reward actual ya parece suficientemente congruente a nivel macro.
 
-### Dirección de ajuste
-- mantener el objetivo principal:
-  - **reducir waiting global**
-- mantener un término de:
-  - **servir bien una fase dominante**
-- mantener un término de:
-  - **fast pass**
-- pero cambiar su balance para que:
-  - el `fast_pass` no gane por sí solo
-  - la dominante bien servida tenga más valor
-  - las extensiones sin utilidad sigan penalizadas
+Por eso, el objetivo no es rehacerla por completo, sino mantener el mismo enfoque:
 
-### Regla conceptual deseada
-- fase dominante real:
-  - premiar más cuando se le da tiempo suficiente
-- fase débil:
-  - premiar pasar rápido
-- fase intermedia:
-  - dejar que el PPO decida de forma continua
+- reducir waiting global
+- servir bien una fase dominante
+- mantener fast pass útil
+- seguir penalizando extensiones innecesarias
 
 ### Qué NO se quiere hacer
-- no meter hard rules
-- no truncar la acción por fuera
-- no imponer manualmente “si share > X entonces 45”
+- no meter reglas duras
+- no truncar manualmente la acción
+- no imponer cosas del tipo:
+  - “si share > X entonces duración = 45”
 
 ---
 
-## 3. Empujar mejor el uso del rango completo de acción
+## 3. Mantener el amarillo como transición limpia del entorno
 
-Hoy el policy ya baja bastante, pero no sube lo suficiente.
+La rama actual con amarillo debe seguir respetando esta separación:
 
-Entonces la siguiente iteración debe ayudar a que el agente descubra más fácilmente que:
+- verde útil decidido por la policy
+- amarillo de transición del entorno
+- reward basada en el efecto del verde
+- tiempo total del episodio incluyendo también el amarillo
 
-- `7` no siempre basta para una fase vacía, si `5` sería mejor
-- `18–19` no siempre basta para una dominante, si `35–45` sería mejor
-
-La idea no es forzar eso desde fuera, sino hacer que:
-
-- el estado lo vuelva evidente
-- la reward lo vuelva rentable
+Esa separación ya es parte central del proyecto actual y no se quiere perder.
 
 ---
 
@@ -283,46 +308,40 @@ Se seguirá usando:
 - train con exploración PPO
 - test con política determinista
 
-Porque el criterio real del proyecto es:
+Porque el criterio real del proyecto sigue siendo:
 
 - que el comportamiento útil aparezca en **test determinista**
 - no solo como episodios buenos aislados durante train
 
 ---
 
-## Hipótesis de trabajo para la siguiente iteración
+## Hipótesis de trabajo actual
 
-La hipótesis actual del proyecto es esta:
+La hipótesis vigente del proyecto es esta:
 
-> El agente ya aprendió parcialmente a distinguir fases fuertes y débiles, pero todavía no tiene una representación suficientemente clara de la dominancia relativa ni un incentivo suficientemente bien alineado para explotar el rango completo de duración.
+> La v39 ya resolvió buena parte de la estabilidad y la implementación correcta del amarillo ya volvió viable la rama realista, pero todavía falta que el agente use con más decisión el extremo alto del rango cuando la dominancia de una fase es muy clara.
 
 Si esta hipótesis es correcta, entonces la siguiente mejora debería producir:
 
-- menos acciones medias constantes
-- más diferencias claras entre fases
+- menos políticas conservadoras en el extremo alto
+- más diferencias claras entre dominante fuerte y dominante moderada
 - verdes muy cortos en fases débiles
-- verdes mucho más largos en la dominante
-- y adaptación gradual cuando el flujo se equilibre
+- verdes todavía más largos en la dominante cuando realmente lo merece
+- y mantenimiento de la consistencia lograda
 
 ---
 
 ## Criterio de éxito de la siguiente versión
 
-La siguiente versión irá en la dirección correcta si en **test determinista** se observa:
+La siguiente iteración irá en la dirección correcta si en **test determinista** se observa:
 
-- la acción deja de verse casi constante
-- la duración depende más claramente del estado
-- al inicio:
-  - fase dominante claramente más larga
-  - demás fases cerca del mínimo
-- después:
-  - las fases secundarias suben solo cuando su presión lo justifica
-- más adelante:
-  - reparto más balanceado cuando el tráfico realmente se balancea
+- la acción depende más claramente del estado
+- las fases débiles se mantienen cerca del mínimo
+- la fase dominante se acerca más al máximo cuando realmente domina
+- cuando el tráfico se balancea, el reparto del verde también se balancea
+- la banda de resultados con amarillo se mantiene o mejora usando el protocolo de 32 episodios
 
-Idealmente, además, se buscará mejorar el mejor waiting actual de referencia:
-
-- **objetivo a superar:** `6438`
+Idealmente, además, la rama con amarillo debería empujar su mejor waiting más cerca de la base v39 sin amarillo.
 
 ---
 
@@ -342,33 +361,58 @@ No se quiere que el sistema gane únicamente por:
 - ciclar rápido a ciegas
 - colapsar a mínimo para casi todo
 - producir una política casi constante
+- o compensar el amarillo con heurísticas externas duras
 
 ---
 
 ## Resumen ejecutivo
 
 ### Punto actual
-La **v36** es una versión funcional y útil, pero todavía conservadora.
+La **v39** ya es la base consolidada del proyecto.
 
-### Mejor hallazgo
-Ya mostró que el agente puede aprender una estructura razonable y bajar el waiting hasta **6438**.
+### Mejor hallazgo global
+La base sin amarillo mostró un mejor waiting observado de **`6211`**.
 
-### Principal limitación
-Todavía no llega a los extremos `min_green` / `max_green` cuando la situación del tráfico lo justificaría.
+### Estado de la rama con amarillo
+La rama con amarillo ya es funcional y prometedora.
+Su mejor zona observada hasta ahora está aproximadamente entre:
+- `10926`
+- `12017`
+- `11584`
+
+### Principal limitación actual
+Todavía no explota suficientemente el extremo alto del rango cuando una fase domina claramente.
 
 ### Próximo paso
 La siguiente iteración se enfocará en:
 
-- **estado más expresivo en demanda relativa**
-- **reward mejor alineada con dominancia real**
-- **mantener PPO puro y acción escalar única**
-- **sin heurísticas duras**
-- **buscando que el agente use mejor todo el rango de duración**
+- mantener la base PPO pura
+- mantener acción escalar única
+- mantener orden fijo de fases
+- mantener amarillo bien integrado como transición del entorno
+- usar **32 episodios** como protocolo práctico
+- y afinar la política para que use mejor el rango alto en dominancia real
 
 ---
 
 ## Comandos base de trabajo
 
-### Entrenamiento
+### Entrenamiento base v39 sin amarillo
 ```bash
-python main.py --policy-train -m model_future_v36 -e 15 -s 2000 --min-green 5 --max-green 45
+python main.py --policy-train -m model_future_v39 -e 20 -s 2000 --min-green 5 --max-green 45
+```
+
+### Test base v39 sin amarillo
+```bash
+python main.py --policy-test -m model_future_v39 -s 2000 --min-green 5 --max-green 45
+```
+
+### Entrenamiento rama v39 con amarillo
+```bash
+python main.py --policy-train -m model_future_v39_yellow_test -e 32 -s 2000 --min-green 5 --max-green 45
+```
+
+### Test rama v39 con amarillo
+```bash
+python main.py --policy-test -m model_future_v39_yellow_test -s 2000 --min-green 5 --max-green 45
+```

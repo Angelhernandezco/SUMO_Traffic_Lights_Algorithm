@@ -28,6 +28,12 @@ def _normalized_action_to_duration(action01: np.ndarray, *, min_green: int, max_
     return max(int(min_green), int(duration))
 
 
+def _yellow_state_from_green_state(green_state: str) -> str:
+    """Build a yellow transition state from a green state string."""
+
+    return green_state.replace("G", "y").replace("g", "y")
+
+
 def _select_junction_phases_and_lanes(max_phases: int = 4) -> Tuple[str, list, list]:
     junctions = traci.trafficlight.getIDList()
     if not junctions:
@@ -284,6 +290,7 @@ class SumoTrafficEnv:
         self.junction = junction
         self.min_green = int(min_green)
         self.max_green = int(max_green)
+        self.yellow_duration = 4
         self.phase_cursor = 0
 
     def reset(self) -> np.ndarray:
@@ -313,29 +320,57 @@ class SumoTrafficEnv:
         )
         requested_duration = min(int(requested_duration), int(max_steps))
 
-        waiting_sum = 0.0
-        executed_duration = 0
+        green_waiting_sum = 0.0
+        yellow_waiting_sum = 0.0
+        green_executed_duration = 0
+        yellow_executed_duration = 0
 
         if requested_duration > 0:
-            set_phase_by_index(self.junction, current_phase["index"], int(requested_duration))
+            green_state = current_phase.get("state")
+            if green_state is not None:
+                traci.trafficlight.setRedYellowGreenState(self.junction, green_state)
+            else:
+                set_phase_by_index(self.junction, current_phase["index"], int(requested_duration))
+
             for _ in range(int(requested_duration)):
                 traci.simulationStep()
-                executed_duration += 1
-                waiting_sum += float(sum(traci.lane.getLastStepHaltingNumber(l) for l in self.lanes))
+                green_executed_duration += 1
+                green_waiting_sum += float(sum(traci.lane.getLastStepHaltingNumber(l) for l in self.lanes))
                 if traci.simulation.getMinExpectedNumber() <= 0:
                     break
 
-        after_same_phase = self._snapshot(current_phase_idx)
+        after_green = self._snapshot(current_phase_idx)
 
-        mean_wait = waiting_sum / max(1, executed_duration)
+        remaining_after_green = max(0, int(max_steps) - int(green_executed_duration))
+        if (
+            green_executed_duration > 0
+            and remaining_after_green > 0
+            and traci.simulation.getMinExpectedNumber() > 0
+            and current_phase.get("state") is not None
+        ):
+            yellow_state = _yellow_state_from_green_state(current_phase["state"])
+            yellow_steps = min(int(self.yellow_duration), int(remaining_after_green))
+            if yellow_steps > 0:
+                traci.trafficlight.setRedYellowGreenState(self.junction, yellow_state)
+                for _ in range(int(yellow_steps)):
+                    traci.simulationStep()
+                    yellow_executed_duration += 1
+                    yellow_waiting_sum += float(sum(traci.lane.getLastStepHaltingNumber(l) for l in self.lanes))
+                    if traci.simulation.getMinExpectedNumber() <= 0:
+                        break
+
+        executed_duration = int(green_executed_duration + yellow_executed_duration)
+        waiting_sum = float(green_waiting_sum + yellow_waiting_sum)
+
+        mean_wait = float(green_waiting_sum) / max(1, green_executed_duration)
         before_curr = float(before["current_pressure"])
         before_total = float(before["total_pressure"])
         before_current_share = float(before["current_share"])
         before_peak_future = float(before["max_future_pressure"])
         before_weighted_future = float(before["weighted_future_pressure"])
         before_peak_future_pos = int(before["peak_future_pos"])
-        after_curr = float(after_same_phase["current_pressure"])
-        after_total = float(after_same_phase["total_pressure"])
+        after_curr = float(after_green["current_pressure"])
+        after_total = float(after_green["total_pressure"])
 
         served_current = np.clip((before_curr - after_curr) / (before_curr + 1.0), -1.0, 1.0)
         global_relief = np.clip((before_total - after_total) / (before_total + 1.0), -1.0, 1.0)
@@ -343,7 +378,7 @@ class SumoTrafficEnv:
         regrowth_penalty = 0.75 * max(0.0, after_total - before_total) / (before_total + 1.0)
         phase_cost = mean_wait + after_total_cost + regrowth_penalty
 
-        extra_green = max(0, int(executed_duration) - int(self.min_green))
+        extra_green = max(0, int(green_executed_duration) - int(self.min_green))
         green_span = max(1, int(self.max_green) - int(self.min_green))
         extra_green_ratio = float(extra_green) / float(green_span)
         extra_green_sq = float(extra_green_ratio * extra_green_ratio)
@@ -360,19 +395,13 @@ class SumoTrafficEnv:
         no_queue_soft = np.clip(1.0 - queue_now / 1.5, 0.0, 1.0)
         waste_soft = max(weak_current_soft, no_queue_soft)
 
-        # Jerarquía buscada:
-        # 1) Servir bien una fase dominante.
-        # 2) No dejar corta una fase que realmente domina.
-        # 3) Fast-pass solo cuando current es débil y sí hay valor en llegar antes
-        #    a una fase más fuerte. Cuando todo está vacío, fast-pass existe pero
-        #    con mucho menos peso.
         chain_empty_soft = np.clip(
             low_pressure_soft * (0.65 + 0.35 * low_next_soft) * (0.75 + 0.25 * low_next2_soft),
             0.0,
             1.5,
         )
 
-        distance_weight = float(before_peak_future_pos / 3.0)  # 1/3, 2/3 o 1.0
+        distance_weight = float(before_peak_future_pos / 3.0)
         dominance_gate = max(before_current_share, dominance_soft)
         dominance_ratio_sum = float(before["dominance_ratio_sum"])
         dominance_ratio_max = float(before["dominance_ratio_max"])
@@ -380,14 +409,12 @@ class SumoTrafficEnv:
         top2_to_top1_ratio = float(before["top2_to_top1_ratio"])
         current_rank = int(before["current_rank"])
 
-        # Valor real de "apurar": cuánto más fuerte se ve lo que viene frente a current.
         future_pull_soft = np.clip(
             0.70 * future_peak_gap_soft + 0.45 * future_urgency_soft,
             0.0,
             1.0,
         )
 
-        # Cuando literalmente casi todo está bajo, fast-pass existe pero vale poco.
         dead_cycle_soft = np.clip(
             low_pressure_soft * low_next_soft * low_next2_soft * (1.0 - future_pull_soft),
             0.0,
@@ -403,10 +430,8 @@ class SumoTrafficEnv:
             1.5,
         )
 
-        # Costo por quedarse verde en current mientras lo fuerte está adelante.
         bad_delay_cost = extra_green_sq * future_pull_soft * (0.75 + 0.95 * distance_weight)
 
-        # Penalización por extensión inútil: más baja si current sí domina y está sirviendo.
         dominance_relief = 1.0 - 0.40 * dominance_gate * max(0.0, served_current)
         bad_extension_soft = extra_green_sq * dominance_relief * (
             1.00 * waste_soft
@@ -495,7 +520,11 @@ class SumoTrafficEnv:
 
         info = {
             "requested_duration": int(requested_duration),
+            "green_executed_duration": int(green_executed_duration),
+            "yellow_executed_duration": int(yellow_executed_duration),
             "executed_duration": int(executed_duration),
+            "green_waiting_sum": float(green_waiting_sum),
+            "yellow_waiting_sum": float(yellow_waiting_sum),
             "mean_wait": float(mean_wait),
             "current_pressure": float(before_curr),
             "next_pressure": float(before["next_pressure"]),
@@ -532,6 +561,7 @@ class SumoTrafficEnv:
             "reward": float(reward),
         }
         return next_obs, float(reward), done, int(executed_duration), float(waiting_sum), info
+
 
 
 def _run_single_episode(
@@ -582,6 +612,8 @@ def _run_single_episode(
                 f"peak_pos={int(info.get('peak_future_pos', 0))} "
                 f"action01={np.round(action_dbg, 3).tolist()} "
                 f"req_dur={int(info.get('requested_duration', 0))} "
+                f"green_exec={int(info.get('green_executed_duration', 0))} "
+                f"yellow_exec={int(info.get('yellow_executed_duration', 0))} "
                 f"exec_dur={int(info.get('executed_duration', phase_seconds))} "
                 f"served={info.get('served_current', 0.0):.3f} "
                 f"cost={info.get('phase_cost', 0.0):.3f} "
@@ -836,8 +868,8 @@ def run_policy(
                         "obs_dim": int(obs_dim),
                         "action_dim": 1,
                         "normalize_obs": True,
-                        "state_version": "current_next_next2_next3_plus_relative_dominance_v39",
-                        "reward_version": "phase_cost_anchor_clarity_gate_v39",
+                        "state_version": "current_next_next2_next3_plus_relative_dominance_v39_yellow_sep",
+                        "reward_version": "phase_cost_anchor_clarity_gate_v39_yellow_sep",
                         "init_action_mean": 0.095,
                         "init_total_concentration": 3.0,
                         "entropy_start": entropy_start,
