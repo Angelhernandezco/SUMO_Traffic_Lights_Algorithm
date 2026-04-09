@@ -52,7 +52,6 @@ def get_green_phases(junction):
             green_phases.append(
                 {
                     "index": phase_index,
-                    "state": state,
                     "lanes": list(lanes),
                 }
             )
