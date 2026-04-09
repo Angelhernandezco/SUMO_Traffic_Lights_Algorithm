@@ -317,13 +317,27 @@ class SumoTrafficEnv:
         executed_duration = 0
 
         if requested_duration > 0:
-            set_phase_by_index(self.junction, current_phase["index"], int(requested_duration))
+            traci.trafficlight.setRedYellowGreenState(self.junction, current_phase["state"])
             for _ in range(int(requested_duration)):
                 traci.simulationStep()
                 executed_duration += 1
                 waiting_sum += float(sum(traci.lane.getLastStepHaltingNumber(l) for l in self.lanes))
                 if traci.simulation.getMinExpectedNumber() <= 0:
                     break
+
+        # Yellow phase
+        if executed_duration > 0:
+            # Find the yellow phase corresponding to the current green phase
+            # The yellow phase state is typically the green phase state with 'G' replaced by 'y'
+            yellow_state = current_phase["state"].replace("G", "y").replace("g", "y")
+            traci.trafficlight.setRedYellowGreenState(self.junction, yellow_state)
+            yellow_duration = 4
+            for _ in range(yellow_duration):
+                if traci.simulation.getMinExpectedNumber() <= 0:
+                    break
+                traci.simulationStep()
+                executed_duration += 1
+                waiting_sum += float(sum(traci.lane.getLastStepHaltingNumber(l) for l in self.lanes))
 
         after_same_phase = self._snapshot(current_phase_idx)
 
