@@ -543,6 +543,7 @@ def _run_single_episode(
     deterministic: bool,
     debug: bool,
     debug_limit: int,
+    update_obs_rms: bool,
 ) -> dict:
     state = env.reset()
     total_wait = 0.0
@@ -556,7 +557,7 @@ def _run_single_episode(
         raw_action01, log_prob, value, prepared_state = agent.act(
             state,
             deterministic=deterministic,
-            update_rms=collect_rollout,
+            update_rms=bool(collect_rollout and update_obs_rms),
         )
 
         remaining_steps = int(steps) - step
@@ -664,19 +665,19 @@ def run_policy(
         obs_dim,
         action_dim=1,
         hidden_dim=256,
-        lr=3e-4,
+        lr=2e-4,
         gamma=0.99,
         gae_lambda=0.95,
-        clip_eps=0.2,
+        clip_eps=0.15,
         entropy_coef=0.07,
         value_coef=0.5,
-        max_grad_norm=0.5,
-        ppo_epochs=10,
+        max_grad_norm=0.35,
+        ppo_epochs=4,
         minibatch_size=64,
         normalize_obs=True,
         concentration_floor=0.2,
         init_action_mean=0.095,
-        init_total_concentration=2.6,
+        init_total_concentration=3.0,
     )
 
     if not train:
@@ -702,10 +703,16 @@ def run_policy(
     debug = not train
     debug_limit = 250
     best_eval_wait = float("inf")
+    best_eval_reward = None
+    best_episode = None
 
     entropy_start = 0.07
     entropy_end = 0.015
     entropy_decay_portion = 0.70
+    rollout_episodes_per_update = 2
+    obs_rms_freeze_after = 4
+    pending_train_metrics = []
+    pending_rollout_episodes = 0
 
     for ep in range(int(episodes)):
         if train:
@@ -738,11 +745,34 @@ def run_policy(
                     deterministic=False,
                     debug=False,
                     debug_limit=0,
+                    update_obs_rms=(ep < obs_rms_freeze_after),
                 )
             finally:
                 traci.close()
 
-            update_info = agent.update(last_state=train_metrics["last_state"])
+            pending_train_metrics.append(train_metrics)
+            pending_rollout_episodes += 1
+            should_update = bool(
+                pending_rollout_episodes >= rollout_episodes_per_update
+                or ep == int(episodes) - 1
+            )
+
+            if not should_update:
+                print(
+                    f"Episode {ep + 1}/{episodes} | "
+                    f"Train waiting: {train_metrics['total_wait']:.0f} | "
+                    f"Train reward: {train_metrics['total_reward']:.2f} | "
+                    f"rollout_accum={pending_rollout_episodes}/{rollout_episodes_per_update} | "
+                    f"update=pending | "
+                    f"obs_rms={'live' if ep < obs_rms_freeze_after else 'frozen'} | "
+                    f"entropy_coef={agent.entropy_coef:.4f}"
+                )
+                continue
+
+            last_state_for_update = pending_train_metrics[-1]["last_state"]
+            train_wait_avg = float(np.mean([m["total_wait"] for m in pending_train_metrics]))
+            train_reward_avg = float(np.mean([m["total_reward"] for m in pending_train_metrics]))
+            update_info = agent.update(last_state=last_state_for_update)
 
             traci.start([
                 checkBinary("sumo"),
@@ -766,24 +796,32 @@ def run_policy(
                     deterministic=True,
                     debug=False,
                     debug_limit=0,
+                    update_obs_rms=False,
                 )
             finally:
                 traci.close()
 
             print(
                 f"Episode {ep + 1}/{episodes} | "
-                f"Train waiting: {train_metrics['total_wait']:.0f} | "
-                f"Train reward: {train_metrics['total_reward']:.2f} | "
+                f"Rollout eps: {pending_rollout_episodes} | "
+                f"Train waiting(avg): {train_wait_avg:.0f} | "
+                f"Train reward(avg): {train_reward_avg:.2f} | "
                 f"Eval waiting(det): {eval_metrics['total_wait']:.0f} | "
                 f"Eval reward(det): {eval_metrics['total_reward']:.2f} | "
                 f"policy_loss={update_info.get('policy_loss')} | "
                 f"value_loss={update_info.get('value_loss')} | "
                 f"entropy={update_info.get('entropy')} | "
+                f"obs_rms={'live' if ep < obs_rms_freeze_after else 'frozen'} | "
                 f"entropy_coef={agent.entropy_coef:.4f}"
             )
 
+            pending_train_metrics = []
+            pending_rollout_episodes = 0
+
             if float(eval_metrics["total_wait"]) < best_eval_wait:
                 best_eval_wait = float(eval_metrics["total_wait"])
+                best_eval_reward = float(eval_metrics["total_reward"])
+                best_episode = int(ep + 1)
                 agent.save(
                     model_path,
                     metadata={
@@ -793,23 +831,30 @@ def run_policy(
                         "min_green": int(min_green),
                         "max_green": int(max_green),
                         "best_eval_wait": float(best_eval_wait),
-                        "best_episode": int(ep + 1),
+                        "best_eval_reward": float(best_eval_reward),
+                        "best_episode": int(best_episode),
                         "obs_dim": int(obs_dim),
                         "action_dim": 1,
                         "normalize_obs": True,
-                        "state_version": "current_next_next2_next3_plus_relative_dominance_v38_3",
-                        "reward_version": "phase_cost_anchor_clarity_gate_v38_3",
+                        "state_version": "current_next_next2_next3_plus_relative_dominance_v39",
+                        "reward_version": "phase_cost_anchor_clarity_gate_v39",
                         "init_action_mean": 0.095,
-                        "init_total_concentration": 2.6,
+                        "init_total_concentration": 3.0,
                         "entropy_start": entropy_start,
                         "entropy_end": entropy_end,
                         "entropy_decay_portion": entropy_decay_portion,
+                        "rollout_episodes_per_update": rollout_episodes_per_update,
+                        "obs_rms_freeze_after": obs_rms_freeze_after,
+                        "optimizer_lr": 2e-4,
+                        "clip_eps": 0.15,
+                        "ppo_epochs": 4,
+                        "max_grad_norm": 0.35,
                         "concentration_floor": 0.2,
                     },
                 )
                 print(
                     f"New best deterministic model saved to {model_path} "
-                    f"(best_eval_wait={best_eval_wait:.0f})"
+                    f"(best_eval_wait={best_eval_wait:.0f}, best_eval_reward={best_eval_reward:.2f}, episode={best_episode})"
                 )
         else:
             traci.start([
@@ -834,6 +879,7 @@ def run_policy(
                     deterministic=True,
                     debug=debug,
                     debug_limit=debug_limit,
+                    update_obs_rms=False,
                 )
             finally:
                 traci.close()
@@ -845,3 +891,9 @@ def run_policy(
 
     if train:
         print(f"Best deterministic policy saved to {model_path}")
+        if best_episode is not None and best_eval_reward is not None:
+            print(
+                f"Best eval summary | episode: {best_episode} | "
+                f"waiting(det): {best_eval_wait:.0f} | "
+                f"reward(det): {best_eval_reward:.2f}"
+            )
