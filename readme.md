@@ -395,6 +395,215 @@ La siguiente iteración se enfocará en:
 
 ---
 
+
+---
+
+## Glosario de variables que aparecen en los logs
+
+Esta sección resume qué significa cada campo que suele aparecer en los logs de **training** y **testing**.
+
+## 1. Bloque general de SUMO / ejecución
+
+Estas líneas las imprime SUMO alrededor de cada episodio o test:
+
+- `Duration`: tiempo real total que tardó esa ejecución.
+- `TraCI-Duration`: parte del tiempo gastada en la comunicación con TraCI.
+- `Real time factor`: relación entre tiempo simulado y tiempo real. Más alto = simulación más rápida respecto al reloj real.
+- `UPS`: *updates per second* aproximados de la simulación.
+- `Inserted`: vehículos que realmente entraron a la red en esa ejecución.
+- `Loaded`: vehículos cargados desde la ruta/archivo, aunque no necesariamente todos alcanzaron a entrar.
+- `Running`: vehículos que todavía seguían en la red al terminar la ejecución.
+- `Waiting`: vehículos detenidos o esperando al final de esa ejecución.
+- `Emergency Stops` / `Emergency Braking`: eventos de frenado fuerte o parada de emergencia reportados por SUMO cuando aparecen en el log.
+
+---
+
+## 2. Campos principales del training
+
+Las líneas de training tienen dos formatos principales.
+
+### 2.1 Línea de acumulación antes del update PPO
+
+Ejemplo:
+
+```text
+Episode 7/32 | Train waiting: 15025 | Train reward: -1219.84 | rollout_accum=1/2 | update=pending | obs_rms=frozen | entropy_coef=0.0251
+```
+
+Significado:
+
+- `Episode 7/32`: episodio actual y total configurado en el entrenamiento.
+- `Train waiting`: waiting total observado en **ese episodio de train**.
+- `Train reward`: reward total acumulada en **ese episodio de train**.
+- `rollout_accum=1/2`: cuántos episodios se han acumulado en el buffer antes de correr el update PPO. En esta versión normalmente se acumulan `2` episodios por update.
+- `update=pending`: todavía no se hizo update; solo se está acumulando rollout.
+- `obs_rms=live`: la normalización de observaciones (`obs_rms`) todavía se está actualizando.
+- `obs_rms=frozen`: la normalización ya se congeló y dejó de actualizarse.
+- `entropy_coef`: coeficiente actual del término de entropía, usado para modular exploración.
+
+### 2.2 Línea después del update PPO
+
+Ejemplo:
+
+```text
+Episode 22/32 | Rollout eps: 2 | Train waiting(avg): 17719 | Train reward(avg): -1478.01 | Eval waiting(det): 12648 | Eval reward(det): -897.01 | policy_loss=... | value_loss=... | entropy=... | obs_rms=frozen | entropy_coef=...
+```
+
+Significado:
+
+- `Rollout eps`: cantidad de episodios usados en ese update PPO.
+- `Train waiting(avg)`: waiting promedio de los episodios acumulados antes del update.
+- `Train reward(avg)`: reward promedio de esos episodios acumulados.
+- `Eval waiting(det)`: waiting de la **evaluación determinista** que se corre justo después del update. Este es el indicador más importante dentro del training.
+- `Eval reward(det)`: reward de esa evaluación determinista.
+- `policy_loss`: pérdida de la policy en el update PPO.
+- `value_loss`: pérdida del crítico / value function en el update PPO.
+- `entropy`: entropía media de la policy en ese update; más alta suele implicar policy más dispersa/exploratoria.
+- `obs_rms`: estado de la normalización de observaciones en ese punto (`live` o `frozen`).
+- `entropy_coef`: coeficiente de entropía usado en ese update.
+
+---
+
+## 3. Resumen de checkpoints durante training
+
+### 3.1 Nuevo mejor checkpoint
+
+Ejemplo:
+
+```text
+New best deterministic model saved to ... (best_eval_wait=11000, best_eval_reward=-778.45, episode=34)
+```
+
+Significado:
+
+- `best_eval_wait`: mejor waiting determinista visto hasta ese momento en el training.
+- `best_eval_reward`: reward correspondiente a ese mismo checkpoint.
+- `episode`: episodio en el que apareció ese mejor checkpoint.
+
+### 3.2 Resumen final del training
+
+Ejemplo:
+
+```text
+Best eval summary | episode: 34 | waiting(det): 11000 | reward(det): -778.45
+```
+
+Significado:
+
+- `episode`: episodio donde apareció el mejor checkpoint guardado.
+- `waiting(det)`: mejor waiting determinista del entrenamiento.
+- `reward(det)`: reward determinista asociada a ese mejor checkpoint.
+
+---
+
+## 4. Campos principales del testing
+
+### 4.1 Resumen global del test
+
+Ejemplo:
+
+```text
+Total waiting: 11000 | Total reward: -778.45
+```
+
+Significado:
+
+- `Total waiting`: waiting total del test determinista completo.
+- `Total reward`: reward total del test determinista completo.
+
+La intención normal es que este test reproduzca el mejor checkpoint guardado durante training.
+
+---
+
+## 5. Variables del bloque `[DEBUG]`
+
+En test, el proyecto imprime un bloque por decisión de fase cuando el debug está activo. En la rama actual con amarillo, el formato es similar a este:
+
+```text
+[DEBUG] phase=3 curr_p=12.55 next_p=0.00 next2_p=0.00 next3_p=0.00 share=0.926 dom_sum=12.550 dom_max=12.550 rank=1 peak_pos=1 action01=[0.646] req_dur=31 green_exec=31 yellow_exec=4 exec_dur=35 served=0.823 cost=1.092 waste=0.000 bad_delay=0.000 fast_pass=0.000 bad_ext=0.007 under_g=0.386 comp=0.000 clar=1.000 dom=0.926 r=4.977
+```
+
+### 5.1 Identificación de contexto
+
+- `phase`: índice de la fase actual antes de ejecutar la acción.
+- `curr_p`: presión/demanda de la fase actual antes de actuar.
+- `next_p`: presión de la siguiente fase del cursor.
+- `next2_p`: presión de la fase ubicada dos pasos adelante.
+- `next3_p`: presión de la fase ubicada tres pasos adelante.
+
+### 5.2 Variables de dominancia relativa
+
+- `share`: proporción de la presión actual respecto al total; ayuda a saber qué tan dominante es la fase actual.
+- `dom_sum`: razón de dominancia de la fase actual contra la **suma** de las otras fases.
+- `dom_max`: razón de dominancia de la fase actual contra la **mejor otra fase**.
+- `rank`: posición relativa de la fase actual cuando se ordenan las fases por presión. `1` suele significar que es la más fuerte.
+- `peak_pos`: posición futura donde aparece la mayor presión alternativa mirando adelante en el orden fijo de fases.
+- `clar`: claridad de dominancia. Más alto = la fase dominante está más claramente separada del resto.
+- `comp`: nivel de competencia / balance entre fases. Más alto = el escenario está más mezclado y menos claramente dominado.
+- `dom`: intensidad suave de dominancia que usa la reward shaping.
+
+### 5.3 Acción y duración ejecutada
+
+- `action01`: salida continua de la policy en escala `0..1`.
+- `req_dur`: duración de verde pedida por la policy después de mapear `action01` al rango `min_green..max_green`.
+- `green_exec`: segundos reales de verde ejecutados.
+- `yellow_exec`: segundos reales de amarillo ejecutados.
+- `exec_dur`: duración total realmente ejecutada en esa decisión (`green_exec + yellow_exec`).
+
+### 5.4 Variables de servicio / costo
+
+- `served`: qué tan bien sirvió la fase actual durante esa decisión.
+- `cost`: costo principal de esa decisión dentro de la reward actual.
+- `waste`: cuánto de esa extensión de verde pareció desperdiciada.
+- `bad_delay`: penalización por quedarse demasiado tiempo en la fase actual cuando convendría avanzar.
+- `fast_pass`: bono por pasar relativamente rápido una fase poco útil o débil.
+- `bad_ext`: penalización por extensión innecesaria.
+- `under_g`: penalización por dar **demasiado poco verde** cuando la fase lo necesitaba.
+- `r`: reward instantánea de esa decisión/fase.
+
+---
+
+## 6. Nota importante para interpretar los logs
+
+### Base sin amarillo vs rama con amarillo
+
+En la base **sin amarillo**, el bloque debug viejo normalmente mostraba:
+
+- `phase`
+- `curr_p`, `next_p`, `next2_p`, `next3_p`
+- `share`
+- `peak_pos`
+- `action01`
+- `req_dur`
+- `exec_dur`
+- `served`
+- `waste`
+- `bad_delay`
+- `fast_pass`
+- `bad_ext`
+- `under_g`
+- `dom`
+- `r`
+
+En la rama **con amarillo bien separado**, además aparecen:
+
+- `dom_sum`
+- `dom_max`
+- `rank`
+- `green_exec`
+- `yellow_exec`
+- `cost`
+- `comp`
+- `clar`
+
+Esto significa que los logs actuales de la rama con amarillo son más expresivos y permiten interpretar mejor:
+
+- cuánto verde real dio la policy
+- cuánto tiempo fue amarillo
+- qué tan dominante era la fase
+- y qué tan mezclado/competitivo era el estado del tráfico
+
+
 ## Comandos base de trabajo
 
 ### Entrenamiento base v39 sin amarillo
