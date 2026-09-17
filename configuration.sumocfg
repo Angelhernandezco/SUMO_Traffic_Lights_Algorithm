@@ -1,7 +1,7 @@
 <configuration>
     <input>
-        <net-file value="maps/prueba1.net.xml"/>
-        <route-files value="maps/prueba1MoreTraffic3.rou.xml"/>
+        <net-file value="maps/master_slave.net.xml"/>
+        <route-files value="maps/master_slave.rou.xml"/>
     </input>
 
     <report>
