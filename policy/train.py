@@ -1,4 +1,5 @@
 import os
+from dataclasses import dataclass
 from typing import Dict, List, Tuple
 
 import numpy as np
@@ -8,6 +9,23 @@ from sumolib import checkBinary
 
 from sumo_utils import get_green_phases, set_phase_by_index
 from policy.agent import PPOAgent
+
+
+MASTER_TLS_ID = "J0"
+SLAVE_TLS_IDS = ("J2", "J10", "J16")
+EXPECTED_GREEN_PHASES = {"J0": 4, "J2": 4, "J10": 2, "J16": 4}
+
+
+@dataclass
+class IntersectionContext:
+    tls_id: str
+    role: str
+    active_program: str
+    green_phases: list
+    lanes_by_phase: List[List[str]]
+    controlled_lanes: List[str]
+    phase_count: int
+    phase_cursor: int | None = None
 
 
 def _normalized_action_to_duration(action01: np.ndarray, *, min_green: int, max_green: int) -> int:
@@ -34,23 +52,43 @@ def _yellow_state_from_green_state(green_state: str) -> str:
     return green_state.replace("G", "y").replace("g", "y")
 
 
-def _select_junction_phases_and_lanes(max_phases: int = 4) -> Tuple[str, list, list]:
-    junctions = traci.trafficlight.getIDList()
-    if not junctions:
-        raise RuntimeError("No traffic lights found in the SUMO network.")
-    junction = junctions[0]
+def _build_intersection_contexts() -> Dict[str, IntersectionContext]:
+    found = set(traci.trafficlight.getIDList())
+    full_network = {MASTER_TLS_ID, *SLAVE_TLS_IDS}
+    if found == {MASTER_TLS_ID}:
+        tls_ids = (MASTER_TLS_ID,)
+    elif found == full_network:
+        tls_ids = (MASTER_TLS_ID, *SLAVE_TLS_IDS)
+    else:
+        raise RuntimeError(
+            f"Expected either J0 alone or J0/J2/J10/J16; found {sorted(found)}."
+        )
 
-    green_phases = get_green_phases(junction)
-    if not green_phases:
-        raise RuntimeError(f"No green phases detected for junction {junction}.")
-    if len(green_phases) > max_phases:
-        green_phases = green_phases[:max_phases]
-
-    lanes = sorted({lane for phase in green_phases for lane in phase["lanes"]})
-    if not lanes:
-        raise RuntimeError("No controlled lanes extracted from green phases.")
-
-    return junction, green_phases, lanes
+    contexts = {}
+    for tls_id in tls_ids:
+        green_phases = get_green_phases(tls_id)
+        expected_count = EXPECTED_GREEN_PHASES[tls_id]
+        if len(green_phases) != expected_count:
+            raise RuntimeError(
+                f"{tls_id} requires {expected_count} green phases, found {len(green_phases)}."
+            )
+        lanes_by_phase = [sorted(phase["lanes"]) for phase in green_phases]
+        controlled_lanes = sorted(set(traci.trafficlight.getControlledLanes(tls_id)))
+        if not controlled_lanes:
+            raise RuntimeError(f"No controlled lanes extracted for {tls_id}.")
+        if set(controlled_lanes) != {lane for lanes in lanes_by_phase for lane in lanes}:
+            raise RuntimeError(f"Green phases do not cover all controlled lanes for {tls_id}.")
+        contexts[tls_id] = IntersectionContext(
+            tls_id=tls_id,
+            role="master" if tls_id == MASTER_TLS_ID else "slave",
+            active_program=traci.trafficlight.getProgram(tls_id),
+            green_phases=green_phases,
+            lanes_by_phase=lanes_by_phase,
+            controlled_lanes=controlled_lanes,
+            phase_count=len(green_phases),
+            phase_cursor=0 if tls_id == MASTER_TLS_ID else None,
+        )
+    return contexts
 
 
 def _build_phase_lane_indices(phases: list, lanes: List[str]) -> List[np.ndarray]:
@@ -276,26 +314,63 @@ def _structured_snapshot(
 class SumoTrafficEnv:
     def __init__(
         self,
-        lanes: List[str],
-        phases: list,
-        phase_lane_indices: List[np.ndarray],
-        junction: str,
+        contexts: Dict[str, IntersectionContext],
         *,
         min_green: int,
         max_green: int,
     ) -> None:
-        self.lanes = lanes
-        self.phases = phases
-        self.phase_lane_indices = phase_lane_indices
-        self.junction = junction
+        self.contexts = contexts
+        self.master = contexts[MASTER_TLS_ID]
+        self.lanes = self.master.controlled_lanes
+        self.phases = self.master.green_phases
+        self.phase_lane_indices = _build_phase_lane_indices(self.phases, self.lanes)
+        self.junction = self.master.tls_id
+        self.metric_lanes = sorted({
+            lane for context in contexts.values() for lane in context.controlled_lanes
+        })
         self.min_green = int(min_green)
         self.max_green = int(max_green)
         self.yellow_duration = 4
-        self.phase_cursor = 0
+        self.waiting_by_tls = {}
+        self.waiting_total_network = 0.0
+        self.throughput = 0
+
+    @property
+    def phase_cursor(self) -> int:
+        return int(self.master.phase_cursor)
+
+    @phase_cursor.setter
+    def phase_cursor(self, value: int) -> None:
+        self.master.phase_cursor = int(value)
 
     def reset(self) -> np.ndarray:
         self.phase_cursor = 0
+        self.waiting_by_tls = {tls_id: 0.0 for tls_id in self.contexts}
+        self.waiting_total_network = 0.0
+        self.throughput = 0
         return self._obs()
+
+    def _record_step_metrics(self) -> float:
+        lane_waiting = {
+            lane: float(traci.lane.getLastStepHaltingNumber(lane))
+            for lane in self.metric_lanes
+        }
+        for tls_id, context in self.contexts.items():
+            self.waiting_by_tls[tls_id] += sum(
+                lane_waiting[lane] for lane in context.controlled_lanes
+            )
+        self.waiting_total_network += sum(lane_waiting.values())
+        self.throughput += int(traci.simulation.getArrivedNumber())
+        return sum(lane_waiting[lane] for lane in self.lanes)
+
+    def observational_metrics(self) -> dict:
+        metrics = {
+            f"waiting_{tls_id}": float(waiting)
+            for tls_id, waiting in self.waiting_by_tls.items()
+        }
+        metrics["waiting_total_network"] = float(self.waiting_total_network)
+        metrics["throughput"] = int(self.throughput)
+        return metrics
 
     def _snapshot(self, phase_idx: int | None = None) -> Dict[str, np.ndarray | float | int]:
         idx = int(self.phase_cursor if phase_idx is None else phase_idx)
@@ -335,7 +410,7 @@ class SumoTrafficEnv:
             for _ in range(int(requested_duration)):
                 traci.simulationStep()
                 green_executed_duration += 1
-                green_waiting_sum += float(sum(traci.lane.getLastStepHaltingNumber(l) for l in self.lanes))
+                green_waiting_sum += self._record_step_metrics()
                 if traci.simulation.getMinExpectedNumber() <= 0:
                     break
 
@@ -355,7 +430,7 @@ class SumoTrafficEnv:
                 for _ in range(int(yellow_steps)):
                     traci.simulationStep()
                     yellow_executed_duration += 1
-                    yellow_waiting_sum += float(sum(traci.lane.getLastStepHaltingNumber(l) for l in self.lanes))
+                    yellow_waiting_sum += self._record_step_metrics()
                     if traci.simulation.getMinExpectedNumber() <= 0:
                         break
 
@@ -653,18 +728,27 @@ def _run_single_episode(
         "total_wait": float(total_wait),
         "total_reward": float(total_reward),
         "steps": int(step),
+        **env.observational_metrics(),
     }
 
 
-def _make_env(*, lanes, phases, phase_lane_indices, junction, min_green, max_green) -> SumoTrafficEnv:
+def _make_env(*, contexts, min_green, max_green) -> SumoTrafficEnv:
     return SumoTrafficEnv(
-        lanes=lanes,
-        phases=phases,
-        phase_lane_indices=phase_lane_indices,
-        junction=junction,
+        contexts=contexts,
         min_green=int(min_green),
         max_green=int(max_green),
     )
+
+
+def _format_observational_metrics(metrics: dict) -> str:
+    keys = [f"waiting_{tls_id}" for tls_id in (MASTER_TLS_ID, *SLAVE_TLS_IDS)]
+    waiting = [
+        f"{key}={metrics[key]:.0f}"
+        for key in keys if key in metrics
+    ]
+    waiting.append(f"waiting_total_network={metrics['waiting_total_network']:.0f}")
+    waiting.append(f"throughput={metrics['throughput']:.0f}")
+    return " | ".join(waiting)
 
 
 def run_policy(
@@ -676,14 +760,13 @@ def run_policy(
     gui: bool = False,
     min_green: int = 5,
     max_green: int = 60,
+    sumo_config: str = "configuration.sumocfg",
 ) -> None:
-    traci.start([checkBinary("sumo"), "-c", "configuration.sumocfg"])
+    traci.start([checkBinary("sumo"), "-c", sumo_config])
     try:
-        junction, phases, lanes = _select_junction_phases_and_lanes(max_phases=4)
-        if len(phases) != 4:
-            raise RuntimeError(
-                f"This version expects exactly 4 green phases (found {len(phases)})."
-            )
+        contexts = _build_intersection_contexts()
+        master = contexts[MASTER_TLS_ID]
+        junction, phases, lanes = master.tls_id, master.green_phases, master.controlled_lanes
         phase_lane_indices = _build_phase_lane_indices(phases, lanes)
         sample_obs = _structured_snapshot(lanes, phase_lane_indices, phase_idx=0)["state"]
         obs_dim = int(np.asarray(sample_obs, dtype=np.float32).shape[0])
@@ -757,15 +840,12 @@ def run_policy(
 
             traci.start([
                 checkBinary("sumo"),
-                "-c", "configuration.sumocfg",
+                "-c", sumo_config,
                 "--tripinfo-output", "maps/tripinfo.xml",
             ])
             try:
                 train_env = _make_env(
-                    lanes=lanes,
-                    phases=phases,
-                    phase_lane_indices=phase_lane_indices,
-                    junction=junction,
+                    contexts=contexts,
                     min_green=min_green,
                     max_green=max_green,
                 )
@@ -799,6 +879,7 @@ def run_policy(
                     f"obs_rms={'live' if ep < obs_rms_freeze_after else 'frozen'} | "
                     f"entropy_coef={agent.entropy_coef:.4f}"
                 )
+                print(f"Train observational | {_format_observational_metrics(train_metrics)}")
                 continue
 
             last_state_for_update = pending_train_metrics[-1]["last_state"]
@@ -808,15 +889,12 @@ def run_policy(
 
             traci.start([
                 checkBinary("sumo"),
-                "-c", "configuration.sumocfg",
+                "-c", sumo_config,
                 "--tripinfo-output", "maps/tripinfo.xml",
             ])
             try:
                 eval_env = _make_env(
-                    lanes=lanes,
-                    phases=phases,
-                    phase_lane_indices=phase_lane_indices,
-                    junction=junction,
+                    contexts=contexts,
                     min_green=min_green,
                     max_green=max_green,
                 )
@@ -846,6 +924,13 @@ def run_policy(
                 f"obs_rms={'live' if ep < obs_rms_freeze_after else 'frozen'} | "
                 f"entropy_coef={agent.entropy_coef:.4f}"
             )
+            train_observational = {
+                key: float(np.mean([metrics[key] for metrics in pending_train_metrics]))
+                for key in eval_metrics
+                if key.startswith("waiting_") or key == "throughput"
+            }
+            print(f"Train observational(avg) | {_format_observational_metrics(train_observational)}")
+            print(f"Eval observational(det) | {_format_observational_metrics(eval_metrics)}")
 
             pending_train_metrics = []
             pending_rollout_episodes = 0
@@ -891,15 +976,12 @@ def run_policy(
         else:
             traci.start([
                 checkBinary(sim_binary),
-                "-c", "configuration.sumocfg",
+                "-c", sumo_config,
                 "--tripinfo-output", "maps/tripinfo.xml",
             ])
             try:
                 env = _make_env(
-                    lanes=lanes,
-                    phases=phases,
-                    phase_lane_indices=phase_lane_indices,
-                    junction=junction,
+                    contexts=contexts,
                     min_green=min_green,
                     max_green=max_green,
                 )
@@ -920,6 +1002,7 @@ def run_policy(
                 f"Total waiting: {test_metrics['total_wait']:.0f} | "
                 f"Total reward: {test_metrics['total_reward']:.2f}"
             )
+            print(f"Test observational(det) | {_format_observational_metrics(test_metrics)}")
 
     if train:
         print(f"Best deterministic policy saved to {model_path}")

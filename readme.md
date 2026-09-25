@@ -608,20 +608,43 @@ Esto significa que los logs actuales de la rama con amarillo son más expresivos
 
 ### Entrenamiento base v39 sin amarillo
 ```bash
-python main.py --policy-train -m model_future_v39 -e 20 -s 2000 --min-green 5 --max-green 45
+python main.py --policy-train -m model_future_v39 -e 20 -s 2000 --min-green 5 --max-green 45 --sumo-config configuration.v39.sumocfg
 ```
 
 ### Test base v39 sin amarillo
 ```bash
-python main.py --policy-test -m model_future_v39 -s 2000 --min-green 5 --max-green 45
+python main.py --policy-test -m model_future_v39 -s 2000 --min-green 5 --max-green 45 --sumo-config configuration.v39.sumocfg
 ```
 
 ### Entrenamiento rama v39 con amarillo
 ```bash
-python main.py --policy-train -m model_future_v39_yellow_test -e 32 -s 2000 --min-green 5 --max-green 45
+python main.py --policy-train -m model_future_v39_yellow_test -e 32 -s 2000 --min-green 5 --max-green 45 --sumo-config configuration.v39.sumocfg
 ```
 
 ### Test rama v39 con amarillo
 ```bash
-python main.py --policy-test -m model_future_v39_yellow_test -s 2000 --min-green 5 --max-green 45
+python main.py --policy-test -m model_future_v39_yellow_test -s 2000 --min-green 5 --max-green 45 --sumo-config configuration.v39.sumocfg
 ```
+
+## Fase A: medición master/slave
+
+`configuration.sumocfg` usa `maps/master_slave.net.xml` y `maps/master_slave.rou.xml`.
+J0 es el único semáforo controlado por PPO; J2, J10 y J16 ejecutan sus
+programas estáticos de SUMO. El escenario v39 anterior está separado en
+`configuration.v39.sumocfg`.
+
+```powershell
+.\.venv\Scripts\python.exe main.py --policy-test -m model_future_v39_yellow_test36_3 -s 2000 --min-green 5 --max-green 45 --sumo-config configuration.v39.sumocfg
+.\.venv\Scripts\python.exe main.py --policy-test -m model_future_v39_yellow_test36_3 -s 2000 --min-green 5 --max-green 45 --sumo-config configuration.sumocfg
+```
+
+`waiting_J0`, `waiting_J2`, `waiting_J10` y `waiting_J16` suman por
+segundo los vehículos detenidos en los carriles controlados de cada TLS.
+`waiting_total_network` usa la unión de esos carriles (los accesos
+controlados de los cuatro TLS, no todas las vías de la red). `Total waiting`
+continúa siendo `waiting_J0`, incluido el criterio para guardar el mejor
+checkpoint. `throughput` cuenta los vehículos que llegan a destino durante
+el episodio. `waiting_corridor` queda para una fase posterior.
+
+J2 conserva una fase amarilla estática de 24 s: programa 0, índice 5,
+estado `rrrrrrrrrryyyyyrrrrr`.

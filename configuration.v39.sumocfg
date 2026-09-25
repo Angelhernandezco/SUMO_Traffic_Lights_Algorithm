@@ -1,0 +1,11 @@
+<configuration>
+    <input>
+        <net-file value="maps/prueba1.net.xml"/>
+        <route-files value="maps/prueba1MoreTraffic3.rou.xml"/>
+    </input>
+
+    <report>
+        <verbose value="true"/>
+        <no-step-log value="true"/>
+    </report>
+</configuration>

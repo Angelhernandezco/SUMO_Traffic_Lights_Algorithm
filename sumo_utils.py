@@ -19,12 +19,19 @@ def get_green_phases(junction):
     - the lanes that receive green light in that phase
     """
 
-    # Get the traffic light logic programs
+    # Use the program SUMO is currently running for this traffic light.
     logics = traci.trafficlight.getAllProgramLogics(junction)
     if not logics:
-        return []
+        raise RuntimeError(f"No traffic-light programs found for junction {junction}.")
 
-    phases = logics[0].phases
+    active_program = traci.trafficlight.getProgram(junction)
+    logic = next((logic for logic in logics if logic.programID == active_program), None)
+    if logic is None:
+        raise RuntimeError(
+            f"Active program {active_program!r} not found for junction {junction}."
+        )
+
+    phases = logic.phases
     controlled_links = traci.trafficlight.getControlledLinks(junction)
     green_phases = []
 

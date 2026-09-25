@@ -78,7 +78,14 @@ def get_options():
         dest="max_green",
         type="int",
         default=45,
-        help="Maximum green duration per phase in policy mode (default: 30)",
+        help="Maximum green duration per phase in policy mode (default: 45)",
+    )
+    opt_parser.add_option(
+        "--sumo-config",
+        dest="sumo_config",
+        type="string",
+        default="configuration.sumocfg",
+        help="SUMO configuration for PPO mode (default: configuration.sumocfg)",
     )
     options, args = opt_parser.parse_args()
     return options
@@ -116,6 +123,7 @@ if __name__ == "__main__":
             gui=False,
             min_green=options.min_green,
             max_green=options.max_green,
+            sumo_config=options.sumo_config,
         )
     elif options.policy_test:
         run_policy(
@@ -126,6 +134,7 @@ if __name__ == "__main__":
             gui=True,
             min_green=options.min_green,
             max_green=options.max_green,
+            sumo_config=options.sumo_config,
         )
     else:
         print(
