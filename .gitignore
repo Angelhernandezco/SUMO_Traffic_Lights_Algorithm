@@ -16,5 +16,5 @@ env/
 
 # Generated SUMO reports and simulation outputs
 maps/tripinfo.xml
+policy/forecast_runs/
 *.log
-

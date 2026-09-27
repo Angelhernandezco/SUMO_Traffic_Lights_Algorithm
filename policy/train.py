@@ -9,6 +9,7 @@ from sumolib import checkBinary
 
 from sumo_utils import get_green_phases, set_phase_by_index
 from policy.agent import PPOAgent
+from policy.forecast import ShadowForecast
 
 
 MASTER_TLS_ID = "J0"
@@ -318,6 +319,7 @@ class SumoTrafficEnv:
         *,
         min_green: int,
         max_green: int,
+        shadow_forecast: bool = False,
     ) -> None:
         self.contexts = contexts
         self.master = contexts[MASTER_TLS_ID]
@@ -334,6 +336,8 @@ class SumoTrafficEnv:
         self.waiting_by_tls = {}
         self.waiting_total_network = 0.0
         self.throughput = 0
+        self.shadow_forecast = bool(shadow_forecast)
+        self.forecast = None
 
     @property
     def phase_cursor(self) -> int:
@@ -348,6 +352,7 @@ class SumoTrafficEnv:
         self.waiting_by_tls = {tls_id: 0.0 for tls_id in self.contexts}
         self.waiting_total_network = 0.0
         self.throughput = 0
+        self.forecast = ShadowForecast() if self.shadow_forecast else None
         return self._obs()
 
     def _record_step_metrics(self) -> float:
@@ -361,6 +366,8 @@ class SumoTrafficEnv:
             )
         self.waiting_total_network += sum(lane_waiting.values())
         self.throughput += int(traci.simulation.getArrivedNumber())
+        if self.forecast is not None:
+            self.forecast.observe_step(traci)
         return sum(lane_waiting[lane] for lane in self.lanes)
 
     def observational_metrics(self) -> dict:
@@ -732,11 +739,12 @@ def _run_single_episode(
     }
 
 
-def _make_env(*, contexts, min_green, max_green) -> SumoTrafficEnv:
+def _make_env(*, contexts, min_green, max_green, shadow_forecast=False) -> SumoTrafficEnv:
     return SumoTrafficEnv(
         contexts=contexts,
         min_green=int(min_green),
         max_green=int(max_green),
+        shadow_forecast=bool(shadow_forecast),
     )
 
 
@@ -761,10 +769,18 @@ def run_policy(
     min_green: int = 5,
     max_green: int = 60,
     sumo_config: str = "configuration.sumocfg",
+    shadow_forecast: bool = False,
+    forecast_output: str | None = None,
 ) -> None:
+    if shadow_forecast and train:
+        raise ValueError("Shadow forecasting is available only in policy-test mode.")
+    if forecast_output is not None and not shadow_forecast:
+        raise ValueError("--forecast-output requires --shadow-forecast.")
     traci.start([checkBinary("sumo"), "-c", sumo_config])
     try:
         contexts = _build_intersection_contexts()
+        if shadow_forecast and not all(slave in contexts for slave in SLAVE_TLS_IDS):
+            raise ValueError("Shadow forecasting requires J0/J2/J10/J16 in the SUMO network.")
         master = contexts[MASTER_TLS_ID]
         junction, phases, lanes = master.tls_id, master.green_phases, master.controlled_lanes
         phase_lane_indices = _build_phase_lane_indices(phases, lanes)
@@ -984,6 +1000,7 @@ def run_policy(
                     contexts=contexts,
                     min_green=min_green,
                     max_green=max_green,
+                    shadow_forecast=shadow_forecast,
                 )
                 test_metrics = _run_single_episode(
                     agent=agent,
@@ -995,6 +1012,13 @@ def run_policy(
                     debug_limit=debug_limit,
                     update_obs_rms=False,
                 )
+                if env.forecast is not None:
+                    forecast_summary = env.forecast.finalize(float(traci.simulation.getTime()))
+                    output_path = forecast_output or os.path.join(
+                        os.path.dirname(__file__), "forecast_runs", f"{model_name}.jsonl"
+                    )
+                    env.forecast.store.write_jsonl(output_path)
+                    print(f"Shadow forecast | output={output_path} | summary={forecast_summary}")
             finally:
                 traci.close()
 

@@ -87,7 +87,24 @@ def get_options():
         default="configuration.sumocfg",
         help="SUMO configuration for PPO mode (default: configuration.sumocfg)",
     )
+    opt_parser.add_option(
+        "--shadow-forecast",
+        action="store_true",
+        default=False,
+        help="Record read-only ETA and platoon forecasts in PPO test mode",
+    )
+    opt_parser.add_option(
+        "--forecast-output",
+        type="string",
+        default=None,
+        help="JSONL path for shadow forecasts (requires --shadow-forecast)",
+    )
     options, args = opt_parser.parse_args()
+    if ((options.shadow_forecast or options.forecast_output is not None)
+            and (not options.policy_test or options.policy_train)):
+        opt_parser.error("Shadow forecasting is available only with --policy-test")
+    if options.forecast_output is not None and not options.shadow_forecast:
+        opt_parser.error("--forecast-output requires --shadow-forecast")
     return options
 
 
@@ -135,6 +152,8 @@ if __name__ == "__main__":
             min_green=options.min_green,
             max_green=options.max_green,
             sumo_config=options.sumo_config,
+            shadow_forecast=options.shadow_forecast,
+            forecast_output=options.forecast_output,
         )
     else:
         print(
