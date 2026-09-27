@@ -10,6 +10,7 @@ from sumolib import checkBinary
 from sumo_utils import get_green_phases, set_phase_by_index
 from policy.agent import PPOAgent
 from policy.forecast import ShadowForecast
+from policy.coordination import C0Diagnostics, validate_modes
 
 
 MASTER_TLS_ID = "J0"
@@ -320,7 +321,11 @@ class SumoTrafficEnv:
         min_green: int,
         max_green: int,
         shadow_forecast: bool = False,
+        eta_mode: str = "baseline",
+        coordination_mode: str = "off",
+        c0_horizon: int = 2000,
     ) -> None:
+        validate_modes(eta_mode, coordination_mode)
         self.contexts = contexts
         self.master = contexts[MASTER_TLS_ID]
         self.lanes = self.master.controlled_lanes
@@ -336,8 +341,12 @@ class SumoTrafficEnv:
         self.waiting_by_tls = {}
         self.waiting_total_network = 0.0
         self.throughput = 0
-        self.shadow_forecast = bool(shadow_forecast)
+        self.shadow_forecast = bool(shadow_forecast or eta_mode == "local")
         self.forecast = None
+        self.eta_mode = eta_mode
+        self.coordination_mode = coordination_mode
+        self.c0_horizon = int(c0_horizon)
+        self.c0 = None
 
     @property
     def phase_cursor(self) -> int:
@@ -353,6 +362,10 @@ class SumoTrafficEnv:
         self.waiting_total_network = 0.0
         self.throughput = 0
         self.forecast = ShadowForecast() if self.shadow_forecast else None
+        self.c0 = (C0Diagnostics(traci, self.coordination_mode,
+                                 float(traci.simulation.getTime())
+                                 + self.c0_horizon * float(traci.simulation.getDeltaT()))
+                   if self.eta_mode == "local" else None)
         return self._obs()
 
     def _record_step_metrics(self) -> float:
@@ -368,6 +381,8 @@ class SumoTrafficEnv:
         self.throughput += int(traci.simulation.getArrivedNumber())
         if self.forecast is not None:
             self.forecast.observe_step(traci)
+        if self.c0 is not None:
+            self.c0.observe_step(traci, self.forecast)
         return sum(lane_waiting[lane] for lane in self.lanes)
 
     def observational_metrics(self) -> dict:
@@ -739,12 +754,16 @@ def _run_single_episode(
     }
 
 
-def _make_env(*, contexts, min_green, max_green, shadow_forecast=False) -> SumoTrafficEnv:
+def _make_env(*, contexts, min_green, max_green, shadow_forecast=False,
+              eta_mode="baseline", coordination_mode="off", c0_horizon=2000) -> SumoTrafficEnv:
     return SumoTrafficEnv(
         contexts=contexts,
         min_green=int(min_green),
         max_green=int(max_green),
         shadow_forecast=bool(shadow_forecast),
+        eta_mode=eta_mode,
+        coordination_mode=coordination_mode,
+        c0_horizon=c0_horizon,
     )
 
 
@@ -771,7 +790,21 @@ def run_policy(
     sumo_config: str = "configuration.sumocfg",
     shadow_forecast: bool = False,
     forecast_output: str | None = None,
+    eta_mode: str = "baseline",
+    coordination_mode: str = "off",
+    coordination_output: str | None = None,
 ) -> None:
+    validate_modes(eta_mode, coordination_mode)
+    if train and (eta_mode != "baseline" or coordination_mode != "off" or coordination_output is not None):
+        raise ValueError("C0 diagnostics are available only in policy-test mode.")
+    if coordination_output is not None and eta_mode != "local":
+        raise ValueError("--coordination-output requires --eta-mode local.")
+    if eta_mode == "local":
+        baseline_output = forecast_output or os.path.join(os.path.dirname(__file__), "forecast_runs", f"{model_name}.jsonl")
+        c0_output = coordination_output or os.path.join(os.path.dirname(__file__), "forecast_runs", f"{model_name}.c0.jsonl")
+        if os.path.normcase(os.path.abspath(baseline_output)) == os.path.normcase(os.path.abspath(c0_output)):
+            raise ValueError("Forecast and coordination output paths must be different.")
+    shadow_forecast = bool(shadow_forecast or eta_mode == "local")
     if shadow_forecast and train:
         raise ValueError("Shadow forecasting is available only in policy-test mode.")
     if forecast_output is not None and not shadow_forecast:
@@ -1001,6 +1034,9 @@ def run_policy(
                     min_green=min_green,
                     max_green=max_green,
                     shadow_forecast=shadow_forecast,
+                    eta_mode=eta_mode,
+                    coordination_mode=coordination_mode,
+                    c0_horizon=steps,
                 )
                 test_metrics = _run_single_episode(
                     agent=agent,
@@ -1019,6 +1055,10 @@ def run_policy(
                     )
                     env.forecast.store.write_jsonl(output_path)
                     print(f"Shadow forecast | output={output_path} | summary={forecast_summary}")
+                if env.c0 is not None:
+                    c0_summary = env.c0.finalize(float(traci.simulation.getTime()))
+                    env.c0.write_jsonl(c0_output)
+                    print(f"C0 diagnostics | output={c0_output} | summary={c0_summary}")
             finally:
                 traci.close()
 

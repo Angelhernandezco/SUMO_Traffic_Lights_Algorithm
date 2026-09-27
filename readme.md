@@ -648,3 +648,64 @@ el episodio. `waiting_corridor` queda para una fase posterior.
 
 J2 conserva una fase amarilla estática de 24 s: programa 0, índice 5,
 estado `rrrrrrrrrryyyyyrrrrr`.
+
+## Fase C0: forecast local y coordinación shadow
+
+C0 agrega observación causal durante cada paso del verde y amarillo de J0.
+Los valores predeterminados `--eta-mode baseline --coordination-mode off`
+conservan la ejecución anterior. Los modos nuevos están disponibles únicamente
+con `--policy-test`, que evalúa el checkpoint de forma determinista.
+
+```powershell
+.\.venv\Scripts\python.exe main.py --policy-test -m model_future_v39_yellow_test36_3 -s 2000 --min-green 5 --max-green 45 --sumo-config configuration.sumocfg --eta-mode local --coordination-mode off --forecast-output logs/c0/cli_off.phase_b.jsonl --coordination-output logs/c0/cli_off.jsonl
+.\.venv\Scripts\python.exe main.py --policy-test -m model_future_v39_yellow_test36_3 -s 2000 --min-green 5 --max-green 45 --sumo-config configuration.sumocfg --eta-mode local --coordination-mode shadow --forecast-output logs/c0/cli_shadow.phase_b.jsonl --coordination-output logs/c0/cli_shadow.jsonl
+```
+
+`local/off` registra las vistas locales sin evaluar ajustes. `local/shadow`
+requiere `eta-mode local` y evalúa reducciones hipotéticas de hasta 5 s,
+con mínimos experimentales de 10 s para J2/J16 y 36 s para J10. Conserva
+todas las duraciones reales, incluido el amarillo de 24 s de J2. No existe
+el modo `advance` ni un ejecutor de control sobre slaves.
+
+El forecast local conserva los IDs y la agrupación de Fase B. Usa miembros
+presentes en el acceso receptor cuya ruta y conexión sirve la fase SUMO 2;
+admite un remanente de un platoón cerrado originalmente de al menos dos
+vehículos. Excluye inserciones directas en E1 y singletons originales.
+Su disponibilidad `tiempo + distancia restante / velocidad permitida` es
+una estimación optimista de recorrido libre; no predice exactamente el cruce
+ni usa llegadas reales, errores o resultados observados. Cada consulta fallida
+invalida ese miembro; los miembros válidos de una vista parcial siguen siendo
+utilizables. Las vistas con más de un paso de antigüedad no son admisibles.
+
+`--shadow-forecast` y `--forecast-output` mantienen el diagnóstico original
+de Fase B. `local` lo habilita automáticamente. `--coordination-output`
+guarda un JSONL independiente con configuración, revisiones locales,
+retiros, decisiones y resumen. Sin una ruta explícita, C0 escribe
+`policy/forecast_runs/<modelo>.c0.jsonl`. Los dos archivos deben ser distintos.
+
+Las reservas shadow consumen un presupuesto ficticio por próxima ocurrencia
+receptora y bloquean la siguiente ocurrencia. No desplazan aperturas nominales.
+Los candidatos únicos se cuentan por `(TLS, platoón, ocurrencia)`;
+las abstenciones por motivo cuentan decisiones por paso y pueden repetirse.
+La cobertura cuenta miembros válidos sobre miembros locales elegibles de
+platoones cerrados originalmente múltiples; las incompatibilidades se
+registran por separado. `local_forecast_retired` registra `no_local_members`.
+
+La validación recuperada y completada está en `logs/c0/report.md`.
+Con SUMO 1.26.0, demanda oficial y horizonte 2000 s, los candidatos
+geométricos fueron 22/9/14 y las reservas admisibles 8/5/8 para J2/J10/J16.
+Estos resultados describen oportunidades sobre el baseline; no beneficios
+de C1 ni reducciones de waiting.
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests -p test_coordination.py -v
+.\.venv\Scripts\python.exe -m unittest discover -s tests -p test_forecast.py -v
+.\.venv\Scripts\python.exe tests/validate_c0.py
+```
+
+El validador usa el baseline recuperado y la evidencia histórica de
+`logs/timeout_fix/`. Reutiliza corridas completas que coincidan con sus
+firmas de código y hashes de salida. Intercepta la capa de escritura TraCI
+y falla ante cualquier comando dirigido a J2/J10/J16. Compara acciones,
+observaciones, reward, duraciones y trazas completas; exige igualdad exacta
+con el baseline y JSONL idénticos en las tres repeticiones shadow.

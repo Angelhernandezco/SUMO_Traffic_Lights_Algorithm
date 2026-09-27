@@ -97,14 +97,26 @@ def get_options():
         "--forecast-output",
         type="string",
         default=None,
-        help="JSONL path for shadow forecasts (requires --shadow-forecast)",
+        help="Fase B JSONL path (requires --shadow-forecast or --eta-mode local)",
     )
+    opt_parser.add_option("--eta-mode", type="choice", choices=("baseline", "local"),
+                          default="baseline", help="ETA observer: baseline or causal local (test only)")
+    opt_parser.add_option("--coordination-mode", type="choice", choices=("off", "shadow"),
+                          default="off", help="C0 diagnostic mode; no slave control")
+    opt_parser.add_option("--coordination-output", type="string", default=None,
+                          help="Independent C0 JSONL path (requires --eta-mode local)")
     options, args = opt_parser.parse_args()
-    if ((options.shadow_forecast or options.forecast_output is not None)
+    if ((options.shadow_forecast or options.forecast_output is not None
+         or options.eta_mode != "baseline" or options.coordination_mode != "off"
+         or options.coordination_output is not None)
             and (not options.policy_test or options.policy_train)):
         opt_parser.error("Shadow forecasting is available only with --policy-test")
-    if options.forecast_output is not None and not options.shadow_forecast:
-        opt_parser.error("--forecast-output requires --shadow-forecast")
+    if options.forecast_output is not None and not (options.shadow_forecast or options.eta_mode == "local"):
+        opt_parser.error("--forecast-output requires --shadow-forecast or --eta-mode local")
+    if options.coordination_mode == "shadow" and options.eta_mode != "local":
+        opt_parser.error("--coordination-mode shadow requires --eta-mode local")
+    if options.coordination_output is not None and options.eta_mode != "local":
+        opt_parser.error("--coordination-output requires --eta-mode local")
     return options
 
 
@@ -154,6 +166,9 @@ if __name__ == "__main__":
             sumo_config=options.sumo_config,
             shadow_forecast=options.shadow_forecast,
             forecast_output=options.forecast_output,
+            eta_mode=options.eta_mode,
+            coordination_mode=options.coordination_mode,
+            coordination_output=options.coordination_output,
         )
     else:
         print(
