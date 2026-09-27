@@ -1,6 +1,7 @@
 """Causal forecasts, C0 reservations and limited C1 execution."""
 
 import copy
+import inspect
 import json
 import io
 import unittest
@@ -55,7 +56,7 @@ class LocalForecastTests(unittest.TestCase):
             previous_roads={"a": "E1", "b": "E1", "direct": "E1"},
             followed={vid: SimpleNamespace(route=route, platoon_id=1,
                                            actual_by_slave={"J2": 999},
-                                           status_by_slave={"J2": "cruzado"}, censor_reason="teleport")
+                                           status_by_slave={"J2": "cruzado"}, censor_reason=None)
                       for vid in ("a", "b")},
             platoons={1: SimpleNamespace(closed=True, member_ids=["a", "b"])})
         self.traci = mock.Mock()
@@ -128,7 +129,21 @@ class LocalForecastTests(unittest.TestCase):
         result = self.observe()["J2"][1]
         self.assertFalse(result.compatible)
         self.assertEqual(result.member_failures, (("a", "incompatible"), ("b", "incompatible")))
-        self.assertIsNone(self.observer.summary()["J2"]["valid_member_coverage"])
+
+    def test_censored_vehicle_never_regains_local_eligibility_after_reappearance(self):
+        self.observe()
+        for reason in ("teleport", "disappeared", "route_changed"):
+            with self.subTest(reason=reason):
+                self.source.followed["a"].censor_reason = reason
+                view = self.observe(11)["J2"][1]
+                self.assertEqual(view.member_ids, ("b",))
+                self.assertEqual(view.valid_member_ids, ("b",))
+                self.assertEqual(view.eligible_member_count, 1)
+                self.source.followed["a"].censor_reason = None
+        self.source.followed["a"].censor_reason = "teleport"
+        self.source.previous_roads = {"a": "E1"}
+        self.assertEqual(self.observe(12)["J2"], {})
+        self.assertEqual(self.observer.summary()["J2"]["valid_member_coverage"], 1)
 
     def test_arrival_labels_cannot_change_local_views(self):
         first = self.observe()["J2"][1]
@@ -252,8 +267,14 @@ class AdvanceExecutorTests(unittest.TestCase):
         self.executor = AdvanceExecutor(self.evaluator, self.emit)
         self.traci = mock.Mock()
         self.traci.TraCIException = RuntimeError
+        self.now = 1
+        self.traci.trafficlight.getNextSwitch.return_value = self.signals["J2"].next_switch
+        def apply(tls, remaining):
+            self.traci.trafficlight.getNextSwitch.return_value = self.now + remaining
+        self.traci.trafficlight.setPhaseDuration.side_effect = apply
 
     def execute(self, now=1):
+        self.now = now
         return self.executor.execute(self.traci, self.request, now, self.signals, self.views)
 
     def abstains(self, reason, now=1):
@@ -270,7 +291,8 @@ class AdvanceExecutorTests(unittest.TestCase):
         self.assertEqual(result["nominal_opening_before"], 19)
         self.assertEqual(result["budget_used_after"], 5)
         self.assertEqual(self.signals, before)
-        self.assertEqual(self.traci.mock_calls, [mock.call.trafficlight.setPhaseDuration("J2", 9)])
+        self.traci.trafficlight.setPhaseDuration.assert_called_once_with("J2", 9)
+        self.traci.trafficlight.getNextSwitch.assert_called_once_with("J2")
         self.assertEqual(self.executor.summary()["J2"]["real_interventions"], 1)
 
     def test_revalidated_minimum_green(self):
@@ -345,7 +367,36 @@ class AdvanceExecutorTests(unittest.TestCase):
         result = self.execute()
         self.assertEqual(result["reason"], "write_failed")
         self.assertEqual(self.executor.executed, {})
+        self.assertEqual(self.evaluator.reserved, {})
+        self.assertTrue(result["reservation_released"])
         self.assertEqual(self.executor.summary()["J2"]["unexecuted_reservations"], 1)
+        self.traci.trafficlight.setPhaseDuration.side_effect = lambda tls, remaining: setattr(
+            self.traci.trafficlight.getNextSwitch, "return_value", self.now + remaining)
+        fresh = self.evaluator.evaluate(1, self.signals, self.views)
+        self.assertEqual(len(fresh), 1)
+        self.assertEqual(self.executor.execute(self.traci, fresh[0], 1, self.signals, self.views)["result"], "executed")
+
+    def test_acknowledged_but_unapplied_write_releases_shadow_budget(self):
+        self.traci.trafficlight.setPhaseDuration.side_effect = None
+        result = self.execute()
+        self.assertEqual(result["reason"], "write_not_applied")
+        self.assertEqual(self.evaluator.reserved, {})
+        self.assertEqual(self.executor.executed, {})
+        self.assertEqual(len(self.evaluator.evaluate(1, self.signals, self.views)), 1)
+
+    def test_unverifiable_write_stops_instead_of_freeing_ambiguous_budget(self):
+        self.traci.trafficlight.getNextSwitch.side_effect = RuntimeError("read failed")
+        with self.assertRaisesRegex(RuntimeError, "Cannot verify"):
+            self.execute()
+        self.assertEqual(self.evaluator.reserved["J2"][0], 1)
+
+    def test_final_rounded_reduction_revalidates_horizon(self):
+        self.evaluator.horizon = 16
+        self.views = forecasts(packet(now=6, ready=15.5))
+        # Hypothetical opening 14 < 16, but rounded effective opening is 16.
+        self.assertEqual(self.execute(now=6)["reason"], "effective_opening_outside_horizon")
+        self.traci.trafficlight.setPhaseDuration.assert_not_called()
+        self.assertEqual(self.evaluator.reserved, {})
 
     def test_deterministic_execution_and_logs(self):
         first = self.execute()
@@ -413,8 +464,11 @@ class InterfaceTests(unittest.TestCase):
 
     def test_cli_defaults_and_rejected_nonlocal_or_training_modes(self):
         import main
+        from policy.train import run_policy
+        self.assertEqual(inspect.signature(run_policy).parameters["max_green"].default, 60)
         with mock.patch("sys.argv", ["main.py", "--policy-test"]):
             options = main.get_options()
+        self.assertEqual((options.min_green, options.max_green), (5, 45))
         self.assertEqual((options.eta_mode, options.coordination_mode), ("baseline", "off"))
         for args in (("--policy-test", "--coordination-mode", "advance"),
                      ("--policy-test", "--coordination-mode", "shadow"),

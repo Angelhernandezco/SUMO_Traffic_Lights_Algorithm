@@ -832,3 +832,79 @@ completas está en `full_corridor_trips.md`; la vista local de origen J0 en
 `corridor_j0_any_j16_exit.md`; el desglose de cada conexión y origen en
 `movement_breakdown.csv`. Las poblaciones y definiciones se identifican
 por separado: estos agregados complementarios no se deben sumar entre sí.
+
+## Preparación pre-C2 (sin planificador conjunto)
+
+`run_policy()` mantiene su valor predeterminado histórico `max_green=60` para
+llamadas directas que omiten el argumento. La CLI de `main.py` usa `45` y lo
+pasa explícitamente, igual que los validadores y el checkpoint oficial
+`model_future_v39_yellow_test36_3.pth` (`min_green=5`, `max_green=45`).
+Las nuevas llamadas directas deben pasar ambos límites explícitamente. No se
+cambió el valor interno heredado ni el mapeo de acciones. La prueba de un
+checkpoint con metadatos sigue rechazando límites distintos.
+
+Correcciones técnicas en C1: el ejecutor comprueba el horizonte de la
+apertura calculada con la reducción final, después del redondeo; si queda
+fuera registra `effective_opening_outside_horizon` y se abstiene. La reserva
+activa de shadow se sincroniza con el presupuesto realmente ejecutado. Un
+rechazo de TraCI registra `write_failed`; un comando aceptado sin cambio
+observado en `getNextSwitch()` registra `write_not_applied`. Ambos liberan
+la reserva activa y no activan descanso. El historial de oportunidades C0
+permanece en los eventos. Un valor de `getNextSwitch()` inesperado después
+de la escritura detiene la corrida para evitar contabilizar una intervención
+ambigua. Los vehículos censurados por teleport, desaparición o cambio de
+ruta no vuelven a entrar al forecast local aunque reaparezcan en el acceso.
+
+La telemetría nueva vive en `policy/corridor_telemetry.py` y solo la invoca
+`tests/validate_pre_c2.py` como observador externo tras el registro existente
+de cada paso. El módulo de control no la importa. Su interfaz TraCI permite
+únicamente getters; no agrega `simulationStep()` ni modifica decisiones.
+
+```powershell
+.\.venv\Scripts\python.exe tests\validate_pre_c2.py
+```
+
+La validación exige una referencia previa en `logs/pre_c2/before` y escribe
+`logs/pre_c2/after/validation.json`, además de `*.vehicle_steps.jsonl`,
+`*.vehicle_events.jsonl`, `*.platoon_steps.jsonl` y `*.corridor.json` por
+modo. Las muestras incluyen tiempo, identidad y platoón originales,
+TLS/acceso, edge/carril/posición/velocidad, distancia al final del carril,
+fase/estado/señal del movimiento, verde receptor, vehículos delante en el
+mismo carril, detención, ocupación de los carriles downstream de la conexión
+e intervalo libre estimado con distancia y velocidad disponibles en ese
+instante. `*.corridor.json` conserva visitas, segmentos J0→J2, J2→J10 y
+J10→J16, censura y dispersión temporal de grupos. Los miembros originales
+se conservan aunque ya no estén presentes; se registran por paso los
+miembros observados y si están distribuidos en edges/carriles distintos.
+
+| Evento | Definición observada | Uso retrospectivo |
+|---|---|---|
+| `j0_release_observed` | Primera detección verificada en E1 tras J0 | Inicio J0→J2, no instante subsegundo de stop line J0 |
+| `approach_enter` / `next_link_enter` | Primera muestra en E1, E5 o E10 | Llegada al acceso; puede estar censurada a izquierda |
+| `queue_proxy_enter` | Velocidad <0.1 m/s y otro vehículo por delante en el mismo carril | Proxy reproducible de cola, no cola física confirmada |
+| `stop_begin` / `stop_end` | Cruce del umbral 0.1 m/s entre muestras | Episodios detenidos y waiting por segmento |
+| `stop_line_cross` | Transición observada del acceso a carril interno o salida prevista | Cruce J2/J10/J16 y ciclo receptor observado |
+| `intersection_exit` | Entrada observada en el edge de salida | Inicio efectivo del tramo siguiente |
+| `vehicle_censored` | Teleport, desaparición o cambio de ruta | Excluir cruces y grupos incompletos |
+
+Cada segmento guarda llegada/cruce, waiting detenido, inicios de detención
+y tiempo libre estimado al inicio. Las muestras por paso permiten separar
+tiempo detenido con verde, rojo, amarillo o señal desconocida; el estado
+de la señal observado al final del paso no prueba por sí solo la causa del
+retraso. Vehículos delante y ocupación downstream son indicios causales
+disponibles, no una prueba de bloqueo; no se infiere una causa exclusiva
+sin capacidad adicional. Los eventos de platoón ofrecen dispersión en
+entrada/cruce/salida, amplitud cabeza-cola, miembros completos y cruces en
+ciclos receptores distintos. `compact_exit_percent` usa solo pares
+platoón×TLS completos con al menos dos miembros esperados y la definición temporal
+original (gaps ≤3 s y ventana ≤15 s); no redefine los platoones del control.
+La distribución entre edges o carriles indica separación observada, pero
+no basta para afirmar una partición física estable. Los instantes tienen
+resolución de un paso y los periodos fuera del horizonte quedan censurados.
+`arrival` significa primera muestra en el edge de acceso. En J0→J2 puede
+coincidir con `j0_release_observed`, porque E1 comienza justo después de J0;
+para tiempo hasta la línea de parada se usa `cross`. La distancia por paso
+permite definir después un umbral de proximidad explícito sin alterar C1.
+Las ventanas alcanzables/incompatibles con ±5 s pueden evaluarse después
+uniendo muestras y eventos C0/C1 con los límites de fase ya registrados;
+la telemetría no toma esa decisión ni implementa el predictor encadenado.

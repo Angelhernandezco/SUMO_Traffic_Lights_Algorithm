@@ -786,7 +786,7 @@ def run_policy(
     model_name: str = "my_policy",
     gui: bool = False,
     min_green: int = 5,
-    max_green: int = 60,
+    max_green: int = 60,  # Legacy direct-API default; official CLI explicitly passes 45.
     sumo_config: str = "configuration.sumocfg",
     shadow_forecast: bool = False,
     forecast_output: str | None = None,

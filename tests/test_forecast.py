@@ -129,6 +129,32 @@ class ForecastTimeoutTests(unittest.TestCase):
         self.assertEqual(self.closures(), [{"event": "singleton_closed", "time": 14.0,
                                            "platoon_id": 1, "member_ids": ["a"]}])
 
+    def test_teleport_disappearance_and_reroute_are_permanent_censors(self):
+        original = ("-E0", "E1", "E5", "E10", "E13")
+        for cause in ("teleport", "disappeared", "route_changed"):
+            with self.subTest(cause=cause):
+                self.setUp()
+                vehicle = TrackedVehicle("a", 1., "-E0", original, "e1_e5_e10", 1, 0.,
+                                         {slave: 10. for slave in ("J2", "J10", "J16")},
+                                         {slave: 50. for slave in ("J2", "J10", "J16")},
+                                         {slave: "pendiente" for slave in ("J2", "J10", "J16")})
+                self.observer.followed["a"] = vehicle
+                self.observer.seen_e1.add("a")
+                self.observer.previous_roads["a"] = "E1"
+                self.traci.vehicle.getIDList.return_value = [] if cause == "disappeared" else ["a"]
+                self.traci.vehicle.getRoadID.return_value = "E1"
+                self.traci.vehicle.getRoute.return_value = ("E1", "E6") if cause == "route_changed" else original
+                self.traci.simulation.getStartingTeleportIDList.return_value = ["a"] if cause == "teleport" else []
+                self.step(2.)
+                self.assertEqual(vehicle.censor_reason, cause)
+                # The ID may later appear on E1 again with its original route.
+                self.traci.vehicle.getIDList.return_value = ["a"]
+                self.traci.vehicle.getRoute.return_value = original
+                self.traci.simulation.getStartingTeleportIDList.return_value = []
+                self.step(3.)
+                self.assertEqual(vehicle.censor_reason, cause)
+                self.assertEqual([e["event"] for e in self.observer.store.events].count("vehicle_censored"), 1)
+
     def test_repeated_steps_and_finalize_do_not_close_twice(self):
         self.observer._add_to_platoon("a", 10.0)
         for time in (14.0, 15.0, 100.0):

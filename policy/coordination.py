@@ -116,7 +116,7 @@ class LocalForecastObserver:
         # It contains no arrival labels and is refreshed before this observer.
         for vid, road in sorted(source.previous_roads.items()):
             vehicle = source.followed.get(vid)
-            if vehicle is None:
+            if vehicle is None or vehicle.censor_reason is not None:
                 continue
             for tls, edge in CORRIDOR:
                 if road == edge:
@@ -375,8 +375,8 @@ class ShadowAdvanceEvaluator:
 class AdvanceExecutor:
     """Execute C0 reservations after a fresh read, reusing its pure evaluator.
 
-    The shadow ledger records admissions, even if execution fails. The real
-    ledger is consumed only after a successful write. No cycle compensation.
+    Historical shadow admissions remain in the event history. Active budget
+    and cooldown follow only observed successful writes. No cycle compensation.
     """
 
     def __init__(self, evaluator, emit):
@@ -407,6 +407,7 @@ class AdvanceExecutor:
             "nominal_opening_before": None, "remaining_before": remaining,
             "requested_reduction": request["hypothetical_reduction"],
             "effective_reduction": 0.0, "remaining_after": remaining,
+            "effective_opening": None, "reservation_released": False,
             "minimum_green": request["minimum_green"],
             "budget_used_before": budget, "budget_used_after": budget,
             "budget_remaining_before": 5.0 - budget, "cooldown": cooldown,
@@ -447,15 +448,41 @@ class AdvanceExecutor:
                 if reduction < step:
                     failures.append("reduction_below_step")
                 else:
-                    try:
-                        traci.trafficlight.setPhaseDuration(tls, remaining - reduction)
-                    except (RuntimeError, traci.TraCIException):
-                        failures.append("write_failed")
+                    effective_opening = decision["nominal_opening"] - reduction
+                    record["effective_opening"] = effective_opening
+                    if effective_opening >= self.evaluator.horizon:
+                        failures.append("effective_opening_outside_horizon")
                     else:
-                        self.executed[tls] = (occurrence, reduction)
-                        record.update(effective_reduction=reduction,
-                                      remaining_after=remaining - reduction,
-                                      budget_used_after=budget + reduction)
+                        try:
+                            traci.trafficlight.setPhaseDuration(tls, remaining - reduction)
+                        except (RuntimeError, traci.TraCIException):
+                            failures.append("write_failed")
+                        else:
+                            try:
+                                actual_switch = float(traci.trafficlight.getNextSwitch(tls))
+                            except (RuntimeError, traci.TraCIException) as error:
+                                raise RuntimeError(f"Cannot verify {tls} next switch after setPhaseDuration") from error
+                            if math.isclose(actual_switch, signal.next_switch, abs_tol=1e-6):
+                                failures.append("write_not_applied")
+                            elif not math.isclose(actual_switch, now + remaining - reduction, abs_tol=1e-6):
+                                # A changed but unexpected switch cannot be treated
+                                # as a failed write with a free future budget.
+                                raise RuntimeError(f"Unexpected {tls} next switch after setPhaseDuration: {actual_switch}")
+                            else:
+                                self.executed[tls] = (occurrence, reduction)
+                                record.update(effective_reduction=reduction,
+                                              remaining_after=remaining - reduction,
+                                              budget_used_after=budget + reduction)
+        # C0's admission history is retained, but its active reservation must
+        # never impose budget/cooldown for a command that did not take effect.
+        reserved = self.evaluator.reserved.get(tls)
+        actual = self.executed.get(tls)
+        if actual is None:
+            self.evaluator.reserved.pop(tls, None)
+        else:
+            self.evaluator.reserved[tls] = actual
+        record["reservation_released"] = bool(failures and reserved is not None
+                                               and reserved[0] == occurrence and actual != reserved)
         record.update(result="abstain" if failures else "executed",
                       reason=failures[0] if failures else "advance_executed",
                       failed_conditions=failures)
