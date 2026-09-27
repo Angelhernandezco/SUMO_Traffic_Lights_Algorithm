@@ -796,7 +796,7 @@ def run_policy(
 ) -> None:
     validate_modes(eta_mode, coordination_mode)
     if train and (eta_mode != "baseline" or coordination_mode != "off" or coordination_output is not None):
-        raise ValueError("C0 diagnostics are available only in policy-test mode.")
+        raise ValueError("Coordination is available only in policy-test mode.")
     if coordination_output is not None and eta_mode != "local":
         raise ValueError("--coordination-output requires --eta-mode local.")
     if eta_mode == "local":
@@ -1058,7 +1058,7 @@ def run_policy(
                 if env.c0 is not None:
                     c0_summary = env.c0.finalize(float(traci.simulation.getTime()))
                     env.c0.write_jsonl(c0_output)
-                    print(f"C0 diagnostics | output={c0_output} | summary={c0_summary}")
+                    print(f"Coordination | output={c0_output} | summary={c0_summary}")
             finally:
                 traci.close()
 

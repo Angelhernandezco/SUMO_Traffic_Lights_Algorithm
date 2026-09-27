@@ -664,8 +664,8 @@ con `--policy-test`, que evalúa el checkpoint de forma determinista.
 `local/off` registra las vistas locales sin evaluar ajustes. `local/shadow`
 requiere `eta-mode local` y evalúa reducciones hipotéticas de hasta 5 s,
 con mínimos experimentales de 10 s para J2/J16 y 36 s para J10. Conserva
-todas las duraciones reales, incluido el amarillo de 24 s de J2. No existe
-el modo `advance` ni un ejecutor de control sobre slaves.
+todas las duraciones reales, incluido el amarillo de 24 s de J2. El modo
+experimental `advance` se describe en la sección C1 siguiente.
 
 El forecast local conserva los IDs y la agrupación de Fase B. Usa miembros
 presentes en el acceso receptor cuya ruta y conexión sirve la fase SUMO 2;
@@ -709,3 +709,126 @@ firmas de código y hashes de salida. Intercepta la capa de escritura TraCI
 y falla ante cualquier comando dirigido a J2/J10/J16. Compara acciones,
 observaciones, reward, duraciones y trazas completas; exige igualdad exacta
 con el baseline y JSONL idénticos en las tres repeticiones shadow.
+
+## Fase C1: adelanto limitado de slaves
+
+Hipótesis: ejecutar las reservas admisibles de C0 puede reducir la espera
+del corredor y de la red, sin perjudicar demasiado el tráfico transversal
+ni el throughput. Se conserva el checkpoint y todo el comportamiento de
+J0/PPO; el único factor experimental es el timing real de las slaves.
+
+`--coordination-mode advance` requiere `--eta-mode local` y `--policy-test`.
+Usa exactamente `ShadowAdvanceEvaluator` para admitir las reservas y para
+revalidarlas con una nueva lectura de señales y el presupuesto real. El
+ejecutor comprueba también fase/inicio, programa, ocurrencia receptora y
+revisión del forecast. Corre después del observador local en cada paso
+existente; no añade pasos de simulación ni cambia el loop de J0.
+
+Solo llama `setPhaseDuration(TLS, nueva_duración_restante)` sobre J2/J10/J16.
+Reduce como máximo 5 s por próxima apertura, con una sola intervención y
+descanso durante la siguiente ocurrencia receptora completa. Los mínimos
+son J2=10 s, J10=36 s y J16=10 s. La reducción es el mínimo entre 5 s, el
+tiempo reducible y la distancia temporal a la disponibilidad local; se
+redondea hacia abajo a pasos completos y se abstiene si no alcanza un paso.
+Se conserva al menos un paso futuro antes del cambio de fase.
+
+No escribe sobre verdes receptores, amarillos ni all-red. No salta fases,
+cambia programas ni compensa posteriormente el desplazamiento del ciclo.
+J2 conserva su amarillo de 24 s. OFF y SHADOW conservan el esquema y los
+eventos JSONL C0. ADVANCE mantiene esos eventos y agrega `c1_execution`,
+con reserva/revisión, disponibilidad, apertura previa, duración restante,
+reducciones solicitada/efectiva, presupuesto, descanso y resultado/motivo.
+El resumen agrega intervenciones reales, segundos reducidos y reservas no
+ejecutadas con sus razones. Las oportunidades de ADVANCE pertenecen a su
+tráfico real modificado; no se exige conservar los conteos C0 de ese modo.
+
+```powershell
+.\.venv\Scripts\python.exe main.py --policy-test -m model_future_v39_yellow_test36_3 -s 2000 --min-green 5 --max-green 45 --sumo-config configuration.sumocfg --eta-mode local --coordination-mode advance --forecast-output logs/c1/cli_advance.phase_b.jsonl --coordination-output logs/c1/cli_advance.jsonl
+.\.venv\Scripts\python.exe -m unittest discover -s tests -p 'test_*.py' -v
+.\.venv\Scripts\python.exe tests/validate_c1.py
+```
+
+El validador compara local/off con C0 y ejecuta tres repeticiones ADVANCE
+de 2000 s. Audita la capa `_setCmd` dentro del ejecutor para exigir cero
+escrituras a J0 y únicamente `setPhaseDuration` a slaves. Verifica la
+secuencia completa, duraciones de amarillos/receptores, mínimos, límites,
+presupuesto, descanso, vigencia y determinismo exacto de trazas/JSONL.
+Los hashes protegen checkpoint, PPO, forecast Fase B, red y demanda.
+La evidencia se guarda en `logs/c1/report.md` y `validation_summary.json`.
+
+Las métricas suplementarias del validador no participan en decisiones:
+espera transversal sobre accesos de slaves excluyendo E1/E5/E10,
+detenciones observadas en esos tres edges y tiempo desde detección en E1
+hasta cruce de J16 para vehículos de origen master con recorrido completo.
+El tiempo medio incluye solo vehículos que completan ese recorrido; se
+reporta también el número incompleto/censurado y una comparación de IDs
+comunes para evitar atribuir diferencias de muestra a mejora de tiempos.
+
+Resultado C1 con la demanda oficial: waiting total 26865 → 26955 (+0.34%),
+throughput 604 → 608 (+0.66%), waiting transversal 13521 → 14105 (+4.32%)
+y detenciones del corredor 413 → 435 (+5.33%). Se ejecutaron 9/4/7
+intervenciones y se redujeron 40/20/31 s en J2/J10/J16, sin reservas
+perdidas al ejecutar. Las tres corridas ADVANCE fueron idénticas y las
+46 pruebas pasaron; OFF/SHADOW conservaron C0 exactamente. C1 no cumple
+el criterio de mejora de waiting total en este escenario: se detiene aquí
+el experimento, sin extensión ni nuevas heurísticas. El modo sigue siendo
+optativo y el predeterminado continúa en OFF.
+
+## Auditoría diagnóstica de flujos con C1 congelado
+
+```powershell
+.\.venv\Scripts\python.exe tests/validate_flow_metrics.py
+.\.venv\Scripts\python.exe tests/report_flow_metrics.py
+```
+
+Este validador añade únicamente un observador externo de evaluación,
+`policy/flow_metrics.py`, después del registro existente de cada paso.
+El controlador no importa ese módulo; la interfaz del observador expone
+solo getters TraCI. No cambia semillas, tiempos, decisiones, condiciones,
+escrituras ni pasos de simulación. Compara OFF/SHADOW/ADVANCE con sus
+evaluaciones guardadas y repite OFF y ADVANCE con igualdad exacta.
+
+El movimiento recto se define por ruta e índice actuales: E1→E5 en J2,
+E5→E10 en J10 y E10→E13 en J16. Se distinguen el origen J0 verificado
+por Fase B, las inserciones directas en E1 y otros orígenes. También se
+reportan todos los movimientos de E1/E5/E10, incluidos giros: esa es la
+extensión de acceso que sirve la fase receptora actual. Para J16 se entrega
+así tanto E10→E13 como el conjunto E10→E11/E12/E13 de origen J0.
+El grupo secundario es el complemento del movimiento recto por TLS; incluye
+giros y tráfico del boulevard en sentido contrario, además del transversal.
+
+Waiting suma segundos con velocidad <0.1 m/s en carriles de entrada y se
+reconcilia exactamente con el waiting existente de cada slave. Una detención
+es el inicio de un episodio bajo ese umbral; una primera observación ya
+detenida cuenta como parada observada. Los vehículos que aún no cruzan y
+los que terminan ruta sobre un acceso se identifican por separado del
+throughput local. El porcentaje sin parada usa cruces completos, y los
+tiempos desde la liberación de J0 usan solo recorridos completados.
+
+Los remanentes son un subconjunto temporal según el forecast causal vigente,
+sin duplicar población. Se comparan población completa, mismos IDs presentes
+en ambas condiciones y mismos IDs que cruzan en ambas. En agregados, un ID
+puede pertenecer a distintos grupos en distintos TLS; los waiting por paso
+son disjuntos, pero los conteos de IDs de los grupos no se deben sumar.
+
+`logs/c1_diagnostic/report.md` contiene tablas por TLS y agregadas.
+`comparison.json` conserva todas las métricas y cohortes; `*.flow_metrics.json`
+conserva registros por vehículo y `*.flow_events.jsonl` entradas/paradas/cruces.
+`validation_summary.json` documenta hashes de congelación y comparaciones.
+Esta auditoría describe efectos observados sin elegir el objetivo de tesis
+ni clasificar globalmente C1 como bueno o malo.
+
+`tests/report_flow_metrics.py` deriva tablas adicionales de los registros
+guardados, sin importar TraCI ni ejecutar otra simulación. Distingue rutas
+parciales del corredor de vehículos de origen J0 con ruta completa
+E1,E5,E10 y una salida válida de J16. Una ruta que termina sobre E10 no
+cuenta como movimiento de cruce en J16. Conserva vistas de todos los IDs,
+IDs comunes y viajes completados en ambas condiciones. Para los viajes
+completos suma waiting/paradas de los tres accesos por vehículo, además de
+reportar cruces sin parada en todo el recorrido y tiempo post-J0 hasta J16.
+
+`logs/c1_diagnostic/overview.md` reúne los resultados. El detalle de rutas
+completas está en `full_corridor_trips.md`; la vista local de origen J0 en
+`corridor_j0_any_j16_exit.md`; el desglose de cada conexión y origen en
+`movement_breakdown.csv`. Las poblaciones y definiciones se identifican
+por separado: estos agregados complementarios no se deben sumar entre sí.

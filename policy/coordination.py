@@ -1,4 +1,4 @@
-"""C0 observations and hypothetical reservations. No traffic-light writes.
+"""C0 observations/reservations and the opt-in C1 slave timing executor.
 
 Local readiness is a free-flow lower estimate, not a stop-line crossing ETA.
 The shadow ledger never changes nominal signal times or predicts C1 outcomes.
@@ -27,10 +27,10 @@ NOMINAL_DURATIONS = {
 def validate_modes(eta_mode, coordination_mode):
     if eta_mode not in ("baseline", "local"):
         raise ValueError("eta-mode must be baseline or local")
-    if coordination_mode not in ("off", "shadow"):
-        raise ValueError("C0 coordination-mode must be off or shadow")
-    if coordination_mode == "shadow" and eta_mode != "local":
-        raise ValueError("coordination-mode shadow requires eta-mode local")
+    if coordination_mode not in ("off", "shadow", "advance"):
+        raise ValueError("coordination-mode must be off, shadow or advance")
+    if coordination_mode != "off" and eta_mode != "local":
+        raise ValueError(f"coordination-mode {coordination_mode} requires eta-mode local")
 
 
 @dataclass(frozen=True)
@@ -229,6 +229,7 @@ class ShadowAdvanceEvaluator:
             self.entries[tls] = int(signal.phase == self.programs[tls].receptor)
 
     def evaluate(self, now, signals, forecasts):
+        requests = []
         for tls in TLS_ORDER:
             signal, program = signals[tls], self.programs[tls]
             previous = self.previous_phase.get(tls, signal.phase)
@@ -337,7 +338,9 @@ class ShadowAdvanceEvaluator:
                     self.reserved[tls] = (occurrence, reduction)
                     self.reservations[tls].append({"time": now, "platoon_id": packet.platoon_id,
                                                    "occurrence": occurrence, "seconds": reduction})
+                    requests.append(record)
                 self._record(now, record, failures)
+        return requests
 
     def _record(self, now, record, failures):
         reason = failures[0] if failures else "shadow_reserved"
@@ -369,8 +372,109 @@ class ShadowAdvanceEvaluator:
         return result
 
 
+class AdvanceExecutor:
+    """Execute C0 reservations after a fresh read, reusing its pure evaluator.
+
+    The shadow ledger records admissions, even if execution fails. The real
+    ledger is consumed only after a successful write. No cycle compensation.
+    """
+
+    def __init__(self, evaluator, emit):
+        self.evaluator, self.emit = evaluator, emit
+        self.executed = {}
+        self.results = {tls: [] for tls in TLS_ORDER}
+
+    def execute(self, traci, request, now, signals, forecasts):
+        tls = request["tls_id"]
+        if tls not in TLS_ORDER:
+            raise ValueError("Coordination may write only to corridor slaves")
+        signal = signals[tls]
+        packet = forecasts[tls].get(request["platoon_id"])
+        occurrence = self.evaluator.entries[tls] + 1
+        last = self.executed.get(tls)
+        budget = last[1] if last and last[0] == occurrence else 0.0
+        cooldown = bool(last and occurrence == last[0] + 1)
+        remaining = signal.next_switch - now
+        record = {
+            "tls_id": tls, "program": signal.program_id, "phase": signal.phase,
+            "state": signal.state, "phase_started": signal.phase_started,
+            "receptor_occurrence": occurrence, "platoon_id": request["platoon_id"],
+            "revision": packet.revision if packet else None,
+            "reservation_revision": request["revision"],
+            "observed_at": packet.observed_at if packet else None,
+            "ready_earliest": packet.ready_earliest if packet else None,
+            "ready_latest": packet.ready_latest if packet else None,
+            "nominal_opening_before": None, "remaining_before": remaining,
+            "requested_reduction": request["hypothetical_reduction"],
+            "effective_reduction": 0.0, "remaining_after": remaining,
+            "minimum_green": request["minimum_green"],
+            "budget_used_before": budget, "budget_used_after": budget,
+            "budget_remaining_before": 5.0 - budget, "cooldown": cooldown,
+        }
+        failures = []
+        if (signal.program_id != request["program"] or signal.phase != request["phase"]
+                or signal.state != request["state"] or signal.phase_started != request["phase_started"]):
+            failures.append("signal_changed")
+        if occurrence != request["receptor_occurrence"]:
+            failures.append("receptor_occurrence_changed")
+        if packet is None:
+            failures.append("forecast_retired")
+        elif packet.revision != request["revision"]:
+            failures.append("forecast_revision_changed")
+        if not failures:
+            # Reuse the ENTIRE C0 eligibility calculation, with the execution
+            # ledger instead of the just-consumed hypothetical reservation.
+            decisions = []
+            probe = ShadowAdvanceEvaluator(self.evaluator.programs, self.evaluator.step_seconds,
+                                           self.evaluator.horizon,
+                                           lambda event, time, **data: decisions.append(data))
+            probe.previous_phase = self.evaluator.previous_phase.copy()
+            probe.entries = self.evaluator.entries.copy()
+            probe.reserved = self.executed.copy()
+            isolated = {target: {} for target in TLS_ORDER}
+            isolated[tls][packet.platoon_id] = packet
+            probe.evaluate(now, signals, isolated)
+            decision = next(d for d in decisions if d["tls_id"] == tls)
+            failures.extend(decision["failed_conditions"])
+            record["nominal_opening_before"] = decision["nominal_opening"]
+            if not failures:
+                needed = max(0.0, decision["nominal_opening"] - packet.ready_earliest)
+                reduction = min(5.0, decision["hypothetical_reduction"], needed)
+                # SUMO acts on discrete future steps. Round DOWN to preserve
+                # the green minimum even for a fractional readiness estimate.
+                step = self.evaluator.step_seconds
+                reduction = math.floor(reduction / step) * step
+                if reduction < step:
+                    failures.append("reduction_below_step")
+                else:
+                    try:
+                        traci.trafficlight.setPhaseDuration(tls, remaining - reduction)
+                    except (RuntimeError, traci.TraCIException):
+                        failures.append("write_failed")
+                    else:
+                        self.executed[tls] = (occurrence, reduction)
+                        record.update(effective_reduction=reduction,
+                                      remaining_after=remaining - reduction,
+                                      budget_used_after=budget + reduction)
+        record.update(result="abstain" if failures else "executed",
+                      reason=failures[0] if failures else "advance_executed",
+                      failed_conditions=failures)
+        self.results[tls].append({"time": now, **record})
+        self.emit("c1_execution", now, **record)
+        return record
+
+    def summary(self):
+        return {tls: {
+            "real_interventions": sum(r["result"] == "executed" for r in records),
+            "seconds_reduced": sum(r["effective_reduction"] for r in records),
+            "unexecuted_reservations": sum(r["result"] == "abstain" for r in records),
+            "loss_reasons": dict(sorted(Counter(r["reason"] for r in records
+                                                 if r["result"] == "abstain").items())),
+        } for tls, records in self.results.items()}
+
+
 class C0Diagnostics:
-    """Read-only integration; source observations precede every C0 step."""
+    """Source/local observations precede evaluation and optional C1 execution."""
 
     def __init__(self, traci, coordination_mode, horizon):
         self.mode = coordination_mode
@@ -379,7 +483,8 @@ class C0Diagnostics:
         self.events = []
         self.local = LocalForecastObserver(self.programs, self.emit)
         self.evaluator = (ShadowAdvanceEvaluator(self.programs, self.step_seconds, horizon, self.emit)
-                          if coordination_mode == "shadow" else None)
+                          if coordination_mode in ("shadow", "advance") else None)
+        self.executor = AdvanceExecutor(self.evaluator, self.emit) if coordination_mode == "advance" else None
         self.finalized = False
         if self.evaluator is not None:
             self.evaluator.seed_phases(self.read_signals(traci))
@@ -408,12 +513,20 @@ class C0Diagnostics:
         now = float(traci.simulation.getTime())
         forecasts = self.local.observe(traci, source, now)
         if self.evaluator is not None:
-            self.evaluator.evaluate(now, self.read_signals(traci), forecasts)
+            requests = self.evaluator.evaluate(now, self.read_signals(traci), forecasts)
+            if self.executor is not None:
+                for request in requests:
+                    self.executor.execute(traci, request, float(traci.simulation.getTime()),
+                                          self.read_signals(traci), self.local.latest)
 
     def summary(self):
-        return {"mode": self.mode, "semantics": "static_baseline_opportunities_only; no_slave_writes",
+        result = {"mode": self.mode, "semantics": "static_baseline_opportunities_only; no_slave_writes",
                 "local": self.local.summary(),
                 "shadow": self.evaluator.summary() if self.evaluator is not None else None}
+        if self.executor is not None:
+            result.update(semantics="live_slave_timing; C0_reservations_then_C1_execution",
+                          advance=self.executor.summary())
+        return result
 
     def finalize(self, now):
         if not self.finalized:

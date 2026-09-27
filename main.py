@@ -101,10 +101,10 @@ def get_options():
     )
     opt_parser.add_option("--eta-mode", type="choice", choices=("baseline", "local"),
                           default="baseline", help="ETA observer: baseline or causal local (test only)")
-    opt_parser.add_option("--coordination-mode", type="choice", choices=("off", "shadow"),
-                          default="off", help="C0 diagnostic mode; no slave control")
+    opt_parser.add_option("--coordination-mode", type="choice", choices=("off", "shadow", "advance"),
+                          default="off", help="Coordination: off, C0 shadow or C1 slave advance (test only)")
     opt_parser.add_option("--coordination-output", type="string", default=None,
-                          help="Independent C0 JSONL path (requires --eta-mode local)")
+                          help="Independent coordination JSONL path (requires --eta-mode local)")
     options, args = opt_parser.parse_args()
     if ((options.shadow_forecast or options.forecast_output is not None
          or options.eta_mode != "baseline" or options.coordination_mode != "off"
@@ -113,8 +113,8 @@ def get_options():
         opt_parser.error("Shadow forecasting is available only with --policy-test")
     if options.forecast_output is not None and not (options.shadow_forecast or options.eta_mode == "local"):
         opt_parser.error("--forecast-output requires --shadow-forecast or --eta-mode local")
-    if options.coordination_mode == "shadow" and options.eta_mode != "local":
-        opt_parser.error("--coordination-mode shadow requires --eta-mode local")
+    if options.coordination_mode != "off" and options.eta_mode != "local":
+        opt_parser.error(f"--coordination-mode {options.coordination_mode} requires --eta-mode local")
     if options.coordination_output is not None and options.eta_mode != "local":
         opt_parser.error("--coordination-output requires --eta-mode local")
     return options

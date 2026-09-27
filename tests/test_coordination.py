@@ -1,4 +1,4 @@
-"""Causal forecasts and hypothetical ledgers, without a slave executor."""
+"""Causal forecasts, C0 reservations and limited C1 execution."""
 
 import copy
 import json
@@ -12,7 +12,7 @@ from types import SimpleNamespace
 from unittest import mock
 
 from policy.coordination import (
-    LocalForecast, LocalForecastObserver, NOMINAL_DURATIONS, SignalSnapshot,
+    AdvanceExecutor, LocalForecast, LocalForecastObserver, NOMINAL_DURATIONS, SignalSnapshot,
     SlaveProgram, ShadowAdvanceEvaluator, TLS_ORDER, read_programs, validate_modes,
 )
 
@@ -240,12 +240,133 @@ class ShadowLedgerTests(unittest.TestCase):
         self.assertTrue(all(e["reason"] == "no_forecast" for e in self.events))
 
 
+class AdvanceExecutorTests(unittest.TestCase):
+    def setUp(self):
+        self.events = []
+        self.emit = lambda event, time, **data: self.events.append((event, time, data))
+        self.evaluator = ShadowAdvanceEvaluator(programs(), 1, 2000, self.emit)
+        self.signals = signals()
+        self.evaluator.seed_phases(self.signals)
+        self.views = forecasts(packet())
+        self.request = self.evaluator.evaluate(1, self.signals, self.views)[0]
+        self.executor = AdvanceExecutor(self.evaluator, self.emit)
+        self.traci = mock.Mock()
+        self.traci.TraCIException = RuntimeError
+
+    def execute(self, now=1):
+        return self.executor.execute(self.traci, self.request, now, self.signals, self.views)
+
+    def abstains(self, reason, now=1):
+        result = self.execute(now)
+        self.assertEqual(result["result"], "abstain")
+        self.assertIn(reason, result["failed_conditions"])
+        self.traci.trafficlight.setPhaseDuration.assert_not_called()
+        return result
+
+    def test_valid_intervention_only_writes_remaining_slave_duration(self):
+        before = copy.deepcopy(self.signals)
+        result = self.execute()
+        self.assertEqual(result["effective_reduction"], 5)
+        self.assertEqual(result["nominal_opening_before"], 19)
+        self.assertEqual(result["budget_used_after"], 5)
+        self.assertEqual(self.signals, before)
+        self.assertEqual(self.traci.mock_calls, [mock.call.trafficlight.setPhaseDuration("J2", 9)])
+        self.assertEqual(self.executor.summary()["J2"]["real_interventions"], 1)
+
+    def test_revalidated_minimum_green(self):
+        self.signals["J2"] = replace(self.signals["J2"], next_switch=10)
+        self.abstains("minimum_green_limit")
+
+    def test_consumed_budget_blocks_even_a_second_request(self):
+        self.executor.executed["J2"] = (1, 2)
+        self.abstains("budget_reserved")
+
+    def test_cooldown_blocks_following_receptor_occurrence(self):
+        self.evaluator.entries["J2"] = 1
+        self.request = {**self.request, "receptor_occurrence": 2}
+        self.executor.executed["J2"] = (1, 5)
+        self.abstains("cooldown")
+
+    def test_expired_and_future_forecasts(self):
+        for observed_at, reason in ((-1, "stale"), (2, "future_observation")):
+            self.views = forecasts(packet(observed_at=observed_at))
+            self.abstains(reason)
+
+    def test_retired_and_revised_forecasts(self):
+        self.views = forecasts()
+        self.abstains("forecast_retired")
+        self.views = forecasts(packet(revision=2))
+        self.abstains("forecast_revision_changed")
+
+    def test_yellow_receptor_and_all_red_never_written(self):
+        for phase, state in ((1, "yrr"), (2, "Grr"), (0, "rrr")):
+            self.signals["J2"] = replace(signals()["J2"], phase=phase, state=state)
+            self.abstains("signal_changed")
+
+    def test_changed_occurrence_and_phase_start(self):
+        self.evaluator.entries["J2"] += 1
+        self.abstains("receptor_occurrence_changed")
+        self.evaluator.entries["J2"] -= 1
+        self.signals["J2"] = replace(self.signals["J2"], phase_started=1)
+        self.abstains("signal_changed")
+
+    def test_multiple_platoons_and_revisions_write_once(self):
+        evaluator = ShadowAdvanceEvaluator(programs(), 1, 2000, self.emit)
+        evaluator.seed_phases(self.signals)
+        requests = evaluator.evaluate(1, self.signals, forecasts(packet(pid=2), packet(pid=1)))
+        self.assertEqual(len(requests), 1)
+        self.assertEqual(requests[0]["platoon_id"], 1)
+        self.execute()
+        self.execute()
+        self.assertEqual(self.traci.trafficlight.setPhaseDuration.call_count, 1)
+        self.assertEqual(self.executor.results["J2"][-1]["reason"], "budget_reserved")
+
+    def test_partial_reduction_preserves_minimum(self):
+        self.signals["J2"] = replace(self.signals["J2"], next_switch=12)
+        result = self.execute()
+        self.assertEqual(result["effective_reduction"], 2)
+        self.traci.trafficlight.setPhaseDuration.assert_called_once_with("J2", 9)
+
+    def test_zero_remaining_reduction(self):
+        self.abstains("insufficient_remaining_green", now=15)
+
+    def test_reduction_capped_by_readiness_and_rounded_down(self):
+        self.views = forecasts(packet(ready=15.5))
+        result = self.execute(now=6)
+        # Refresh the same revision at the execution time for this isolated test.
+        self.assertEqual(result["reason"], "stale")
+        self.views = forecasts(packet(now=6, ready=15.5))
+        result = self.execute(now=6)
+        self.assertEqual(result["effective_reduction"], 3)
+        self.traci.trafficlight.setPhaseDuration.assert_called_once_with("J2", 6)
+
+    def test_failed_write_does_not_consume_real_budget(self):
+        self.traci.trafficlight.setPhaseDuration.side_effect = RuntimeError("failed")
+        result = self.execute()
+        self.assertEqual(result["reason"], "write_failed")
+        self.assertEqual(self.executor.executed, {})
+        self.assertEqual(self.executor.summary()["J2"]["unexecuted_reservations"], 1)
+
+    def test_deterministic_execution_and_logs(self):
+        first = self.execute()
+        events = copy.deepcopy(self.events)
+        self.setUp()
+        self.assertEqual(first, self.execute())
+        self.assertEqual(events, self.events)
+
+    def test_j0_cannot_be_targeted(self):
+        self.request = {**self.request, "tls_id": "J0"}
+        with self.assertRaisesRegex(ValueError, "only.*slaves"):
+            self.execute()
+        self.assertEqual(self.traci.mock_calls, [])
+
+
 class InterfaceTests(unittest.TestCase):
-    def test_c1_is_not_a_supported_mode(self):
-        for eta, coordination in (("baseline", "shadow"), ("local", "advance"), ("unknown", "off")):
+    def test_modes_require_local_forecasts(self):
+        for eta, coordination in (("baseline", "shadow"), ("baseline", "advance"), ("unknown", "off")):
             with self.assertRaises(ValueError):
                 validate_modes(eta, coordination)
-        for eta, coordination in (("baseline", "off"), ("local", "off"), ("local", "shadow")):
+        for eta, coordination in (("baseline", "off"), ("local", "off"), ("local", "shadow"), ("local", "advance")):
             validate_modes(eta, coordination)
 
     def network_mock(self):
@@ -290,7 +411,7 @@ class InterfaceTests(unittest.TestCase):
             with self.subTest(mutation=mutation), self.assertRaises(ValueError):
                 read_programs(traci)
 
-    def test_cli_defaults_and_rejected_c1_or_training_modes(self):
+    def test_cli_defaults_and_rejected_nonlocal_or_training_modes(self):
         import main
         with mock.patch("sys.argv", ["main.py", "--policy-test"]):
             options = main.get_options()
@@ -308,6 +429,9 @@ class InterfaceTests(unittest.TestCase):
                                      "--coordination-output", "c0.jsonl"]):
             options = main.get_options()
         self.assertEqual(options.coordination_output, "c0.jsonl")
+        with mock.patch("sys.argv", ["main.py", "--policy-test", "--eta-mode", "local",
+                                     "--coordination-mode", "advance"]):
+            self.assertEqual(main.get_options().coordination_mode, "advance")
 
 
 if __name__ == "__main__":
