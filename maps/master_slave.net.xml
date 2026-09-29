@@ -405,7 +405,7 @@
         <phase duration="15" state="rrrrrGGGGGrrrrrrrrrr"/>
         <phase duration="4"  state="rrrrryyyyyrrrrrrrrrr"/>
         <phase duration="15" state="rrrrrrrrrrGGGGGrrrrr"/>
-        <phase duration="24" state="rrrrrrrrrryyyyyrrrrr"/>
+        <phase duration="4" state="rrrrrrrrrryyyyyrrrrr"/>
         <phase duration="15" state="rrrrrrrrrrrrrrrGGGGG"/>
         <phase duration="4"  state="rrrrrrrrrrrrrrryyyyy"/>
     </tlLogic>
