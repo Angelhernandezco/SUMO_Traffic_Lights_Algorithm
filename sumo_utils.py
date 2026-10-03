@@ -83,3 +83,22 @@ def get_waiting_time(lanes):
     for lane_id in lanes:
         waiting_time += traci.lane.getLastStepHaltingNumber(lane_id)
     return waiting_time
+
+
+def get_lane_metrics(lanes):
+    """
+    Return, for the current simulation step:
+    - halting: vehicles stopped (speed < 0.1 m/s) across all lanes
+    - moving: vehicles in motion across all lanes
+    - avg_queue: stopped vehicles / number of lanes
+    """
+    halting = 0
+    moving = 0
+    for lane_id in lanes:
+        total = traci.lane.getLastStepVehicleNumber(lane_id)
+        stopped = traci.lane.getLastStepHaltingNumber(lane_id)
+        halting += stopped
+        moving += total - stopped
+
+    avg_queue = halting / len(lanes) if lanes else 0.0
+    return {"halting": halting, "moving": moving, "avg_queue": avg_queue}
