@@ -1,6 +1,6 @@
 # V1/V3 completos y comparación con V2
 
-Demanda 42–46, 3600 s, SUMO seed 42, PPO determinista oficial sólo en J0. Red/checkpoint/offsets intactos. Los controladores originales siguen disponibles con alcance `j2`.
+Demandas 42–46, 3600 s, SUMO seed 42, PPO determinista oficial sólo en J0. V1/V2/V3 coordinan el corredor completo. Código activo: `run_sync.py` y `sync/`; demandas en `sync/demand/`. Offsets J0/J2/J10/J16: 0/0/72/24; verdes 5–45 s, amarillos separados de 4 s y orden cíclico.
 
 ## Alcance y dirección
 
@@ -66,7 +66,7 @@ La cobertura física mide la ventana entre primera/última llegada observada de 
 | J10 | 283/283 | 80 | 203 | 203/203 |
 | J16 | 283/283 | 80 | 203 | 203/203 |
 
-Una apertura puede haberse iniciado antes del aviso y aprovecharse; las aperturas asociadas incluyen algunas preparaciones vacías. No equivalen al número de ciclos con vehículos. Los eventos CSV guardan el inicio real y cada frente objetivo; el desplazamiento de apertura se debe calcular como actual_start-target, ya que el target_error heredado de V1 vale cero cuando ya está verde.
+Una apertura puede haberse iniciado antes del aviso y aprovecharse; las aperturas asociadas incluyen algunas preparaciones vacías. No equivalen al número de ciclos con vehículos. Con `--traces`, los eventos CSV guardan el inicio real y cada frente objetivo; el desplazamiento de apertura se debe calcular como actual_start-target, ya que el target_error heredado de V1 vale cero cuando ya está verde.
 
 ## Recomendación
 
@@ -78,17 +78,19 @@ Extender el alcance bajó el waiting global medio de V1 de 45572 a 44072 y de V3
 
 `per_demand.csv` incluye waiting E1, secundario de cada receptor, mediana/P90 de recorrido, paradas, llegadas/pendientes y las tres métricas de `get_lane_metrics`: `waiting_time`, `effective_flow`, `avg_queue_length`. Effective flow son veh·s en movimiento; no es throughput. Waiting red cuenta vehículos detenidos en toda la red, incluidas conexiones internas; waiting_time cuenta sólo carriles controlados únicos.
 
-`runs/*_events.csv` conserva avisos, cortes, alcance legal y aperturas. `window_arrival_audit.csv` compara ventanas físicas y frente/cola desplazados para los vehículos que realmente llegan a cada receptor. Una llegada no observada dentro de 5 m se registra como cota superior del cruce a resolución de 1 s, con estado desconocido. La cobertura de una ventana objetivo no equivale al porcentaje de vehículos sin parada.
+`aggregate.json` conserva los agregados, variabilidad entre demandas y la auditoría de ventanas físicas. `reference.json` contiene las configuraciones, resúmenes originales, hashes de recursos y firmas canónicas de las siete trazas de cada una de las 15 corridas. `validation.json` registra las comprobaciones realizadas. Son referencias necesarias para medir cambios posteriores; los CSV crudos sólo se exportan con `--traces`.
 
-Cero violaciones de verdes 5–45 s, amarillos completos de 4 s y orden cíclico; los fragmentos iniciales por offset y terminales por horizonte quedan censurados. Cero teleports. Mismas rutas e IDs de cohorte entre versiones. Nueve pruebas nativas de SUMO verificaron los tres receptores, causalidad y cierre vacío. Los replays locales reprodujeron las métricas previas; la ejecución con un hilo de CPU reprodujo exactamente JSON y siete CSV de V1/V3 locales y V1/V2/V3 completos en demanda 42.
+Una llegada no observada dentro de 5 m se registra como cota superior del cruce a resolución de 1 s, con estado desconocido. La cobertura de una ventana objetivo no equivale al porcentaje de vehículos sin parada.
+
+La reorganización reprodujo las 15 corridas: igualdad de métricas (tolerancia absoluta máxima 1e-12 para representación flotante) y de las siete firmas de trazas, incluidas acciones PPO, fases y trayectorias. Pasaron 22 casos nativos, las tres versiones con GUI y las pruebas breves de PPO/DQN/plain/heurística originales, sin entrenamiento. Cero violaciones semafóricas y cero teleports; los fragmentos iniciales por offset y terminales por horizonte quedan censurados. Las cohortes y rutas son iguales entre versiones.
 
 ## Reproducción
 
 ```powershell
-.\.venv\Scripts\python.exe analysis\run_corridor_sync.py --mode v1 --seed 42 --gui
-.\.venv\Scripts\python.exe analysis\run_corridor_sync.py --mode v3 --seed 42 --gui
-# Histórico: añadir --scope j2
-.\.venv\Scripts\python.exe analysis\corridor_full.py --seeds 42 43 44 45 46
+.\.venv\Scripts\python.exe run_sync.py --mode v1 --seed 42 --gui
+.\.venv\Scripts\python.exe run_sync.py --mode v2 --seed 42
+.\.venv\Scripts\python.exe run_sync.py --mode v3 --seed 42 --traces
+.\.venv\Scripts\python.exe -m tests.validate_sync --seeds 42 43 44 45 46 --modes v1 v2 v3 --output-dir results/validation_repeat
 ```
 
-No se modificaron policy/, checkpoint, red ni offsets; sin entrenamiento, commit o push.
+Cada carpeta de salida debe ser nueva para evitar sobrescribir resultados. El checkpoint oficial es `policy/models/model_future_v39_yellow_test36_3.pth`. Las comprobaciones mantienen protegidos los recursos y el código original. Los antecedentes de onda fija, calibración y control local están en [CORRIDOR_HISTORY.md](../CORRIDOR_HISTORY.md).
