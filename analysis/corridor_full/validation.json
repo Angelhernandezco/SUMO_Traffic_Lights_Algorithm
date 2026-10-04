@@ -1,0 +1,205 @@
+{
+  "source_commit": "f6b440bda67288946919aab7bc1445e52c7bd2fb",
+  "environment": {
+    "python": "3.11.9",
+    "numpy": "2.4.6",
+    "torch": "2.14.0+cpu",
+    "sumo": "Eclipse SUMO sumo 1.26.0"
+  },
+  "full_runs": [
+    {
+      "run": "seed42_v1_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed43_v1_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed44_v1_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed45_v1_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed46_v1_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed42_v2_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed43_v2_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed44_v2_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed45_v2_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed46_v2_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed42_v3_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed43_v3_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed44_v3_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed45_v3_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed46_v3_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    }
+  ],
+  "GUI_seed42": [
+    {
+      "run": "seed42_v1_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed42_v2_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed42_v3_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    }
+  ],
+  "native_cases": {
+    "receivers": {
+      "passed": 9,
+      "cases": [
+        "J2/v1/empty=False",
+        "J2/v3/empty=False",
+        "J2/v3/empty=True",
+        "J10/v1/empty=False",
+        "J10/v3/empty=False",
+        "J10/v3/empty=True",
+        "J16/v1/empty=False",
+        "J16/v3/empty=False",
+        "J16/v3/empty=True"
+      ]
+    },
+    "copy": {
+      "passed": 7,
+      "cases": [
+        "minimum_5",
+        "example_25",
+        "maximum_45",
+        "unreachable_front",
+        "current_green_25",
+        "elapsed_green_5",
+        "two_copies_without_merging"
+      ]
+    },
+    "preannounce": {
+      "passed": 6,
+      "cases": [
+        "natural_green_no_cut",
+        "late_front_earliest_legal_opening",
+        "front_correction_cancels_unused_cut",
+        "empty_preparation_closes",
+        "causal_tail_and_45s_cap",
+        "terminal_request_stays_closed"
+      ]
+    }
+  },
+  "original_modes": {
+    "steps_requested": 120,
+    "PPO": "passed",
+    "DQN": "passed",
+    "plain": "passed",
+    "heuristic": "passed",
+    "training": false,
+    "protected_hashes_unchanged": true,
+    "plain_lane_metrics": {
+      "waiting_time": 991,
+      "effective_flow": 813.0,
+      "avg_queue_length": 0.17062672176308535
+    }
+  },
+  "protected_hashes_unchanged": true,
+  "summary_float_absolute_tolerance": 1e-12,
+  "canonical_traces_exact": true,
+  "no_stop_full_totals": {
+    "v1": 51,
+    "v2": 61,
+    "v3": 84
+  },
+  "full_cohort_total_per_mode": 93,
+  "trace_export_equivalence": "GUI + CSV export and headless summaries match the same seven frozen signatures",
+  "code_sha256": {
+    "run_sync.py": "12a675752ba3f291292d7967c12b78e6c01cf07b734f225f6259f0c46e67760a",
+    "sync/__init__.py": "69222bdc589128bec0923d42ed3f4ca8d6fd0dffd42059e0b8afc47babaa8cb6",
+    "sync/common.py": "affb719edd791e7a8e93ee6a58acf0fd51a2ccd3e2d5a403ba24308254eab0a0",
+    "sync/metrics.py": "efb2817a29ab1d8b3368758e7373d8c1a328653e9050e7891c9da6f0b9b640aa",
+    "sync/simulation.py": "5e73247c830d4aeb0f356fd038b19382c2bfa7f623d1fcbce66bc53023b63f9c",
+    "sync/v1.py": "ddd49520e979bd8911752835727e57eacd9326a90c75610db098e44384190719",
+    "sync/v2.py": "4a3dd5e65cc8930f80b35eda9fb36f3cd42d9218ad0b47c6b8ed588150a2f56f",
+    "sync/v3.py": "51460a4b534be083246cd595c33edda466aedad20a341bcba0de0ecad66880b6"
+  },
+  "CLI_default_output": {
+    "command": "python run_sync.py --mode v1 --seed 42 --output-dir results/cli_validation",
+    "summary_equal": true,
+    "only_summary_written": true
+  },
+  "post_validation_checks": {
+    "historical_dependencies_removed": true,
+    "native_cases_after_cleanup": 22,
+    "CLI_default_output_equal": true,
+    "final_metrics_formatting_ast_equal": true
+  }
+}

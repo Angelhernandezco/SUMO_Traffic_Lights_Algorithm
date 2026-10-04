@@ -1,5 +1,7 @@
 # Historial experimental master/slave
 
+> **Archivo histórico.** C0/C1, FILTERED, shadow, predictor y recuperación de calendario no forman parte del experimento actual. El estado vigente está en [CORRIDOR_SYNC_CONTEXT.md](CORRIDOR_SYNC_CONTEXT.md). Las cifras de abajo corresponden a redes y controladores anteriores.
+
 Este resumen conserva lo aprendido de la rama histórica policy-learning y sus informes. Las implementaciones, scripts, logs y artefactos experimentales no se copian a esta rama.
 
 ## Regla para leer las cifras
@@ -44,7 +46,7 @@ Reanclar al observar una etapa upstream puede empeorar al saltar a otra ocurrenc
 
 ### 9. Auditoría de autoridad temporal
 
-La auditoría vigente con J2=76 encontró que 5 s pueden dar alivio local limitado, pero son insuficientes para progresión continua general. En una envolvente geométrica, adelanto puro requirió medianas de 43–44 s y P90 de 52–55 s para la progresión completa; esa autoridad excede C1 y no demuestra el efecto de un controlador real. Se observaron 24 intervenciones reales de C1 repartidas entre J2/J10/J16 (9/6/9). Una mejora local de J2 puede perderse en J10/J16.
+La auditoría de esa etapa con J2=76 encontró que 5 s pueden dar alivio local limitado, pero son insuficientes para progresión continua general. En una envolvente geométrica, adelanto puro requirió medianas de 43–44 s y P90 de 52–55 s para la progresión completa; esa autoridad excede C1 y no demuestra el efecto de un controlador real. Se observaron 24 intervenciones reales de C1 repartidas entre J2/J10/J16 (9/6/9). Una mejora local de J2 puede perderse en J10/J16.
 
 ### 10. Filtro downstream / admission-aware (FILTERED)
 
@@ -56,7 +58,7 @@ La descomposición mostró por qué un total agregado puede ocultar redistribuci
 
 ### 12. Robustez multi-demanda
 
-El informe más reciente disponible evaluó cuatro demandas pareadas. Δ es FILTERED − CURRENT; Δ cohorte corresponde a los vehículos completados en ambos modos de cada demanda.
+El último informe de esa línea evaluó cuatro demandas pareadas. Δ es FILTERED − CURRENT; Δ cohorte corresponde a los vehículos completados en ambos modos de cada demanda.
 
 | Demanda | Δ waiting total | Δ waiting cohorte | Lectura |
 |---|---:|---:|---|
@@ -67,9 +69,9 @@ El informe más reciente disponible evaluó cuatro demandas pareadas. Δ es FILT
 
 Conclusión del informe: **CASO C — sensible a la demanda**. El beneficio D0 no generalizó en D2/D3. Los alimentadores laterales E empeoraron waiting por vehículo en los cuatro pares. FILTERED mostró que la admisión downstream importa, pero no es una arquitectura robusta de sincronización.
 
-La línea experimental C1/FILTERED se cierra aquí: no continuar refinándola en esta rama limpia. Sus hallazgos deben servir como restricciones del nuevo diseño, no como código de partida ni como evidencia para activar C2. Son cuatro demandas, no una caracterización exhaustiva de todas las condiciones.
+La línea experimental C1/FILTERED se cerró allí. Sus hallazgos quedan como antecedentes, no como código de partida ni como evidencia para activar C2. Son cuatro demandas, no una caracterización exhaustiva de todas las condiciones.
 
-## Lecciones para el rediseño
+## Lecciones históricas
 
 - El error de amarillo J2 distorsionaba calendario y waiting; por eso resultados deben etiquetarse con la red exacta.
 - Un adelanto local ≤5 s puede ayudar a waiting en una demanda y no crear progresión completa robusta.
