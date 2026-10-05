@@ -507,6 +507,7 @@ def summarize_copy(seed, route, obs, controllers, actions, j0_runs, programs, me
 
 
 def summarize_window(seed, mode, route, obs, controllers, actions, j0_runs, programs, delays):
+    causal_window = mode == "v3" or mode.startswith("v3.")
     strict = {v: r for v, r in obs.records.items() if v in obs.cohort and r["E5_start"] is not None}
     summary = {**obs.lane_metrics(), "seed": seed, "mode": mode, "coordination_scope": "full",
         "horizon_s": END, "SUMO_seed": 42, "cumulative_delays_s": delays,
@@ -546,7 +547,7 @@ def summarize_window(seed, mode, route, obs, controllers, actions, j0_runs, prog
                     covered_s=overlap(front, tail + 1, greens),
                     front_green=any(a <= front < b for a, b in greens),
                     tail_green=any(a <= tail < b for a, b in greens))
-            if mode == "v3":
+            if causal_window:
                 if event["actual_J0_start"] != rel["start"] or event["first_cross_updates"] != bool(members):
                     raise RuntimeError(f"{tls}: duplicated/inconsistent V3 event")
                 if members and (event["front_target"] != front or event["tail_target"] != tail):
@@ -564,7 +565,7 @@ def summarize_window(seed, mode, route, obs, controllers, actions, j0_runs, prog
         summary["receivers"][tls] = {
             "events": len(ctrl.events), "eligible_notices": len(noticed),
             "reachable_at_notice": len(reach),
-            "empty_preparations": sum(not e["crossings"] for e in noticed) if mode == "v3" else None,
+            "empty_preparations": sum(not e["crossings"] for e in noticed) if causal_window else None,
             "actual_openings": sum(e.get("actual_start") is not None for e in ctrl.events),
             "window_coverage_pct": 100 * sum(r["covered_s"] for r in valid) /
                 sum(r["window_s"] for r in valid) if valid else None,
@@ -573,8 +574,8 @@ def summarize_window(seed, mode, route, obs, controllers, actions, j0_runs, prog
                 if r["phase"] == ctrl.corridor_phase and not r["partial"]),
             "opening_error_s": distribution(e.get("target_error") for e in ctrl.events),
             "unserved_at_horizon": sum(e.get("actual_start") is None and
-                (mode != "v3" or bool(e["crossings"])) for e in ctrl.events)}
-        if mode == "v3" and (ctrl.next_crossing != len(obs.audit.crossings) or
+                (not causal_window or bool(e["crossings"])) for e in ctrl.events)}
+        if causal_window and (ctrl.next_crossing != len(obs.audit.crossings) or
                             not all(e["closed"] for e in ctrl.events)):
             raise RuntimeError(f"{tls}: unconsumed crossing/open request")
         events.extend(dict(e, tls=tls) for e in ctrl.events)

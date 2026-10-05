@@ -8,6 +8,7 @@ from uuid import uuid4
 from sync.common import ROOT
 from sync.metrics import write_csv
 from sync.simulation import run
+from sync.v3_variants import WINDOW_CONTROLLERS
 
 TRACE_NAMES = ("releases", "vehicles", "events", "timeline", "actions", "phases", "per_vehicle")
 
@@ -29,7 +30,7 @@ def save_result(result, output, traces=False):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=("v1", "v2", "v3"), required=True)
+    parser.add_argument("--mode", choices=("v1", "v2", *WINDOW_CONTROLLERS), required=True)
     parser.add_argument("--seed", type=int, choices=range(42, 47), default=42)
     parser.add_argument("--gui", action="store_true")
     parser.add_argument("--delay", type=int, default=100, help="GUI delay in milliseconds")

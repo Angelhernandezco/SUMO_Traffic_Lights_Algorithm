@@ -1,0 +1,5844 @@
+{
+  "aggregates": {
+    "plain_offset": {
+      "runs": 5,
+      "no_stop": 79,
+      "cohort": 93,
+      "means": {
+        "mean_J0_to_J16_s": 40.396,
+        "waiting_E1_s": 271,
+        "full_waiting_s": 152,
+        "secondary_total_s": 30041,
+        "network_waiting_s": 48495,
+        "pending": 26.8,
+        "stops_per_vehicle": 0.2170175438596491,
+        "waiting_time": 48489.6,
+        "effective_flow": 31091.2,
+        "avg_queue_length": 0.28061111111111064
+      },
+      "network_sd": 589.8758343922897,
+      "meets_balance_target": false
+    },
+    "v1": {
+      "runs": 5,
+      "no_stop": 51,
+      "cohort": 93,
+      "means": {
+        "mean_J0_to_J16_s": 37.958,
+        "waiting_E1_s": 33.8,
+        "full_waiting_s": 33.4,
+        "secondary_total_s": 28464.6,
+        "network_waiting_s": 44071.6,
+        "pending": 26,
+        "stops_per_vehicle": 0.453859649122807,
+        "waiting_time": 44069.2,
+        "effective_flow": 31150.0,
+        "avg_queue_length": 0.25503009259259285
+      },
+      "network_sd": 2016.6941513278607,
+      "meets_balance_target": false
+    },
+    "v2": {
+      "runs": 5,
+      "no_stop": 61,
+      "cohort": 93,
+      "means": {
+        "mean_J0_to_J16_s": 42.544,
+        "waiting_E1_s": 30.2,
+        "full_waiting_s": 127.6,
+        "secondary_total_s": 25328,
+        "network_waiting_s": 44479.8,
+        "pending": 24.8,
+        "stops_per_vehicle": 0.37,
+        "waiting_time": 44475,
+        "effective_flow": 31311.2,
+        "avg_queue_length": 0.2573784722222222
+      },
+      "network_sd": 848.1374888542541,
+      "meets_balance_target": false
+    },
+    "v3": {
+      "runs": 5,
+      "no_stop": 84,
+      "cohort": 93,
+      "means": {
+        "mean_J0_to_J16_s": 36.092,
+        "waiting_E1_s": 4,
+        "full_waiting_s": 2.4,
+        "secondary_total_s": 33156.6,
+        "network_waiting_s": 49559.8,
+        "pending": 30.4,
+        "stops_per_vehicle": 0.09543859649122807,
+        "waiting_time": 49553.8,
+        "effective_flow": 31601.0,
+        "avg_queue_length": 0.28676967592592567
+      },
+      "network_sd": 2439.3911535463108,
+      "meets_balance_target": false
+    },
+    "v3.1": {
+      "runs": 5,
+      "no_stop": 82,
+      "cohort": 93,
+      "means": {
+        "mean_J0_to_J16_s": 35.136,
+        "waiting_E1_s": 3.6,
+        "full_waiting_s": 3,
+        "secondary_total_s": 29454,
+        "network_waiting_s": 45476.2,
+        "pending": 27,
+        "stops_per_vehicle": 0.12035087719298246,
+        "waiting_time": 45471.8,
+        "effective_flow": 31166.2,
+        "avg_queue_length": 0.2631469907407409
+      },
+      "network_sd": 1589.8231662672424,
+      "meets_balance_target": false
+    },
+    "v3.2": {
+      "runs": 5,
+      "no_stop": 78,
+      "cohort": 93,
+      "means": {
+        "mean_J0_to_J16_s": 35.966,
+        "waiting_E1_s": 6.2,
+        "full_waiting_s": 5.2,
+        "secondary_total_s": 29093.2,
+        "network_waiting_s": 46264,
+        "pending": 27.6,
+        "stops_per_vehicle": 0.15859649122807018,
+        "waiting_time": 46256.4,
+        "effective_flow": 31340.6,
+        "avg_queue_length": 0.2676875
+      },
+      "network_sd": 1723.704876131642,
+      "meets_balance_target": false
+    },
+    "v3.3": {
+      "runs": 5,
+      "no_stop": 76,
+      "cohort": 93,
+      "means": {
+        "mean_J0_to_J16_s": 35.734,
+        "waiting_E1_s": 5.8,
+        "full_waiting_s": 5.2,
+        "secondary_total_s": 29433,
+        "network_waiting_s": 45437.4,
+        "pending": 25.8,
+        "stops_per_vehicle": 0.17982456140350878,
+        "waiting_time": 45432.2,
+        "effective_flow": 31184.2,
+        "avg_queue_length": 0.2629178240740744
+      },
+      "network_sd": 1679.3669342939916,
+      "meets_balance_target": false
+    },
+    "v3.4": {
+      "runs": 5,
+      "no_stop": 81,
+      "cohort": 93,
+      "means": {
+        "mean_J0_to_J16_s": 37.67,
+        "waiting_E1_s": 2.2,
+        "full_waiting_s": 29.2,
+        "secondary_total_s": 26572.4,
+        "network_waiting_s": 42874.2,
+        "pending": 25.4,
+        "stops_per_vehicle": 0.12596491228070175,
+        "waiting_time": 42869.8,
+        "effective_flow": 31084.0,
+        "avg_queue_length": 0.24808912037037031
+      },
+      "network_sd": 690.8467268504643,
+      "meets_balance_target": false
+    },
+    "v3.5": {
+      "runs": 5,
+      "no_stop": 82,
+      "cohort": 93,
+      "means": {
+        "mean_J0_to_J16_s": 37.160000000000004,
+        "waiting_E1_s": 3.4,
+        "full_waiting_s": 23,
+        "secondary_total_s": 27020.8,
+        "network_waiting_s": 43484.6,
+        "pending": 26.8,
+        "stops_per_vehicle": 0.1187719298245614,
+        "waiting_time": 43479.8,
+        "effective_flow": 31193.6,
+        "avg_queue_length": 0.25161921296296286
+      },
+      "network_sd": 1109.4750109849253,
+      "meets_balance_target": false
+    },
+    "v3.6": {
+      "runs": 5,
+      "no_stop": 82,
+      "cohort": 93,
+      "means": {
+        "mean_J0_to_J16_s": 35.518,
+        "waiting_E1_s": 2,
+        "full_waiting_s": 11.6,
+        "secondary_total_s": 27251,
+        "network_waiting_s": 43573.6,
+        "pending": 27,
+        "stops_per_vehicle": 0.11543859649122808,
+        "waiting_time": 43568.8,
+        "effective_flow": 31096.8,
+        "avg_queue_length": 0.25213425925925914
+      },
+      "network_sd": 1381.4551386129049,
+      "meets_balance_target": false
+    },
+    "v3.7": {
+      "runs": 5,
+      "no_stop": 87,
+      "cohort": 93,
+      "means": {
+        "mean_J0_to_J16_s": 34.74,
+        "waiting_E1_s": 0.4,
+        "full_waiting_s": 11.8,
+        "secondary_total_s": 26895.6,
+        "network_waiting_s": 43524.6,
+        "pending": 27.2,
+        "stops_per_vehicle": 0.07543859649122807,
+        "waiting_time": 43520,
+        "effective_flow": 31095.2,
+        "avg_queue_length": 0.25185185185185194
+      },
+      "network_sd": 1151.4930742301492,
+      "meets_balance_target": true
+    }
+  },
+  "constraints_zero": true,
+  "teleports_zero": true,
+  "corridor_pending_zero": true,
+  "mechanism_checks": {
+    "seed42_v3.1": {
+      "receivers": {
+        "J2": {
+          "events": 56,
+          "eligible_notices": 55,
+          "reachable_at_notice": 55,
+          "empty_preparations": 15,
+          "actual_openings": 55,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 55,
+            "mean": -0.35,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 56,
+          "eligible_notices": 55,
+          "reachable_at_notice": 55,
+          "empty_preparations": 15,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -0.3,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -5.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 56,
+          "eligible_notices": 55,
+          "reachable_at_notice": 55,
+          "empty_preparations": 15,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -0.3,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -5.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 235,
+        "J2/phase0": 312,
+        "J2/phase4": 33,
+        "J10/phase6": 288,
+        "J10/phase0": 297,
+        "J16/phase4": 451,
+        "J16/phase6": 133
+      },
+      "physical_windows": {
+        "J2": {
+          "windows": 31,
+          "arrival_window_s": 54,
+          "green_covered_s": 52,
+          "coverage_pct": 96.29629629629629
+        },
+        "J10": {
+          "windows": 26,
+          "arrival_window_s": 45,
+          "green_covered_s": 42,
+          "coverage_pct": 93.33333333333333
+        },
+        "J16": {
+          "windows": 16,
+          "arrival_window_s": 30,
+          "green_covered_s": 30,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 168,
+          "sha256": "2ae90c13157273cbec38805f1eb6803915a866d6559b3c0726ad602c4f90f612"
+        },
+        "vehicles": {
+          "rows": 62,
+          "sha256": "fae7ec2938404232d3bf18b71ce7f44dcf3b19d95742ca5959e23be7603f388f"
+        },
+        "events": {
+          "rows": 168,
+          "sha256": "a9e45172fe29c06a62c17fbd38949b260527d2581672b80568658b3b0122c8d8"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "e2892d6db21f1574251a63afb809f30a9090717d31d6456f104f795e941fe77d"
+        },
+        "actions": {
+          "rows": 222,
+          "sha256": "ed9476dd9800b7ce49cf0809be35cb155543b23f067dce627347bea02a17505e"
+        },
+        "phases": {
+          "rows": 1766,
+          "sha256": "a356b01a6ea4afb691cf51a5f4c7bd88bf4d0f96805a48c41f8dccf22e5b6577"
+        },
+        "per_vehicle": {
+          "rows": 42,
+          "sha256": "f69088285a1e026d62d187d594c6a9f218d30a0022cd6d3294f84ce10c11375e"
+        }
+      }
+    },
+    "seed42_v3.2": {
+      "receivers": {
+        "J2": {
+          "events": 56,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 18,
+          "actual_openings": 54,
+          "window_coverage_pct": 100.0,
+          "front_green": 38,
+          "occupied_windows": 38,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 9.2,
+            "median": 7.0,
+            "p90": 15.0,
+            "min": 6.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 54,
+            "mean": -1.07,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -10.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 56,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 18,
+          "actual_openings": 38,
+          "window_coverage_pct": 100.0,
+          "front_green": 38,
+          "occupied_windows": 38,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 38,
+            "mean": -0.5,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 56,
+          "eligible_notices": 55,
+          "reachable_at_notice": 55,
+          "empty_preparations": 17,
+          "actual_openings": 38,
+          "window_coverage_pct": 100.0,
+          "front_green": 38,
+          "occupied_windows": 38,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 38,
+            "mean": -0.5,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 178,
+        "J2/phase0": 113,
+        "J2/phase4": 4,
+        "J10/phase6": 274,
+        "J10/phase0": 340,
+        "J10/phase2": 2,
+        "J16/phase4": 471,
+        "J16/phase6": 135,
+        "J16/phase0": 2
+      },
+      "early_corridor_closures": 43,
+      "unused_corridor_seconds_removed": 325,
+      "physical_windows": {
+        "J2": {
+          "windows": 29,
+          "arrival_window_s": 63,
+          "green_covered_s": 60,
+          "coverage_pct": 95.23809523809524
+        },
+        "J10": {
+          "windows": 25,
+          "arrival_window_s": 60,
+          "green_covered_s": 56,
+          "coverage_pct": 93.33333333333333
+        },
+        "J16": {
+          "windows": 16,
+          "arrival_window_s": 27,
+          "green_covered_s": 27,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 168,
+          "sha256": "28cfe242cfa58db98b4684710c0dce74fb494604dfc6b142c27ff7afec322ede"
+        },
+        "vehicles": {
+          "rows": 62,
+          "sha256": "de40c518b7db0a77c74bed26e04ac02e8f97e71a2f0aa64f7cd98e728105bc29"
+        },
+        "events": {
+          "rows": 168,
+          "sha256": "507402d97b7fa1864146b494a99eb436c16dbfccdef52fb63a71dbbb5bde7e86"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "a931ba6c9b3d0d6a307934a307e7a7b241f99a51c138f8e3d7e9b8398b716e1a"
+        },
+        "actions": {
+          "rows": 223,
+          "sha256": "9e2f0bfa26fc9b564b658541ca47b639265dcc39f61de28664f32e95b0f1223f"
+        },
+        "phases": {
+          "rows": 1781,
+          "sha256": "6ab1de6c515a32ed8a9c7f46b1f67ace3da2d1d8f1afb6c5fa4284e7485111c9"
+        },
+        "per_vehicle": {
+          "rows": 42,
+          "sha256": "c17467895b42f32db7144f6d70978f5a041999b1d9a4342da06022edeb5d8caf"
+        }
+      }
+    },
+    "seed42_v3.3": {
+      "receivers": {
+        "J2": {
+          "events": 56,
+          "eligible_notices": 55,
+          "reachable_at_notice": 55,
+          "empty_preparations": 15,
+          "actual_openings": 55,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 55,
+            "mean": -0.42,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 56,
+          "eligible_notices": 55,
+          "reachable_at_notice": 55,
+          "empty_preparations": 15,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -0.42,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 56,
+          "eligible_notices": 55,
+          "reachable_at_notice": 55,
+          "empty_preparations": 15,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -0.42,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 146,
+        "J2/phase0": 421,
+        "J2/phase4": 9,
+        "J10/phase6": 261,
+        "J10/phase0": 315,
+        "J10/phase2": 5,
+        "J16/phase4": 448,
+        "J16/phase6": 127,
+        "J16/phase0": 5
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 55,
+      "empty_deferred_notices_without_cuts": 2,
+      "physical_windows": {
+        "J2": {
+          "windows": 30,
+          "arrival_window_s": 53,
+          "green_covered_s": 52,
+          "coverage_pct": 98.11320754716981
+        },
+        "J10": {
+          "windows": 26,
+          "arrival_window_s": 55,
+          "green_covered_s": 51,
+          "coverage_pct": 92.72727272727273
+        },
+        "J16": {
+          "windows": 17,
+          "arrival_window_s": 24,
+          "green_covered_s": 24,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 165,
+          "sha256": "c37c00b8bdee29d1bc67e1a7c748b065a3c1b1fb2fddc089c21dc4484e052b3f"
+        },
+        "vehicles": {
+          "rows": 62,
+          "sha256": "f65c56660cda0ff2a228ae49edb06fb9d0c633357d7c4bc1d86e5bd5d2fb48bf"
+        },
+        "events": {
+          "rows": 168,
+          "sha256": "49d65c9300b22759596480f0481ca229c59c67919db7edaa6f2b2e0a177174e9"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "f3b75daca1a768ac852025c7e3d8b4fdede2a1cead8a7e0eb980079b12f9d4b1"
+        },
+        "actions": {
+          "rows": 221,
+          "sha256": "3b27beba3d7bf26f5983c51c262a18b1e4d02951efdf17f08d134d30353aba94"
+        },
+        "phases": {
+          "rows": 1763,
+          "sha256": "c47037ae2a859b25c128b87bb03a5c910aec8012dad80fd55beb5311b89de47f"
+        },
+        "per_vehicle": {
+          "rows": 42,
+          "sha256": "806626cb6b3de717c61459b37b7d6c82cca675e0a752ae9f6490928ab48b1364"
+        }
+      }
+    },
+    "seed42_v3.4": {
+      "receivers": {
+        "J2": {
+          "events": 56,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 16,
+          "actual_openings": 56,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 56,
+            "mean": -0.41,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -9.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 56,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 16,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -0.03,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -1.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 56,
+          "eligible_notices": 55,
+          "reachable_at_notice": 55,
+          "empty_preparations": 15,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -0.23,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -4.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 253,
+        "J2/phase0": 330,
+        "J2/phase4": 30,
+        "J10/phase6": 294,
+        "J10/phase2": 176,
+        "J10/phase0": 148,
+        "J16/phase6": 180,
+        "J16/phase4": 288,
+        "J16/phase0": 143
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 31,
+          "arrival_window_s": 53,
+          "green_covered_s": 49,
+          "coverage_pct": 92.45283018867924
+        },
+        "J10": {
+          "windows": 27,
+          "arrival_window_s": 55,
+          "green_covered_s": 49,
+          "coverage_pct": 89.0909090909091
+        },
+        "J16": {
+          "windows": 17,
+          "arrival_window_s": 24,
+          "green_covered_s": 23,
+          "coverage_pct": 95.83333333333333
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 168,
+          "sha256": "76dc565f4ebbd55286e5c2c78d91480cf441a35f30d560c89965d65c96cae002"
+        },
+        "vehicles": {
+          "rows": 62,
+          "sha256": "84fdec8f6a65edcdcd113744425a0bcea2e6d50534112ec9a8c5522cca8e179d"
+        },
+        "events": {
+          "rows": 168,
+          "sha256": "b089f9b0651541327bbbd3f234230afc15c36971e1392fc57d45e25688fe4423"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "bdc5e0d84d1d2818a59ea1c9482df4ff2426ce6dbb9c70cf8249e458654937a1"
+        },
+        "actions": {
+          "rows": 223,
+          "sha256": "732930049e57a2f5d0d8ec31ec39d2be8c1092b38ecaa479dd3d1667c392bfea"
+        },
+        "phases": {
+          "rows": 1779,
+          "sha256": "7bad2222a22f5daf6fa2682ad5897fa5c7488c7b24745d18b235bb2a130aef26"
+        },
+        "per_vehicle": {
+          "rows": 42,
+          "sha256": "127ddf7621037e064a43cd9374d05306ddd9a2c5a41c01037dd062e766964ef9"
+        }
+      }
+    },
+    "seed42_v3.5": {
+      "receivers": {
+        "J2": {
+          "events": 56,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 16,
+          "actual_openings": 56,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 56,
+            "mean": -0.41,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -9.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 56,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 16,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -0.03,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -1.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 56,
+          "eligible_notices": 55,
+          "reachable_at_notice": 55,
+          "empty_preparations": 15,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -0.23,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -4.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 253,
+        "J2/phase0": 330,
+        "J2/phase4": 30,
+        "J10/phase6": 294,
+        "J10/phase2": 176,
+        "J10/phase0": 148,
+        "J16/phase6": 180,
+        "J16/phase4": 288,
+        "J16/phase0": 143
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase0": 0,
+        "J2/phase4": 0,
+        "J10/phase6": 0,
+        "J10/phase2": 0,
+        "J10/phase0": 0,
+        "J16/phase6": 0,
+        "J16/phase4": 0,
+        "J16/phase0": 0
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 31,
+          "arrival_window_s": 53,
+          "green_covered_s": 49,
+          "coverage_pct": 92.45283018867924
+        },
+        "J10": {
+          "windows": 27,
+          "arrival_window_s": 55,
+          "green_covered_s": 49,
+          "coverage_pct": 89.0909090909091
+        },
+        "J16": {
+          "windows": 17,
+          "arrival_window_s": 24,
+          "green_covered_s": 23,
+          "coverage_pct": 95.83333333333333
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 168,
+          "sha256": "76dc565f4ebbd55286e5c2c78d91480cf441a35f30d560c89965d65c96cae002"
+        },
+        "vehicles": {
+          "rows": 62,
+          "sha256": "84fdec8f6a65edcdcd113744425a0bcea2e6d50534112ec9a8c5522cca8e179d"
+        },
+        "events": {
+          "rows": 168,
+          "sha256": "b089f9b0651541327bbbd3f234230afc15c36971e1392fc57d45e25688fe4423"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "bdc5e0d84d1d2818a59ea1c9482df4ff2426ce6dbb9c70cf8249e458654937a1"
+        },
+        "actions": {
+          "rows": 223,
+          "sha256": "732930049e57a2f5d0d8ec31ec39d2be8c1092b38ecaa479dd3d1667c392bfea"
+        },
+        "phases": {
+          "rows": 1779,
+          "sha256": "7bad2222a22f5daf6fa2682ad5897fa5c7488c7b24745d18b235bb2a130aef26"
+        },
+        "per_vehicle": {
+          "rows": 42,
+          "sha256": "127ddf7621037e064a43cd9374d05306ddd9a2c5a41c01037dd062e766964ef9"
+        }
+      }
+    },
+    "seed42_v3.6": {
+      "receivers": {
+        "J2": {
+          "events": 56,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 16,
+          "actual_openings": 56,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 56,
+            "mean": -1.52,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -9.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 56,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 16,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -1.02,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -2.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 56,
+          "eligible_notices": 55,
+          "reachable_at_notice": 55,
+          "empty_preparations": 15,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -1.52,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -9.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 285,
+        "J2/phase0": 319,
+        "J2/phase4": 17,
+        "J10/phase6": 256,
+        "J10/phase2": 226,
+        "J10/phase0": 144,
+        "J16/phase6": 196,
+        "J16/phase4": 293,
+        "J16/phase0": 124
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase0": 0,
+        "J2/phase4": 0,
+        "J10/phase6": 0,
+        "J10/phase2": 0,
+        "J10/phase0": 0,
+        "J16/phase6": 0,
+        "J16/phase4": 0,
+        "J16/phase0": 0
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 31,
+          "arrival_window_s": 56,
+          "green_covered_s": 56,
+          "coverage_pct": 100.0
+        },
+        "J10": {
+          "windows": 27,
+          "arrival_window_s": 54,
+          "green_covered_s": 49,
+          "coverage_pct": 90.74074074074075
+        },
+        "J16": {
+          "windows": 17,
+          "arrival_window_s": 23,
+          "green_covered_s": 22,
+          "coverage_pct": 95.65217391304348
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 168,
+          "sha256": "2d0737519af3e9089f471f40d34c7a8d20ed52f130a36082ad01ed2cff92b230"
+        },
+        "vehicles": {
+          "rows": 62,
+          "sha256": "28b51aacedfef8cd901d6ecfc956b668bdecce7a2036f4d72fd46a66748af472"
+        },
+        "events": {
+          "rows": 168,
+          "sha256": "ce2666eb3c56d35f79ffeeb390d4325e119fba82ab1f651f1cf371a16560fdf6"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "e3aba062bf27993b7ef18f10d3ea52f1026428cf6100d352eaafc80fc04857b8"
+        },
+        "actions": {
+          "rows": 224,
+          "sha256": "f3d3769a6ac0948b3e89104f6872c8011e52e5676d6c96e1cf524cac65969af6"
+        },
+        "phases": {
+          "rows": 1782,
+          "sha256": "9e0f87f5e6e43ea87dd9764a665da3a715efb89391cec15795a53b9bfa928825"
+        },
+        "per_vehicle": {
+          "rows": 42,
+          "sha256": "c2909f00e025f930daead44ca11c080b5423b1845b696962aeac4a749b374b45"
+        }
+      }
+    },
+    "seed42_v3.7": {
+      "receivers": {
+        "J2": {
+          "events": 56,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 17,
+          "actual_openings": 56,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 56,
+            "mean": -2.38,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -10.0,
+            "max": -2.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 56,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 17,
+          "actual_openings": 39,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -2.21,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -10.0,
+            "max": -2.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 56,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 17,
+          "actual_openings": 39,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -2.41,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -10.0,
+            "max": -2.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 323,
+        "J2/phase0": 294,
+        "J2/phase4": 9,
+        "J10/phase6": 213,
+        "J10/phase2": 261,
+        "J10/phase0": 157,
+        "J16/phase6": 197,
+        "J16/phase4": 296,
+        "J16/phase0": 137
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase0": 0,
+        "J2/phase4": 0,
+        "J10/phase6": 0,
+        "J10/phase2": 0,
+        "J10/phase0": 0,
+        "J16/phase6": 0,
+        "J16/phase4": 0,
+        "J16/phase0": 0
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 30,
+          "arrival_window_s": 55,
+          "green_covered_s": 55,
+          "coverage_pct": 100.0
+        },
+        "J10": {
+          "windows": 26,
+          "arrival_window_s": 46,
+          "green_covered_s": 44,
+          "coverage_pct": 95.65217391304348
+        },
+        "J16": {
+          "windows": 17,
+          "arrival_window_s": 22,
+          "green_covered_s": 21,
+          "coverage_pct": 95.45454545454545
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 168,
+          "sha256": "7b68b17c637dd793ee2be69c7204fe61ec5870b9c196f03d041d96450f4d7c7a"
+        },
+        "vehicles": {
+          "rows": 62,
+          "sha256": "0642ecb3b0a7d85df21d78d16cef469dfc570694febd71baecbc6567d689fc23"
+        },
+        "events": {
+          "rows": 168,
+          "sha256": "22d5c8d900825a0507005d85bfdb8bed093cc24e728fae348376f5166d9f082e"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "0704b8b97b8410b80369ca7ccd60e2ce31bd9bdd53001a81592ff08d60fc53a9"
+        },
+        "actions": {
+          "rows": 224,
+          "sha256": "0fa49e43154e8f6d0abcb360946434cf6fde4c4365de841d844486b91a0e404c"
+        },
+        "phases": {
+          "rows": 1785,
+          "sha256": "751907e7751e1d8e64c5f335a8436619a500faa47456c9c57c21f8e6a6f74815"
+        },
+        "per_vehicle": {
+          "rows": 42,
+          "sha256": "9e4836b5688fb7f5664ba8e5f792dc876b28ae9c9a8513f998a2af367aeff847"
+        }
+      }
+    },
+    "seed42_v3": {
+      "receivers": {
+        "J2": {
+          "events": 56,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 17,
+          "actual_openings": 56,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 56,
+            "mean": -0.43,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 56,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 17,
+          "actual_openings": 39,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -0.44,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -6.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 56,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 17,
+          "actual_openings": 39,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -0.44,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -6.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 460,
+        "J2/phase0": 133,
+        "J2/phase4": 38,
+        "J10/phase6": 278,
+        "J10/phase0": 353,
+        "J10/phase2": 5,
+        "J16/phase4": 464,
+        "J16/phase6": 166,
+        "J16/phase0": 5
+      },
+      "physical_windows": {
+        "J2": {
+          "windows": 29,
+          "arrival_window_s": 66,
+          "green_covered_s": 63,
+          "coverage_pct": 95.45454545454545
+        },
+        "J10": {
+          "windows": 26,
+          "arrival_window_s": 59,
+          "green_covered_s": 55,
+          "coverage_pct": 93.22033898305085
+        },
+        "J16": {
+          "windows": 17,
+          "arrival_window_s": 22,
+          "green_covered_s": 22,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 168,
+          "sha256": "6de4f5a3eeb1087fb618dc10026b93990220785f46dc52c26fc462f146185e13"
+        },
+        "vehicles": {
+          "rows": 62,
+          "sha256": "93971babfaad20d1aa969c91a9f9b3b013802c6df05076c335bad447ff86dfd7"
+        },
+        "events": {
+          "rows": 168,
+          "sha256": "7d471a8960ad9ac649efbb93c1f659d2b28d2d03d6d89a114bc227395e930939"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "702ca75a692ac51944b993fcb6a2d5839af1615b3ff4ba5a2331d9bc2309e622"
+        },
+        "actions": {
+          "rows": 224,
+          "sha256": "24207330c19e932a602bd95960fc35ff1909fdd802c1f98ea2f15c10a538fa22"
+        },
+        "phases": {
+          "rows": 1786,
+          "sha256": "f2035c8654040e291ee5c6e48f61761b4b3654af2f52a34a00e91828ce8a78bd"
+        },
+        "per_vehicle": {
+          "rows": 42,
+          "sha256": "5adea04226c4c93409952b188482043a9f7668747704be409e19af922099089b"
+        }
+      }
+    },
+    "seed43_v3.1": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 14,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -0.49,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -9.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 14,
+          "actual_openings": 43,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -0.53,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -9.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 14,
+          "actual_openings": 43,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -0.56,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -9.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 311,
+        "J2/phase0": 348,
+        "J2/phase4": 43,
+        "J10/phase6": 324,
+        "J10/phase0": 379,
+        "J10/phase2": 4,
+        "J16/phase4": 493,
+        "J16/phase6": 210,
+        "J16/phase0": 3
+      },
+      "physical_windows": {
+        "J2": {
+          "windows": 32,
+          "arrival_window_s": 82,
+          "green_covered_s": 79,
+          "coverage_pct": 96.34146341463415
+        },
+        "J10": {
+          "windows": 29,
+          "arrival_window_s": 84,
+          "green_covered_s": 75,
+          "coverage_pct": 89.28571428571429
+        },
+        "J16": {
+          "windows": 18,
+          "arrival_window_s": 23,
+          "green_covered_s": 23,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "5ca0b26a19b9e136e15344295a8304cc9d72286dc297b9d2f029b565a317bf96"
+        },
+        "vehicles": {
+          "rows": 71,
+          "sha256": "1228d6a9c67ee9fd5ee771dcc5852595d5661f875a38d8c742e4564760ade62a"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "853fd2ad31c724bd35ad4a6260ada7fe39a39724807cc78971ab37014d124a2f"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "b46696b9c182435094e748d6bfb6ff43cccf70f722eab8e7f0a9a0ed35e9f7b2"
+        },
+        "actions": {
+          "rows": 228,
+          "sha256": "af8f1ed3c3685f0661a37a3782bded764d73dd0c5e1c5da70ac26911347216c3"
+        },
+        "phases": {
+          "rows": 1817,
+          "sha256": "37c29290c472e48d3dc98113b3ff00f2ac9d1551b1f5ee1bf932c1bfc5ec61cf"
+        },
+        "per_vehicle": {
+          "rows": 50,
+          "sha256": "aaac10db7614346f76ba6983b9eb84079a6618e816e758c1f75306171ae848eb"
+        }
+      }
+    },
+    "seed43_v3.2": {
+      "receivers": {
+        "J2": {
+          "events": 59,
+          "eligible_notices": 58,
+          "reachable_at_notice": 58,
+          "empty_preparations": 15,
+          "actual_openings": 58,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 58,
+            "mean": 9.93,
+            "median": 8.5,
+            "p90": 15.0,
+            "min": 6.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 58,
+            "mean": -0.48,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 59,
+          "eligible_notices": 58,
+          "reachable_at_notice": 58,
+          "empty_preparations": 15,
+          "actual_openings": 43,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 58,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -0.3,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 59,
+          "eligible_notices": 58,
+          "reachable_at_notice": 58,
+          "empty_preparations": 15,
+          "actual_openings": 43,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -0.33,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 271,
+        "J2/phase0": 211,
+        "J2/phase4": 7,
+        "J10/phase6": 366,
+        "J10/phase0": 419,
+        "J10/phase2": 3,
+        "J16/phase4": 528,
+        "J16/phase6": 256,
+        "J16/phase0": 3
+      },
+      "early_corridor_closures": 41,
+      "unused_corridor_seconds_removed": 294,
+      "physical_windows": {
+        "J2": {
+          "windows": 35,
+          "arrival_window_s": 75,
+          "green_covered_s": 69,
+          "coverage_pct": 92.0
+        },
+        "J10": {
+          "windows": 31,
+          "arrival_window_s": 57,
+          "green_covered_s": 49,
+          "coverage_pct": 85.96491228070175
+        },
+        "J16": {
+          "windows": 18,
+          "arrival_window_s": 20,
+          "green_covered_s": 20,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 174,
+          "sha256": "fc128db68425e897b05c27fd8a3431f24257dbbda010757a017c0e61e6be014d"
+        },
+        "vehicles": {
+          "rows": 71,
+          "sha256": "76d8c66a99b66d3360070fa40edf39e57a43b882bf00935db6af14036eef759c"
+        },
+        "events": {
+          "rows": 177,
+          "sha256": "f46fa0aecfa86e2106000c4d61091afba4bca82d79e020b4307ff46ff081be4f"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "0e5949bdfec07f44b205b906a147ad3eddd0c787723d092ccabd50226433a8c5"
+        },
+        "actions": {
+          "rows": 233,
+          "sha256": "2f27124532432324f0a94bfff9291c151dff76c4577e142d689a45d17dfc3c69"
+        },
+        "phases": {
+          "rows": 1852,
+          "sha256": "810a30e327e78f85d13654a422d25e1da08cccfec030535093aed48a5b84164c"
+        },
+        "per_vehicle": {
+          "rows": 50,
+          "sha256": "893b4648dbae5b633ae48081b1c2fcdf2536b5dca656b7e250b44f92ba5f92ff"
+        }
+      }
+    },
+    "seed43_v3.3": {
+      "receivers": {
+        "J2": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 15,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 42,
+          "occupied_windows": 42,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -0.72,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -11.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 15,
+          "actual_openings": 42,
+          "window_coverage_pct": 100.0,
+          "front_green": 42,
+          "occupied_windows": 42,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 42,
+            "mean": -0.9,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -11.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 15,
+          "actual_openings": 42,
+          "window_coverage_pct": 100.0,
+          "front_green": 42,
+          "occupied_windows": 42,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 42,
+            "mean": -0.93,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -11.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 224,
+        "J2/phase0": 467,
+        "J2/phase4": 16,
+        "J10/phase6": 323,
+        "J10/phase0": 382,
+        "J10/phase2": 7,
+        "J16/phase4": 493,
+        "J16/phase6": 212,
+        "J16/phase0": 6
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 57,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 32,
+          "arrival_window_s": 75,
+          "green_covered_s": 65,
+          "coverage_pct": 86.66666666666667
+        },
+        "J10": {
+          "windows": 29,
+          "arrival_window_s": 68,
+          "green_covered_s": 62,
+          "coverage_pct": 91.17647058823529
+        },
+        "J16": {
+          "windows": 18,
+          "arrival_window_s": 23,
+          "green_covered_s": 23,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "2f63a8317065bd394fbfe067a831a1a5ca403e9a2fac7ef3bc40f9ab19ed2323"
+        },
+        "vehicles": {
+          "rows": 71,
+          "sha256": "65cbd4f78c71ddb29e2546f65add7f01c7cd69d226af9d46d9363bad64d66100"
+        },
+        "events": {
+          "rows": 174,
+          "sha256": "feefdd3640aa1676b467dbe742c11463a9b0c67a4b3611d9aad598f81fda055c"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "1c920980559e9f1651fbfbf283b2f2284b814ffeb9019830facfa20db5f7aa79"
+        },
+        "actions": {
+          "rows": 229,
+          "sha256": "2360af21bef58be3f50107cb5878880a45a6eef7f514d70a59a50115e7cddab3"
+        },
+        "phases": {
+          "rows": 1820,
+          "sha256": "02afe674ec600ac7b161aae08e06c49bc6d3281c89d5acf33354b235c9dca42f"
+        },
+        "per_vehicle": {
+          "rows": 50,
+          "sha256": "179cdd7019bda0334be3997141814bf5e3d28766072da14ba2d4458ceb7a1714"
+        }
+      }
+    },
+    "seed43_v3.4": {
+      "receivers": {
+        "J2": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 14,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -0.46,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -9.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 14,
+          "actual_openings": 43,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -0.14,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -4.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 14,
+          "actual_openings": 44,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.98,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 43.0
+          },
+          "opening_error_s": {
+            "n": 44,
+            "mean": -2.41,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -42.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 301,
+        "J2/phase0": 368,
+        "J2/phase4": 44,
+        "J10/phase6": 323,
+        "J10/phase2": 195,
+        "J10/phase0": 200,
+        "J16/phase4": 313,
+        "J16/phase6": 184,
+        "J16/phase0": 122
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 35,
+          "arrival_window_s": 69,
+          "green_covered_s": 65,
+          "coverage_pct": 94.20289855072464
+        },
+        "J10": {
+          "windows": 32,
+          "arrival_window_s": 61,
+          "green_covered_s": 47,
+          "coverage_pct": 77.04918032786885
+        },
+        "J16": {
+          "windows": 18,
+          "arrival_window_s": 22,
+          "green_covered_s": 22,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "bc2ad37e3fa34c47e29eeb2a51c3eaf72740d41bcad48d105d40595fed4137cf"
+        },
+        "vehicles": {
+          "rows": 71,
+          "sha256": "c82c9361c10cfdf88ed3ef9bf5866b6c09ed2398b8ac752c550f2a30a8cc988f"
+        },
+        "events": {
+          "rows": 174,
+          "sha256": "53ab0b1dde10c40be20b3d5a03ddc02f429a5978ba089425022b1f157fff1981"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "9f96fac7fa5decec33b7d55776249bcb3b4b81b65a51457be70e28417b351ec9"
+        },
+        "actions": {
+          "rows": 229,
+          "sha256": "1dd0dd57e2e49df9d03f973be0e3ba69058c7762d92d08de8af9a519eeaccd05"
+        },
+        "phases": {
+          "rows": 1806,
+          "sha256": "27d582e62309cef79e6d6e1e2a67ee7763f7438c28f695c67b3fcf65c829e47f"
+        },
+        "per_vehicle": {
+          "rows": 50,
+          "sha256": "e63e39db7f33d77eabefd97828e56d798c7542ed00eb4fb6a8e605c9e3ed59b7"
+        }
+      }
+    },
+    "seed43_v3.5": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 16,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 41,
+          "occupied_windows": 41,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.09,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 20.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -0.44,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 16,
+          "actual_openings": 41,
+          "window_coverage_pct": 100.0,
+          "front_green": 41,
+          "occupied_windows": 41,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.09,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 20.0
+          },
+          "opening_error_s": {
+            "n": 41,
+            "mean": -0.1,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -2.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 16,
+          "actual_openings": 41,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.09,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 20.0
+          },
+          "opening_error_s": {
+            "n": 41,
+            "mean": -0.46,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -5.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 303,
+        "J2/phase0": 361,
+        "J2/phase4": 40,
+        "J10/phase6": 304,
+        "J10/phase2": 196,
+        "J10/phase0": 209,
+        "J16/phase4": 309,
+        "J16/phase6": 245,
+        "J16/phase0": 108
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase0": 0,
+        "J2/phase4": 0,
+        "J10/phase6": 0,
+        "J10/phase2": 0,
+        "J10/phase0": 0,
+        "J16/phase4": 0,
+        "J16/phase6": 0,
+        "J16/phase0": 30
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 31,
+          "arrival_window_s": 81,
+          "green_covered_s": 78,
+          "coverage_pct": 96.29629629629629
+        },
+        "J10": {
+          "windows": 28,
+          "arrival_window_s": 77,
+          "green_covered_s": 67,
+          "coverage_pct": 87.01298701298701
+        },
+        "J16": {
+          "windows": 18,
+          "arrival_window_s": 22,
+          "green_covered_s": 22,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "2803c9de1e93ac4a6fbd35eba1bdc37d735720628921463f63aa499134e04741"
+        },
+        "vehicles": {
+          "rows": 71,
+          "sha256": "f1b58806b0feb72a123d7d123b5891150b8296a62d8780aff0d8ad8e455abf21"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "dc6b0b34b710583f5d59d2316821250c1835ea32e4d04efce6ae2fe9017fcdfe"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "f5df6a1e8e5e295e94f5a49428ad1f67980db0d86970c180eb526d8d0911dce0"
+        },
+        "actions": {
+          "rows": 228,
+          "sha256": "ce2ac21ae96b5f4adc79c23c52d46a74d36b5b043f0e126ce9d3890ba1b2af23"
+        },
+        "phases": {
+          "rows": 1808,
+          "sha256": "e704b6296378dc2ee8d6a789a074861742415988362b8ccb732b80ea6cf5b5eb"
+        },
+        "per_vehicle": {
+          "rows": 50,
+          "sha256": "1ad3418f0194671ec381c0d3d3663c59fd24fb9d771574285e0facb8bce0e3dd"
+        }
+      }
+    },
+    "seed43_v3.6": {
+      "receivers": {
+        "J2": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 15,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 42,
+          "occupied_windows": 42,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -1.67,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -10.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 15,
+          "actual_openings": 42,
+          "window_coverage_pct": 100.0,
+          "front_green": 42,
+          "occupied_windows": 42,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 42,
+            "mean": -1.52,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -12.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 56,
+          "empty_preparations": 15,
+          "actual_openings": 42,
+          "window_coverage_pct": 99.06542056074767,
+          "front_green": 41,
+          "occupied_windows": 42,
+          "corridor_green_s": {
+            "n": 54,
+            "mean": 15.56,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 45.0
+          },
+          "opening_error_s": {
+            "n": 42,
+            "mean": -1.62,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -12.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 350,
+        "J2/phase0": 315,
+        "J2/phase4": 41,
+        "J10/phase6": 278,
+        "J10/phase2": 259,
+        "J10/phase0": 174,
+        "J16/phase4": 315,
+        "J16/phase6": 215,
+        "J16/phase0": 88
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase0": 0,
+        "J2/phase4": 0,
+        "J10/phase6": 0,
+        "J10/phase2": 0,
+        "J10/phase0": 0,
+        "J16/phase4": 0,
+        "J16/phase6": 0,
+        "J16/phase0": 30
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 32,
+          "arrival_window_s": 67,
+          "green_covered_s": 66,
+          "coverage_pct": 98.50746268656717
+        },
+        "J10": {
+          "windows": 29,
+          "arrival_window_s": 67,
+          "green_covered_s": 58,
+          "coverage_pct": 86.56716417910448
+        },
+        "J16": {
+          "windows": 18,
+          "arrival_window_s": 23,
+          "green_covered_s": 23,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "8963f79732b955309a45391964a0e1f15e90aa51e2482288c5371ddd9fa47832"
+        },
+        "vehicles": {
+          "rows": 71,
+          "sha256": "dd097e6138326335f02bb9405a8fa4e91793b0f48288686f0a7077c928f475b6"
+        },
+        "events": {
+          "rows": 174,
+          "sha256": "17e635923bcbbd5df8d519993c38cc4025cf8e212327e6ada93f4bdd9506ffb6"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "13d137009329c3a0a2736a93023386c3994a720bacf1c2b81fa97d073fcb9c19"
+        },
+        "actions": {
+          "rows": 229,
+          "sha256": "4971fafce5745d97c95ee3d64fca5d8839a1f768c5055330df844986687f5276"
+        },
+        "phases": {
+          "rows": 1804,
+          "sha256": "d1d7688de08325cea33a7549b7a70e2a0c78f4f222e6644fe04f4212b22a9bb3"
+        },
+        "per_vehicle": {
+          "rows": 50,
+          "sha256": "4a3fbf444c510478eec5701d3425ad44892dac4bd0101a4ebf8bacfcbbe0bf79"
+        }
+      }
+    },
+    "seed43_v3.7": {
+      "receivers": {
+        "J2": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 14,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -2.53,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -11.0,
+            "max": -2.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 14,
+          "actual_openings": 43,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -2.02,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -3.0,
+            "max": -2.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 14,
+          "actual_openings": 43,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -2.35,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -8.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 385,
+        "J2/phase0": 316,
+        "J2/phase4": 12,
+        "J10/phase6": 248,
+        "J10/phase2": 329,
+        "J10/phase0": 141,
+        "J16/phase4": 348,
+        "J16/phase6": 255,
+        "J16/phase0": 114
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase0": 0,
+        "J2/phase4": 0,
+        "J10/phase6": 0,
+        "J10/phase2": 0,
+        "J10/phase0": 0,
+        "J16/phase4": 0,
+        "J16/phase6": 0,
+        "J16/phase0": 0
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 35,
+          "arrival_window_s": 70,
+          "green_covered_s": 70,
+          "coverage_pct": 100.0
+        },
+        "J10": {
+          "windows": 31,
+          "arrival_window_s": 58,
+          "green_covered_s": 53,
+          "coverage_pct": 91.37931034482759
+        },
+        "J16": {
+          "windows": 17,
+          "arrival_window_s": 23,
+          "green_covered_s": 23,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "ef59e9aa532c20b1288ff8973243c71478c5d1cda538285592757dc15a17dee5"
+        },
+        "vehicles": {
+          "rows": 71,
+          "sha256": "ab1991e22a87f6499f9650344cec636fc3ad05fe0b718affa45a0927006e1f21"
+        },
+        "events": {
+          "rows": 174,
+          "sha256": "c0c70085aedce2cb86e3fca4cdec074751443c06d8360787e7fe21d6612478bb"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "fe4dda6d5fde241c2a4cf0cd61f2f96b6cf0b9deac878806fbdd23682dc83797"
+        },
+        "actions": {
+          "rows": 229,
+          "sha256": "29d91080052ca154e20ab18659a620e33c21f68c003adf96e846a4b23aab6879"
+        },
+        "phases": {
+          "rows": 1822,
+          "sha256": "f05bb8a828131fffe37354c5e0604624e2670dd7949c6813e06e8ee7f41fab94"
+        },
+        "per_vehicle": {
+          "rows": 50,
+          "sha256": "6f57f8a7f39bcfc58be4b61a52e52f1cfaec5c84129f641ddd94de7d73cf6e3b"
+        }
+      }
+    },
+    "seed44_v3.1": {
+      "receivers": {
+        "J2": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 17,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -0.32,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 17,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -0.28,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 17,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -0.28,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 275,
+        "J2/phase0": 392,
+        "J2/phase4": 57,
+        "J10/phase6": 355,
+        "J10/phase0": 372,
+        "J10/phase2": 2,
+        "J16/phase4": 500,
+        "J16/phase6": 226,
+        "J16/phase0": 2
+      },
+      "physical_windows": {
+        "J2": {
+          "windows": 32,
+          "arrival_window_s": 62,
+          "green_covered_s": 58,
+          "coverage_pct": 93.54838709677419
+        },
+        "J10": {
+          "windows": 28,
+          "arrival_window_s": 74,
+          "green_covered_s": 66,
+          "coverage_pct": 89.1891891891892
+        },
+        "J16": {
+          "windows": 15,
+          "arrival_window_s": 35,
+          "green_covered_s": 34,
+          "coverage_pct": 97.14285714285714
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "490bf7f5a31a7316cc62698cfe0f10db3a56c54ad457ff061c7cbcb683b9078a"
+        },
+        "vehicles": {
+          "rows": 69,
+          "sha256": "b27863817f8276e132bccd60b9ce2b67df103bd07f300ae77876e3a4d7bbad6d"
+        },
+        "events": {
+          "rows": 174,
+          "sha256": "63ff3d028b69c674d5eb5cc036498fd3e0feffb921f369659d3012a02436b687"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "7e858bfe4435d43c7206b0cc0f8fe1fa28e6bfdb7992f2d894beeef091cef9c8"
+        },
+        "actions": {
+          "rows": 229,
+          "sha256": "d1fd543d51f6d508c3dfbb82b07c1db6a2da2e05db10f88430e8ac8084ffe49d"
+        },
+        "phases": {
+          "rows": 1826,
+          "sha256": "0c1664d0f0c200d8478053f5f783530f534ea2b5dbc209778307f5ed3480cc40"
+        },
+        "per_vehicle": {
+          "rows": 48,
+          "sha256": "348f44ef1abf94b1e4e979b1f6f491de952b093ba659f41313a01b15696bbed4"
+        }
+      }
+    },
+    "seed44_v3.2": {
+      "receivers": {
+        "J2": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 56,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 9.05,
+            "median": 7.0,
+            "p90": 15.0,
+            "min": 6.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 56,
+            "mean": -0.57,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 39,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -0.1,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -3.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 39,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -0.1,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -3.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 171,
+        "J2/phase0": 207,
+        "J2/phase4": 18,
+        "J10/phase6": 341,
+        "J10/phase0": 381,
+        "J10/phase2": 9,
+        "J16/phase4": 498,
+        "J16/phase6": 223,
+        "J16/phase0": 9
+      },
+      "early_corridor_closures": 46,
+      "unused_corridor_seconds_removed": 339,
+      "physical_windows": {
+        "J2": {
+          "windows": 32,
+          "arrival_window_s": 60,
+          "green_covered_s": 56,
+          "coverage_pct": 93.33333333333333
+        },
+        "J10": {
+          "windows": 28,
+          "arrival_window_s": 69,
+          "green_covered_s": 59,
+          "coverage_pct": 85.5072463768116
+        },
+        "J16": {
+          "windows": 16,
+          "arrival_window_s": 22,
+          "green_covered_s": 22,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "b349a720c954d49e5f4dab8f38c019fe42776d811b039700e530945c3067064c"
+        },
+        "vehicles": {
+          "rows": 69,
+          "sha256": "64c18d3e85d29c4815739f8d17d629ceadeef85dad332ba41c3aaa5f04977426"
+        },
+        "events": {
+          "rows": 174,
+          "sha256": "fea8f470fe7e7c47b2d416db385ac5ce91f3b5e67e7d0cd26a9f9e893ff26aa2"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "aed446b0c8eb3a2a6c5d7c5265b3bfaab7cb22dc2f02c4196add2308eeb433a8"
+        },
+        "actions": {
+          "rows": 229,
+          "sha256": "bf7b601e5d12e4bad3dd22466fe2687d9d255fdf437d56cce34b7d3c8fa98a2c"
+        },
+        "phases": {
+          "rows": 1829,
+          "sha256": "7997541ef6a67d760c0b865cdce984dd50d5a2d37260c8efb78434a15c90e83b"
+        },
+        "per_vehicle": {
+          "rows": 48,
+          "sha256": "1b4d6077f5430306f6ffda147306233ea90511d85ee4b456e1c5ca846d9e946d"
+        }
+      }
+    },
+    "seed44_v3.3": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 17,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -0.47,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 17,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -0.5,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 16,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -0.5,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 214,
+        "J2/phase0": 475,
+        "J2/phase4": 7,
+        "J10/phase6": 335,
+        "J10/phase0": 363,
+        "J10/phase2": 3,
+        "J16/phase4": 491,
+        "J16/phase6": 199,
+        "J16/phase0": 3
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 57,
+      "empty_deferred_notices_without_cuts": 2,
+      "physical_windows": {
+        "J2": {
+          "windows": 33,
+          "arrival_window_s": 68,
+          "green_covered_s": 64,
+          "coverage_pct": 94.11764705882354
+        },
+        "J10": {
+          "windows": 29,
+          "arrival_window_s": 70,
+          "green_covered_s": 62,
+          "coverage_pct": 88.57142857142857
+        },
+        "J16": {
+          "windows": 15,
+          "arrival_window_s": 31,
+          "green_covered_s": 31,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "1ed92484fdbd027314fbc98357e1b42942ceb116f20d0cf77710167ac27a625c"
+        },
+        "vehicles": {
+          "rows": 69,
+          "sha256": "409596bb4e9768052465ec471f0e0ae80c9868f5a72aa9164b31bdd0aa221e01"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "c4387f93e7caf80864df7eaae19c5eed7d7a3a5cbb007ededec7befd26155d86"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "6d8aaa4635e63dd4b1e943eac8d86412bba0f276911d9328a593cf4fa7f0d99b"
+        },
+        "actions": {
+          "rows": 228,
+          "sha256": "a5669a4819d2fd32c8d2e6b03a20a41a8f08340691ad84201a02c9fc7ae99447"
+        },
+        "phases": {
+          "rows": 1814,
+          "sha256": "09c96c2ca91e8731f7e4bb60ab721490e1df013b93d194a118a51e85d8fb2e9a"
+        },
+        "per_vehicle": {
+          "rows": 48,
+          "sha256": "136359b608d6a883b2eddf059403e0ca029934060812f5335eb777bedc58b1f5"
+        }
+      }
+    },
+    "seed44_v3.4": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 17,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -0.37,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 17,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -0.23,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 56,
+          "empty_preparations": 17,
+          "actual_openings": 40,
+          "window_coverage_pct": 99.01960784313725,
+          "front_green": 39,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.67,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 45.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -2.08,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -53.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 268,
+        "J2/phase0": 370,
+        "J2/phase4": 61,
+        "J10/phase6": 333,
+        "J10/phase0": 152,
+        "J10/phase2": 219,
+        "J16/phase0": 152,
+        "J16/phase4": 305,
+        "J16/phase6": 207
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 33,
+          "arrival_window_s": 70,
+          "green_covered_s": 63,
+          "coverage_pct": 90.0
+        },
+        "J10": {
+          "windows": 29,
+          "arrival_window_s": 69,
+          "green_covered_s": 63,
+          "coverage_pct": 91.30434782608695
+        },
+        "J16": {
+          "windows": 14,
+          "arrival_window_s": 26,
+          "green_covered_s": 25,
+          "coverage_pct": 96.15384615384616
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "d235126178a0b0ea625825959616bb2993280d76be2d6a1b6021fe56405a0705"
+        },
+        "vehicles": {
+          "rows": 69,
+          "sha256": "38a3207405e288ac371635446686ca7c9deea6e28fc65b2712f79a1f39d27d41"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "e0baa3eb547477a1596f695eff94f44b9e0390d168ebd3d36c2fc2fdebb54c14"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "c9c837569bf21b28b4cacdf918cfe0892225db3d49d2c9a7c442a60711f367c4"
+        },
+        "actions": {
+          "rows": 228,
+          "sha256": "2c9c1695b8ae5bff9575c61a06026934e59190908f2ec46ea2f4d940d49933ee"
+        },
+        "phases": {
+          "rows": 1808,
+          "sha256": "9302e49a98ad152b6eff2a4b3ef592fd1730e400e2ea94fe4870359d407614e9"
+        },
+        "per_vehicle": {
+          "rows": 48,
+          "sha256": "b9f5c1f6d3e5c204ad4ea177ff23b5bf025a2f97f5a8e8e180437df7b490d8e5"
+        }
+      }
+    },
+    "seed44_v3.5": {
+      "receivers": {
+        "J2": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 17,
+          "actual_openings": 56,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 56,
+            "mean": -0.3,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 56,
+          "empty_preparations": 17,
+          "actual_openings": 40,
+          "window_coverage_pct": 99.01960784313725,
+          "front_green": 39,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -0.23,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 1.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 55,
+          "empty_preparations": 17,
+          "actual_openings": 41,
+          "window_coverage_pct": 99.01960784313725,
+          "front_green": 39,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 16.09,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 45.0
+          },
+          "opening_error_s": {
+            "n": 41,
+            "mean": -2.66,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -53.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 278,
+        "J2/phase0": 370,
+        "J2/phase4": 73,
+        "J10/phase6": 321,
+        "J10/phase0": 183,
+        "J10/phase2": 222,
+        "J16/phase0": 165,
+        "J16/phase4": 294,
+        "J16/phase6": 194
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase0": 0,
+        "J2/phase4": 0,
+        "J10/phase6": 0,
+        "J10/phase0": 0,
+        "J10/phase2": 0,
+        "J16/phase0": 20,
+        "J16/phase4": 0,
+        "J16/phase6": 0
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 32,
+          "arrival_window_s": 59,
+          "green_covered_s": 54,
+          "coverage_pct": 91.52542372881356
+        },
+        "J10": {
+          "windows": 28,
+          "arrival_window_s": 69,
+          "green_covered_s": 62,
+          "coverage_pct": 89.85507246376811
+        },
+        "J16": {
+          "windows": 15,
+          "arrival_window_s": 30,
+          "green_covered_s": 30,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "2c33e3c9906703e76c72d7c5e3e1c35d8a48ad50a33a08d3abf7c2952c9738c8"
+        },
+        "vehicles": {
+          "rows": 69,
+          "sha256": "70fa2d745106114cf1c7ec3b76321a6dda4ccf060e5ae42ae9fb32ac2babcc43"
+        },
+        "events": {
+          "rows": 174,
+          "sha256": "8add1980433050ad4c3f354f675e6721f715b8040947bcf2b81a5e74a0563b2a"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "a441d79b6bb5317089b7b156316dec31757c56d998dcf911aebd0631951351c0"
+        },
+        "actions": {
+          "rows": 229,
+          "sha256": "50e117a696e952f226f105056d3e85ba8031a24e140cfa12431a42a9fb990e0d"
+        },
+        "phases": {
+          "rows": 1809,
+          "sha256": "ba53508433835c517019c8b0a43f62725e97d074d3d8a6f00b0beb77eae03f4e"
+        },
+        "per_vehicle": {
+          "rows": 48,
+          "sha256": "efff82fb7d072435107ee69baacb31e941e1e55d276f483c3eb032c12c9e0317"
+        }
+      }
+    },
+    "seed44_v3.6": {
+      "receivers": {
+        "J2": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -1.3,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -10.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 39,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -1.23,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -10.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 39,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -1.49,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -10.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 325,
+        "J2/phase0": 363,
+        "J2/phase4": 34,
+        "J10/phase6": 312,
+        "J10/phase0": 163,
+        "J10/phase2": 252,
+        "J16/phase0": 137,
+        "J16/phase4": 295,
+        "J16/phase6": 202
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase0": 0,
+        "J2/phase4": 0,
+        "J10/phase6": 0,
+        "J10/phase0": 0,
+        "J10/phase2": 0,
+        "J16/phase0": 60,
+        "J16/phase4": 0,
+        "J16/phase6": 0
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 32,
+          "arrival_window_s": 70,
+          "green_covered_s": 67,
+          "coverage_pct": 95.71428571428571
+        },
+        "J10": {
+          "windows": 28,
+          "arrival_window_s": 58,
+          "green_covered_s": 51,
+          "coverage_pct": 87.93103448275862
+        },
+        "J16": {
+          "windows": 15,
+          "arrival_window_s": 24,
+          "green_covered_s": 24,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "af0f8909396da95471633bbf983de0ea11e6d9942bec58a8b47cd95737bfa81f"
+        },
+        "vehicles": {
+          "rows": 69,
+          "sha256": "1bcfe442bfb9754a99f2d3cc054cf30761f9240a3bfc40b20a8623f8bc164f17"
+        },
+        "events": {
+          "rows": 174,
+          "sha256": "36adf0b3ce58cf8c05c88bcc276a80bf5566d2f1c9eb3e86da775f6ea1831cfc"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "5223e423a1bf65c08cb32c0cf00a069e657701f2179a677cd0fccb642c8858c8"
+        },
+        "actions": {
+          "rows": 229,
+          "sha256": "a457695288e837f9f1c02707fcb0c85068523fd9dce80f45ae15184607a58d8b"
+        },
+        "phases": {
+          "rows": 1809,
+          "sha256": "d2cc304b288fac9fc9c9a85695c2638e842ca5500c44ad32fe3447a385ee0616"
+        },
+        "per_vehicle": {
+          "rows": 48,
+          "sha256": "9c0c16eb472edf010bde1096209519755ca21596e5c0d870cc732555de00b8e2"
+        }
+      }
+    },
+    "seed44_v3.7": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 16,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 41,
+          "occupied_windows": 41,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -2.37,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -9.0,
+            "max": -2.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 16,
+          "actual_openings": 41,
+          "window_coverage_pct": 100.0,
+          "front_green": 41,
+          "occupied_windows": 41,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 41,
+            "mean": -2.02,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -3.0,
+            "max": -2.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 16,
+          "actual_openings": 41,
+          "window_coverage_pct": 100.0,
+          "front_green": 41,
+          "occupied_windows": 41,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 41,
+            "mean": -2.29,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -9.0,
+            "max": -2.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 334,
+        "J2/phase0": 343,
+        "J2/phase4": 23,
+        "J10/phase6": 292,
+        "J10/phase0": 115,
+        "J10/phase2": 298,
+        "J16/phase4": 307,
+        "J16/phase0": 188,
+        "J16/phase6": 209
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase0": 0,
+        "J2/phase4": 0,
+        "J10/phase6": 0,
+        "J10/phase0": 0,
+        "J10/phase2": 0,
+        "J16/phase4": 0,
+        "J16/phase0": 0,
+        "J16/phase6": 0
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 34,
+          "arrival_window_s": 67,
+          "green_covered_s": 67,
+          "coverage_pct": 100.0
+        },
+        "J10": {
+          "windows": 30,
+          "arrival_window_s": 61,
+          "green_covered_s": 58,
+          "coverage_pct": 95.08196721311475
+        },
+        "J16": {
+          "windows": 15,
+          "arrival_window_s": 29,
+          "green_covered_s": 29,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "d01aee9c379f1596a0c94cc54894adbafc84c2cb8050ade113163eb79a8b3ca1"
+        },
+        "vehicles": {
+          "rows": 69,
+          "sha256": "2b01dfaa6e32c651563a745e027f3d410b937f6c0bd0910855f476dfa31faa7a"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "9435e6a15915e03d5a58a206f50937a8751288d3d93d91c1b46f92af4c2ded55"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "c39787694f8db642eb1f55c7bf92c59fc1012b0bbb83dbb81b23e5c59729556d"
+        },
+        "actions": {
+          "rows": 228,
+          "sha256": "bec2b4e37259024d4691ad1984dabcd27e4816973009393e1cea5aa24a81d549"
+        },
+        "phases": {
+          "rows": 1816,
+          "sha256": "ccbe765e5322a03dbe9173b9902f815ed34e48994a67e8e7905b245687c3c7f1"
+        },
+        "per_vehicle": {
+          "rows": 48,
+          "sha256": "6c0eb6e834d0338e526819b520a6b86473a28586ce42a3af1257fafc6059a79b"
+        }
+      }
+    },
+    "seed45_v3.1": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 14,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -0.75,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -11.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 13,
+          "actual_openings": 43,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -1.02,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -11.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 13,
+          "actual_openings": 43,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -1.05,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -11.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 256,
+        "J2/phase0": 369,
+        "J2/phase4": 52,
+        "J10/phase6": 304,
+        "J10/phase0": 353,
+        "J10/phase2": 9,
+        "J16/phase4": 460,
+        "J16/phase6": 196,
+        "J16/phase0": 9
+      },
+      "physical_windows": {
+        "J2": {
+          "windows": 30,
+          "arrival_window_s": 66,
+          "green_covered_s": 59,
+          "coverage_pct": 89.39393939393939
+        },
+        "J10": {
+          "windows": 28,
+          "arrival_window_s": 59,
+          "green_covered_s": 55,
+          "coverage_pct": 93.22033898305085
+        },
+        "J16": {
+          "windows": 17,
+          "arrival_window_s": 23,
+          "green_covered_s": 23,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "d14121121e67032ef5e90efd10fd68ea4337b763c23b722b9298d646325c9d83"
+        },
+        "vehicles": {
+          "rows": 71,
+          "sha256": "17e700b847cbf6d4ec5506770a65625f675fe77a52f431af85695639e83807bf"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "22ca1e2632dc6388b5db6c7185018a6cb46f3a67cbd04a86c219b961ba0adb9b"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "896e6f0b11fffca8301118de6a1e9f96b919c68dce91d072c6abc101a0131fd6"
+        },
+        "actions": {
+          "rows": 227,
+          "sha256": "d2735b41568797904bfdcb5c4474af823c6414c15764f7d787268aa9dcc1c6e2"
+        },
+        "phases": {
+          "rows": 1804,
+          "sha256": "1ba0ada9f7fe84dbd1d98be76a43579d0e6f29dfd1225ffb2c0bfbbb0f3b698f"
+        },
+        "per_vehicle": {
+          "rows": 45,
+          "sha256": "d9bc7a8a0b83909891bc24ebb3a89e6bcfe77e03670bdf88865ccc2cd120444c"
+        }
+      }
+    },
+    "seed45_v3.2": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 15,
+          "actual_openings": 56,
+          "window_coverage_pct": 100.0,
+          "front_green": 41,
+          "occupied_windows": 41,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 9.93,
+            "median": 8.0,
+            "p90": 15.0,
+            "min": 6.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 56,
+            "mean": -0.64,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 1
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 15,
+          "actual_openings": 41,
+          "window_coverage_pct": 100.0,
+          "front_green": 41,
+          "occupied_windows": 41,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 41,
+            "mean": -0.71,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 1
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 15,
+          "actual_openings": 41,
+          "window_coverage_pct": 100.0,
+          "front_green": 41,
+          "occupied_windows": 41,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 41,
+            "mean": -0.71,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -9.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 1
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 148,
+        "J2/phase0": 228,
+        "J2/phase4": 7,
+        "J10/phase6": 298,
+        "J10/phase0": 361,
+        "J10/phase2": 6,
+        "J16/phase4": 487,
+        "J16/phase6": 172,
+        "J16/phase0": 5
+      },
+      "early_corridor_closures": 38,
+      "unused_corridor_seconds_removed": 284,
+      "physical_windows": {
+        "J2": {
+          "windows": 29,
+          "arrival_window_s": 68,
+          "green_covered_s": 67,
+          "coverage_pct": 98.52941176470588
+        },
+        "J10": {
+          "windows": 27,
+          "arrival_window_s": 56,
+          "green_covered_s": 54,
+          "coverage_pct": 96.42857142857143
+        },
+        "J16": {
+          "windows": 17,
+          "arrival_window_s": 19,
+          "green_covered_s": 19,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "9862f643660c8374fbe6aaa989424cce266be3f7de7c360eb5961e5e4024451e"
+        },
+        "vehicles": {
+          "rows": 71,
+          "sha256": "c3e52645cb04ee2c400beac674c326781fc76deee8f9f25f733c134ae0a16216"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "dc6e182bbd4745a9c851e67d61a05e88147e709b7af275838340c38fac4209f8"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "5c5a8b1a4e595c942b0aa670b3571c9ae4047af2fcbb48fbe66c942baebfd1df"
+        },
+        "actions": {
+          "rows": 226,
+          "sha256": "5116cf746a2d428d2c978aa7f37791f5caa4d72e4d9e778316773697a315f7ff"
+        },
+        "phases": {
+          "rows": 1800,
+          "sha256": "d716b0a58277e35c920beeaa688e74016c7d76ccdddc233ac4037851844c9bd6"
+        },
+        "per_vehicle": {
+          "rows": 45,
+          "sha256": "31e6186905052401acff0a5e7456928fdc1ea0d107b02a527801c5d540a45bf9"
+        }
+      }
+    },
+    "seed45_v3.3": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 13,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 44,
+          "occupied_windows": 44,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -0.67,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -13.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 12,
+          "actual_openings": 44,
+          "window_coverage_pct": 100.0,
+          "front_green": 44,
+          "occupied_windows": 44,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 44,
+            "mean": -0.86,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 12,
+          "actual_openings": 44,
+          "window_coverage_pct": 100.0,
+          "front_green": 44,
+          "occupied_windows": 44,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 44,
+            "mean": -0.89,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -9.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 207,
+        "J2/phase0": 458,
+        "J2/phase4": 13,
+        "J10/phase6": 320,
+        "J10/phase0": 343,
+        "J10/phase2": 4,
+        "J16/phase4": 466,
+        "J16/phase6": 196,
+        "J16/phase0": 4
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 57,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 29,
+          "arrival_window_s": 64,
+          "green_covered_s": 61,
+          "coverage_pct": 95.3125
+        },
+        "J10": {
+          "windows": 27,
+          "arrival_window_s": 61,
+          "green_covered_s": 57,
+          "coverage_pct": 93.44262295081967
+        },
+        "J16": {
+          "windows": 17,
+          "arrival_window_s": 26,
+          "green_covered_s": 26,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "43e8074a926f7b8db566da2766e43ca0361288f4173c4f609183555a5408c22b"
+        },
+        "vehicles": {
+          "rows": 71,
+          "sha256": "8f0a9f9e4b0070693e92e9962ddb6b75a441c5a1d1b47b899a607fdb4185e2ea"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "4a5d052e51c3387b6395d211a88105b7b84ce68ad20f8ec2a175ea9d47d416ac"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "aceae8cfacc002d950d21c7f8ae5031355cad91f7fce87e8126f25cee8619252"
+        },
+        "actions": {
+          "rows": 227,
+          "sha256": "3395bffb84578b97c99d5a70f79e2d98a34ebc508d43be3a8d9d0a3353b1c270"
+        },
+        "phases": {
+          "rows": 1804,
+          "sha256": "b3ba892eed03d5fad002ce614979cd61a4b030329b5429906c8fa45d018d5322"
+        },
+        "per_vehicle": {
+          "rows": 45,
+          "sha256": "dba23b962fc3203d7503857fa9faf812e4176c0ca0d1f73086b84925eaab8656"
+        }
+      }
+    },
+    "seed45_v3.4": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 13,
+          "actual_openings": 56,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 56,
+            "mean": -0.57,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 1
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 13,
+          "actual_openings": 43,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -0.49,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 1
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 55,
+          "empty_preparations": 13,
+          "actual_openings": 43,
+          "window_coverage_pct": 95.95959595959596,
+          "front_green": 42,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.62,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 45.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -2.14,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -46.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 1
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 280,
+        "J2/phase0": 350,
+        "J2/phase4": 35,
+        "J10/phase6": 319,
+        "J10/phase0": 153,
+        "J10/phase2": 198,
+        "J16/phase4": 263,
+        "J16/phase0": 158,
+        "J16/phase6": 206
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 31,
+          "arrival_window_s": 58,
+          "green_covered_s": 52,
+          "coverage_pct": 89.65517241379311
+        },
+        "J10": {
+          "windows": 29,
+          "arrival_window_s": 62,
+          "green_covered_s": 57,
+          "coverage_pct": 91.93548387096774
+        },
+        "J16": {
+          "windows": 17,
+          "arrival_window_s": 23,
+          "green_covered_s": 22,
+          "coverage_pct": 95.65217391304348
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "58c81eaf5ad70e51f9b4b4a8abf8b9a7ae8d8bb07913eeb6de5e6a7544c1b22b"
+        },
+        "vehicles": {
+          "rows": 71,
+          "sha256": "c1d7614f5040db2f76ebf4a3c48647285f36f2a5e4b96251c49bc475c16d50da"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "bed225fac944e8d91dfb851f5f91fb1986b8bcf5b00c26f904119c7000f55507"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "24c786fc1ba1b8e4bbf417ce3ee4cb937bc86844f8c5d47f02137be1d7298cad"
+        },
+        "actions": {
+          "rows": 226,
+          "sha256": "b32683fac2d83f9905f3eb6d219ef69b59aab13eccaa142087e3a3bc3ce4141b"
+        },
+        "phases": {
+          "rows": 1793,
+          "sha256": "add4567bd74dcd75b8830c1b4b659a4ea5c95e7e50242f756ba873c64b4625e2"
+        },
+        "per_vehicle": {
+          "rows": 45,
+          "sha256": "bf2b128cbfb4d44f482932583286d8d18ed3c08a337544d3e7d034b0155ba648"
+        }
+      }
+    },
+    "seed45_v3.5": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 13,
+          "actual_openings": 56,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 56,
+            "mean": -0.48,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 1
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 13,
+          "actual_openings": 43,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -0.37,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 1
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 55,
+          "empty_preparations": 13,
+          "actual_openings": 43,
+          "window_coverage_pct": 95.95959595959596,
+          "front_green": 42,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 55,
+            "mean": 15.55,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 45.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -1.63,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -46.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 1
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 283,
+        "J2/phase0": 341,
+        "J2/phase4": 36,
+        "J10/phase6": 314,
+        "J10/phase0": 149,
+        "J10/phase2": 202,
+        "J16/phase4": 250,
+        "J16/phase0": 158,
+        "J16/phase6": 227
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase0": 0,
+        "J2/phase4": 0,
+        "J10/phase6": 0,
+        "J10/phase0": 0,
+        "J10/phase2": 0,
+        "J16/phase4": 0,
+        "J16/phase0": 17,
+        "J16/phase6": 0
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 31,
+          "arrival_window_s": 58,
+          "green_covered_s": 52,
+          "coverage_pct": 89.65517241379311
+        },
+        "J10": {
+          "windows": 29,
+          "arrival_window_s": 62,
+          "green_covered_s": 56,
+          "coverage_pct": 90.3225806451613
+        },
+        "J16": {
+          "windows": 17,
+          "arrival_window_s": 23,
+          "green_covered_s": 22,
+          "coverage_pct": 95.65217391304348
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "371a321579e34cf67c3392767771b4c94af8fb24ec3374115cdb059dd428b63c"
+        },
+        "vehicles": {
+          "rows": 71,
+          "sha256": "d6a32cce8c9e1e6cdb2b519ac562bcf643ed7ceb3a07378779b88093c1467339"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "563e3916907cb1b0143ec58d10f3df9ea8646fac42af4f5e0228b53fe55b7a8e"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "15b0667400cf42bf707cff434097075fe0f5d6fa14cbae516040178563b04fd8"
+        },
+        "actions": {
+          "rows": 226,
+          "sha256": "a23deff26fefc09f83134836dfcc09104ad84fb5df266fe43295a813c1437eb3"
+        },
+        "phases": {
+          "rows": 1792,
+          "sha256": "a52db832ca408dba08b68f71ae5a4c8037fbe24271e1f332861cae10137ceef6"
+        },
+        "per_vehicle": {
+          "rows": 45,
+          "sha256": "9af9e588c279cb804e72a6456629436b4972e312eae23843d4203cf83d3d0365"
+        }
+      }
+    },
+    "seed45_v3.6": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 13,
+          "actual_openings": 56,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 56,
+            "mean": -1.61,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -10.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 1
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 13,
+          "actual_openings": 43,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -1.7,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -10.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 1
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 13,
+          "actual_openings": 43,
+          "window_coverage_pct": 100.0,
+          "front_green": 43,
+          "occupied_windows": 43,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 43,
+            "mean": -1.6,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -9.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 1
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 286,
+        "J2/phase0": 349,
+        "J2/phase4": 24,
+        "J10/phase6": 284,
+        "J10/phase0": 149,
+        "J10/phase2": 231,
+        "J16/phase4": 300,
+        "J16/phase0": 141,
+        "J16/phase6": 222
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase0": 0,
+        "J2/phase4": 0,
+        "J10/phase6": 0,
+        "J10/phase0": 0,
+        "J10/phase2": 0,
+        "J16/phase4": 0,
+        "J16/phase0": 0,
+        "J16/phase6": 0
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 30,
+          "arrival_window_s": 54,
+          "green_covered_s": 53,
+          "coverage_pct": 98.14814814814815
+        },
+        "J10": {
+          "windows": 28,
+          "arrival_window_s": 61,
+          "green_covered_s": 60,
+          "coverage_pct": 98.36065573770492
+        },
+        "J16": {
+          "windows": 17,
+          "arrival_window_s": 24,
+          "green_covered_s": 24,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "fc4af5946ba42700d6bd7def6063fbf4fc126b87a53e1fef6bafb832bb45f9e8"
+        },
+        "vehicles": {
+          "rows": 71,
+          "sha256": "37459546bcd32d03c134400e68d1ae147b8a13864671629c0957accdd078f437"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "aaaf33f31f7832f4819a5effcff662650f6b629148ce8e73aefa5e0ecf94cf3a"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "e8adea2bd4c216b6198e2ac2be9e3b5babd574222a3438d47139177ca750b0c3"
+        },
+        "actions": {
+          "rows": 226,
+          "sha256": "034c2aeb4c11ee6b619574b2668bb29f174cef90d745a2061ed3f4b854862b7f"
+        },
+        "phases": {
+          "rows": 1800,
+          "sha256": "d74924dc18c43eda11c40a33f5707cfd7bb2e085484ea104f2b4df955375c372"
+        },
+        "per_vehicle": {
+          "rows": 45,
+          "sha256": "f9a4dc7b9f86fb74118247592b026da3366bd3628333fc751ba0b8e3f192ae69"
+        }
+      }
+    },
+    "seed45_v3.7": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 15,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 42,
+          "occupied_windows": 42,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -2.88,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -11.0,
+            "max": -2.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 14,
+          "actual_openings": 42,
+          "window_coverage_pct": 100.0,
+          "front_green": 42,
+          "occupied_windows": 42,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 42,
+            "mean": -3.29,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -12.0,
+            "max": -2.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 14,
+          "actual_openings": 42,
+          "window_coverage_pct": 100.0,
+          "front_green": 42,
+          "occupied_windows": 42,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 42,
+            "mean": -3.17,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -11.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 297,
+        "J2/phase0": 364,
+        "J2/phase4": 18,
+        "J10/phase6": 242,
+        "J10/phase0": 143,
+        "J10/phase2": 289,
+        "J16/phase4": 296,
+        "J16/phase0": 139,
+        "J16/phase6": 231
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase0": 0,
+        "J2/phase4": 0,
+        "J10/phase6": 0,
+        "J10/phase0": 0,
+        "J10/phase2": 0,
+        "J16/phase4": 0,
+        "J16/phase0": 0,
+        "J16/phase6": 0
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 31,
+          "arrival_window_s": 53,
+          "green_covered_s": 52,
+          "coverage_pct": 98.11320754716981
+        },
+        "J10": {
+          "windows": 29,
+          "arrival_window_s": 60,
+          "green_covered_s": 57,
+          "coverage_pct": 95.0
+        },
+        "J16": {
+          "windows": 17,
+          "arrival_window_s": 24,
+          "green_covered_s": 24,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "7baf4e674f08be591891c3f2a5277ddbd8ce13c77249a7d31b4ab51b145e79df"
+        },
+        "vehicles": {
+          "rows": 71,
+          "sha256": "de9fe377500f45ba36bd4dc44e76db8cf952263f8b9e9b1769ca38e2a558dafd"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "1751dab21129d6175fdb145bb876b9dfe17cbaf2387b5fa9980c8d1527592e04"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "13fcc3c5d9607a7041d65597bbf6aaea3adf1b4c50f7e4e93365fa705527cf56"
+        },
+        "actions": {
+          "rows": 227,
+          "sha256": "822ea7c1d2f91d2d819f83f89da63f61ce1e23d42df8f006d52cb106c62f1c2d"
+        },
+        "phases": {
+          "rows": 1806,
+          "sha256": "ad352f08620516d0872ea7c17a7e349d7ec85c3306a9ed6943b2e87bad505c88"
+        },
+        "per_vehicle": {
+          "rows": 45,
+          "sha256": "d59f9ed22482fb9ea315eea8fdcbfecd09a6078337c94abf55745c99d3200b72"
+        }
+      }
+    },
+    "seed46_v3.1": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.11,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 19.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -0.26,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 39,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.11,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 19.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -0.26,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 39,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.11,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 19.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -0.26,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 289,
+        "J2/phase4": 50,
+        "J2/phase0": 377,
+        "J10/phase6": 333,
+        "J10/phase0": 384,
+        "J10/phase2": 4,
+        "J16/phase4": 509,
+        "J16/phase6": 207,
+        "J16/phase0": 4
+      },
+      "physical_windows": {
+        "J2": {
+          "windows": 32,
+          "arrival_window_s": 80,
+          "green_covered_s": 74,
+          "coverage_pct": 92.5
+        },
+        "J10": {
+          "windows": 26,
+          "arrival_window_s": 64,
+          "green_covered_s": 57,
+          "coverage_pct": 89.0625
+        },
+        "J16": {
+          "windows": 14,
+          "arrival_window_s": 20,
+          "green_covered_s": 20,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "6c78df33da6db060553d87f20c418c27dd6edbfa6709793aae14553adc2df0b2"
+        },
+        "vehicles": {
+          "rows": 70,
+          "sha256": "6ffe1246e543c8c79239ac0caf33331382d5e416a8051dcf7192fefd3e24ca52"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "4ae5882f5812fb273f31c482e389aeca845cc760182e99a54cac009eab4e0ef7"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "59348e77d843293ccd408523cb943bb09f0b4e3ebf7755cd2cfa445524de3574"
+        },
+        "actions": {
+          "rows": 228,
+          "sha256": "dad58b9233432e2d718db860cd2a76c54109851f8d728c124c8e1897afee9b58"
+        },
+        "phases": {
+          "rows": 1819,
+          "sha256": "57b46704d017ab5a09ce1e302ab103eafa537c6f1a767801e3ac9e22220ebb9e"
+        },
+        "per_vehicle": {
+          "rows": 47,
+          "sha256": "938a45b503ebc607eae1bea0db4847709b4ed39303050a2be80d0cc1e3e62574"
+        }
+      }
+    },
+    "seed46_v3.2": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 10.44,
+            "median": 10.0,
+            "p90": 15.0,
+            "min": 6.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -0.32,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 39,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -0.05,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -1.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 39,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -0.05,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -1.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 202,
+        "J2/phase0": 255,
+        "J2/phase4": 6,
+        "J10/phase6": 344,
+        "J10/phase0": 372,
+        "J10/phase2": 3,
+        "J16/phase4": 509,
+        "J16/phase6": 206,
+        "J16/phase0": 3
+      },
+      "early_corridor_closures": 35,
+      "unused_corridor_seconds_removed": 260,
+      "physical_windows": {
+        "J2": {
+          "windows": 32,
+          "arrival_window_s": 69,
+          "green_covered_s": 65,
+          "coverage_pct": 94.20289855072464
+        },
+        "J10": {
+          "windows": 26,
+          "arrival_window_s": 60,
+          "green_covered_s": 54,
+          "coverage_pct": 90.0
+        },
+        "J16": {
+          "windows": 14,
+          "arrival_window_s": 15,
+          "green_covered_s": 15,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "8b823b4d3b08877d0264525c05477e48023c897809aac76850e9443a862404ab"
+        },
+        "vehicles": {
+          "rows": 70,
+          "sha256": "134d3935306c9a43f36c5601143f84883a6d3ade782b234fe314fb3652380e97"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "acfbb076c66b02bada672e42cdb9a49f6387473b9b5a56403f13e4facfa159da"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "ad4d63911771670ef141f72a32942f6c6bea0115bcc4c3d4efd704a5746b1cd2"
+        },
+        "actions": {
+          "rows": 228,
+          "sha256": "68336bcde38d950b2c1b4a5dceeefc5adf301eab4ca5ed66f62fc6a97c0338e3"
+        },
+        "phases": {
+          "rows": 1822,
+          "sha256": "240cfc8441817f86b705477cdc3f4935fa788e534ed349c81c12851f1138e183"
+        },
+        "per_vehicle": {
+          "rows": 47,
+          "sha256": "145c42dff5d579fa11d31455444d4f34ede2fbd5a7b85ceeee4b7d6bb5c511ce"
+        }
+      }
+    },
+    "seed46_v3.3": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.05,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 18.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -0.14,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 39,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.05,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 18.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -0.03,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -1.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 18,
+          "actual_openings": 39,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.05,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 18.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -0.03,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -1.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase0": 474,
+        "J2/phase4": 13,
+        "J2/phase6": 227,
+        "J10/phase6": 336,
+        "J10/phase0": 378,
+        "J10/phase2": 5,
+        "J16/phase4": 495,
+        "J16/phase6": 218,
+        "J16/phase0": 5
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 57,
+      "empty_deferred_notices_without_cuts": 2,
+      "physical_windows": {
+        "J2": {
+          "windows": 31,
+          "arrival_window_s": 74,
+          "green_covered_s": 66,
+          "coverage_pct": 89.1891891891892
+        },
+        "J10": {
+          "windows": 26,
+          "arrival_window_s": 72,
+          "green_covered_s": 64,
+          "coverage_pct": 88.88888888888889
+        },
+        "J16": {
+          "windows": 14,
+          "arrival_window_s": 18,
+          "green_covered_s": 18,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "47e3f44bbc6345642ea4b5b6434bc1ad9570a32fd740b7fc9536f4ed038a72e9"
+        },
+        "vehicles": {
+          "rows": 70,
+          "sha256": "5d5e79c58c550f071f2f7d018d135156f5be3e61039aae5221795c5344ef2329"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "96ec2b5b1c66ae22e3a8cbc2ab85f4bb00f9ed1a385b108f84e5adbff88370a2"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "b801ee712645d3f44b645bfaaf8e36f0f0e8c49ee186b97a16de88597586fee6"
+        },
+        "actions": {
+          "rows": 228,
+          "sha256": "0fb2d3b4e973b64f6eb001d7c7c3f43c14900eb8e6ec0783f0486b3a12d3dab1"
+        },
+        "phases": {
+          "rows": 1820,
+          "sha256": "47e8a839a34b7a59200152cd89cc03ae3ce9d31c99f90b2e49e61d7357edeb4c"
+        },
+        "per_vehicle": {
+          "rows": 47,
+          "sha256": "2261242a1f2ff718fc7b15142715f97940ee131054becd7209752ddafe2b2ddb"
+        }
+      }
+    },
+    "seed46_v3.4": {
+      "receivers": {
+        "J2": {
+          "events": 58,
+          "eligible_notices": 58,
+          "reachable_at_notice": 58,
+          "empty_preparations": 19,
+          "actual_openings": 58,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 58,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 58,
+            "mean": -0.26,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -7.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 58,
+          "eligible_notices": 58,
+          "reachable_at_notice": 58,
+          "empty_preparations": 19,
+          "actual_openings": 39,
+          "window_coverage_pct": 99.02912621359224,
+          "front_green": 38,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.54,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 45.0
+          },
+          "opening_error_s": {
+            "n": 39,
+            "mean": -1.13,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -44.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 58,
+          "eligible_notices": 58,
+          "reachable_at_notice": 57,
+          "empty_preparations": 19,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 39,
+          "occupied_windows": 39,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.62,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 45.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -1.98,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -55.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 297,
+        "J2/phase4": 76,
+        "J2/phase0": 400,
+        "J10/phase6": 315,
+        "J10/phase2": 267,
+        "J10/phase0": 150,
+        "J16/phase4": 328,
+        "J16/phase0": 160,
+        "J16/phase6": 248
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 33,
+          "arrival_window_s": 62,
+          "green_covered_s": 58,
+          "coverage_pct": 93.54838709677419
+        },
+        "J10": {
+          "windows": 27,
+          "arrival_window_s": 59,
+          "green_covered_s": 49,
+          "coverage_pct": 83.05084745762711
+        },
+        "J16": {
+          "windows": 15,
+          "arrival_window_s": 15,
+          "green_covered_s": 15,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 174,
+          "sha256": "a1c64ffe8f3a998b78da9f28430a640d8d59815e4e237aa654f1746c223e49eb"
+        },
+        "vehicles": {
+          "rows": 70,
+          "sha256": "5eea56ca49dd4cdfdcdd9eee6e0b16fb8f9ba4fb994432939384c45b54ad5522"
+        },
+        "events": {
+          "rows": 174,
+          "sha256": "9a07cda96a3613d7b786478165474556ad644f4a63b7fb086ac439a01ba5c7d8"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "9b0410586f63d962395ab32dd83e162a3df22c5f1d2ba460e20e0ae7f527875f"
+        },
+        "actions": {
+          "rows": 232,
+          "sha256": "5d16da441f5be745f2fd7489af93547de05c85af2f46f38bddb0bc6aa6a67375"
+        },
+        "phases": {
+          "rows": 1832,
+          "sha256": "5561af4354055e90846b5076d92ce67ad1570b3fe0096e92885c6526598fa78a"
+        },
+        "per_vehicle": {
+          "rows": 47,
+          "sha256": "91febc11f020bea8923489d3f3af4570b9e184fb333f2f2ffaedca570ffd0dfb"
+        }
+      }
+    },
+    "seed46_v3.5": {
+      "receivers": {
+        "J2": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 16,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 41,
+          "occupied_windows": 41,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -0.4,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -8.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 16,
+          "actual_openings": 41,
+          "window_coverage_pct": 98.98989898989899,
+          "front_green": 40,
+          "occupied_windows": 41,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.54,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 45.0
+          },
+          "opening_error_s": {
+            "n": 41,
+            "mean": -1.15,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -44.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 58,
+          "eligible_notices": 57,
+          "reachable_at_notice": 56,
+          "empty_preparations": 16,
+          "actual_openings": 42,
+          "window_coverage_pct": 100.0,
+          "front_green": 41,
+          "occupied_windows": 41,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.54,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 45.0
+          },
+          "opening_error_s": {
+            "n": 42,
+            "mean": -1.67,
+            "median": 0.0,
+            "p90": 0.0,
+            "min": -55.0,
+            "max": 0.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 297,
+        "J2/phase4": 64,
+        "J2/phase0": 363,
+        "J10/phase6": 315,
+        "J10/phase2": 221,
+        "J10/phase0": 147,
+        "J16/phase4": 336,
+        "J16/phase0": 132,
+        "J16/phase6": 232
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase4": 0,
+        "J2/phase0": 0,
+        "J10/phase6": 0,
+        "J10/phase2": 0,
+        "J10/phase0": 0,
+        "J16/phase4": 0,
+        "J16/phase0": 18,
+        "J16/phase6": 0
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 34,
+          "arrival_window_s": 64,
+          "green_covered_s": 60,
+          "coverage_pct": 93.75
+        },
+        "J10": {
+          "windows": 30,
+          "arrival_window_s": 52,
+          "green_covered_s": 42,
+          "coverage_pct": 80.76923076923077
+        },
+        "J16": {
+          "windows": 15,
+          "arrival_window_s": 15,
+          "green_covered_s": 15,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "aae06dcf1ca4d8e265b9185c004e36f8614258a802c0ee58435c8678cb513a51"
+        },
+        "vehicles": {
+          "rows": 70,
+          "sha256": "2146ed47a5d8d4bc27708a62df6a05535ab19e77c4f0590b51f43cc8426d2c86"
+        },
+        "events": {
+          "rows": 174,
+          "sha256": "10f02a871c8766cf141c80b012d35bc62b398137a861975ed65d300fe93deef3"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "68a1ac130a60d6d0135ea12027dd406ebf086ff217790508fa27d1f17a1b8592"
+        },
+        "actions": {
+          "rows": 229,
+          "sha256": "bd1c4653cd5d6ada8c210dc07013d4131165a96e1f2d4591e506f3942aac2b4b"
+        },
+        "phases": {
+          "rows": 1810,
+          "sha256": "2b885775104a8c0719f854745296d1febf0cd2b0b56f549dae0587aac9a3750e"
+        },
+        "per_vehicle": {
+          "rows": 47,
+          "sha256": "8b78f081836631b649d0d236b99db2d692189d57216579db0f6310e343a24dce"
+        }
+      }
+    },
+    "seed46_v3.6": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 17,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -1.3,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -10.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 17,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -1.23,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -10.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 17,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.0,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 15.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -1.23,
+            "median": -1.0,
+            "p90": -1.0,
+            "min": -10.0,
+            "max": -1.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 314,
+        "J2/phase4": 36,
+        "J2/phase0": 360,
+        "J10/phase2": 287,
+        "J10/phase6": 281,
+        "J10/phase0": 147,
+        "J16/phase4": 290,
+        "J16/phase0": 156,
+        "J16/phase6": 268
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase4": 0,
+        "J2/phase0": 0,
+        "J10/phase2": 0,
+        "J10/phase6": 0,
+        "J10/phase0": 0,
+        "J16/phase4": 0,
+        "J16/phase0": 0,
+        "J16/phase6": 0
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 32,
+          "arrival_window_s": 76,
+          "green_covered_s": 76,
+          "coverage_pct": 100.0
+        },
+        "J10": {
+          "windows": 27,
+          "arrival_window_s": 63,
+          "green_covered_s": 56,
+          "coverage_pct": 88.88888888888889
+        },
+        "J16": {
+          "windows": 14,
+          "arrival_window_s": 20,
+          "green_covered_s": 20,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "bc8489619d294ea48ce3f06e41c744a6ce245f98c800c480321fcf936687cc28"
+        },
+        "vehicles": {
+          "rows": 70,
+          "sha256": "2ba3c6dbc87111c05b026c3bb47814bcdd94b19aa5a43eb956533ce213e62b23"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "fc57f034015a9da24aa5d8388fa09086a14360d6200524f2f29d8650af586c82"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "1489ce4f85065a9147a2b10c56b12c9c3a3c46877f2847375dd1e8c89918b20a"
+        },
+        "actions": {
+          "rows": 228,
+          "sha256": "ff6772b1985914341f251d39e367c36dea3b8044e2cef956e2fedb1d15c763d5"
+        },
+        "phases": {
+          "rows": 1819,
+          "sha256": "198ebbfa5085978a6bb0756dc9c17cb9096587d3ba9fcd81f85ad312438b1648"
+        },
+        "per_vehicle": {
+          "rows": 47,
+          "sha256": "93f002ef4eb2f361bfc1d838db95791e189eb2256f02a3a49b6c5e0efc33a610"
+        }
+      }
+    },
+    "seed46_v3.7": {
+      "receivers": {
+        "J2": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 17,
+          "actual_openings": 57,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 57,
+            "mean": 15.04,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 17.0
+          },
+          "opening_error_s": {
+            "n": 57,
+            "mean": -2.26,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -10.0,
+            "max": -2.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J10": {
+          "events": 57,
+          "eligible_notices": 57,
+          "reachable_at_notice": 57,
+          "empty_preparations": 17,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.04,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 17.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -2.2,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -10.0,
+            "max": -2.0
+          },
+          "unserved_at_horizon": 0
+        },
+        "J16": {
+          "events": 57,
+          "eligible_notices": 56,
+          "reachable_at_notice": 56,
+          "empty_preparations": 16,
+          "actual_openings": 40,
+          "window_coverage_pct": 100.0,
+          "front_green": 40,
+          "occupied_windows": 40,
+          "corridor_green_s": {
+            "n": 56,
+            "mean": 15.04,
+            "median": 15.0,
+            "p90": 15.0,
+            "min": 15.0,
+            "max": 17.0
+          },
+          "opening_error_s": {
+            "n": 40,
+            "mean": -2.2,
+            "median": -2.0,
+            "p90": -2.0,
+            "min": -10.0,
+            "max": -2.0
+          },
+          "unserved_at_horizon": 0
+        }
+      },
+      "cut_seconds_by_phase": {
+        "J2/phase6": 374,
+        "J2/phase4": 25,
+        "J2/phase0": 297,
+        "J10/phase2": 306,
+        "J10/phase6": 231,
+        "J10/phase0": 164,
+        "J16/phase4": 337,
+        "J16/phase0": 115,
+        "J16/phase6": 238
+      },
+      "extra_noncorridor_green_by_phase": {
+        "J2/phase6": 0,
+        "J2/phase4": 0,
+        "J2/phase0": 0,
+        "J10/phase2": 0,
+        "J10/phase6": 0,
+        "J10/phase0": 0,
+        "J16/phase4": 0,
+        "J16/phase0": 0,
+        "J16/phase6": 0
+      },
+      "early_corridor_closures": 0,
+      "unused_corridor_seconds_removed": 0,
+      "deferred_notices": 0,
+      "empty_deferred_notices_without_cuts": 0,
+      "physical_windows": {
+        "J2": {
+          "windows": 34,
+          "arrival_window_s": 65,
+          "green_covered_s": 65,
+          "coverage_pct": 100.0
+        },
+        "J10": {
+          "windows": 28,
+          "arrival_window_s": 52,
+          "green_covered_s": 48,
+          "coverage_pct": 92.3076923076923
+        },
+        "J16": {
+          "windows": 15,
+          "arrival_window_s": 15,
+          "green_covered_s": 15,
+          "coverage_pct": 100.0
+        }
+      },
+      "canonical_traces": {
+        "releases": {
+          "rows": 171,
+          "sha256": "1966785169c067a373111f860f92f8da2ccf6f712916906223956682e8ea63d1"
+        },
+        "vehicles": {
+          "rows": 70,
+          "sha256": "54b518b19f0b04e27ad6c424c27c37d0e51ed4911bc680526f0cb397032ccb6f"
+        },
+        "events": {
+          "rows": 171,
+          "sha256": "3329b69077d37c58d3d7288fbe44dba4608828a733d49d4f314b30a085c86a78"
+        },
+        "timeline": {
+          "rows": 3600,
+          "sha256": "b35be218ffaac6b1f5da65b4bb75ae0fc6833c8c6dcdd96701ae55a5f0729bcc"
+        },
+        "actions": {
+          "rows": 228,
+          "sha256": "ef8fe0a4fec027ef74f9c34d2973169dcefebd4fc1db294566318d4e85eb28db"
+        },
+        "phases": {
+          "rows": 1813,
+          "sha256": "8a997e8a55255275100c5dcf7f84a2fe10740d54776ae28ddbfd082daf7a96ce"
+        },
+        "per_vehicle": {
+          "rows": 47,
+          "sha256": "e1a65c01d19c7bea4e5c056a8ef199f40ef32c397390ba6fab849b7b9eab2fa6"
+        }
+      }
+    }
+  },
+  "recommended": "v3.7",
+  "paired_comparison": {
+    "plain_offset": {
+      "no_stop_delta": 8,
+      "mean_changes_pct": {
+        "mean_J0_to_J16_s": -14.0013862758689,
+        "secondary_total_s": -10.470357178522693,
+        "network_waiting_s": -10.249304051964126
+      },
+      "seeds_with_lower_global_wait": 5,
+      "seeds_with_lower_secondary_wait": 5,
+      "seeds_with_no_stop_at_least_reference": 5
+    },
+    "v3": {
+      "no_stop_delta": 3,
+      "mean_changes_pct": {
+        "mean_J0_to_J16_s": -3.7459824891942772,
+        "secondary_total_s": -18.883118293190492,
+        "network_waiting_s": -12.177611693348245
+      },
+      "seeds_with_lower_global_wait": 5,
+      "seeds_with_lower_secondary_wait": 5,
+      "seeds_with_no_stop_at_least_reference": 5
+    }
+  },
+  "protected_resources_unchanged": true,
+  "source_commit": "ed2d2e260792211cab69ec5b85b1c93141aa7071",
+  "configuration": {
+    "horizon_s": 3600,
+    "SUMO_seed": 42,
+    "demand_seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "offsets": [
+      0,
+      0,
+      72,
+      24
+    ],
+    "delays": [
+      12,
+      22,
+      32
+    ],
+    "checkpoint": "policy/models/model_future_v39_yellow_test36_3.pth",
+    "green_bounds": [
+      5,
+      45
+    ],
+    "yellow_s": 4,
+    "step_s": 1,
+    "deterministic": true,
+    "training": false
+  },
+  "original_v3_seed42_summary_and_seven_traces_equal": true,
+  "code_sha256": {
+    "run_sync.py": "c0cd4a14516cd9a9daa98c4ba678bc4ac263fc6f0ab045284fc4ef4a5bb1443e",
+    "sync/__init__.py": "69222bdc589128bec0923d42ed3f4ca8d6fd0dffd42059e0b8afc47babaa8cb6",
+    "sync/common.py": "affb719edd791e7a8e93ee6a58acf0fd51a2ccd3e2d5a403ba24308254eab0a0",
+    "sync/metrics.py": "73d0c072b17d7ba70c4b54c01c08e54b2d5b94a3c9b9014ec959167597c45b0a",
+    "sync/simulation.py": "6953bb4e4ab312e7928c35ad65ed1b8d67c0b8c5e2ddbc76e53231f0112677b0",
+    "sync/v1.py": "ddd49520e979bd8911752835727e57eacd9326a90c75610db098e44384190719",
+    "sync/v2.py": "4a3dd5e65cc8930f80b35eda9fb36f3cd42d9218ad0b47c6b8ed588150a2f56f",
+    "sync/v3.py": "51460a4b534be083246cd595c33edda466aedad20a341bcba0de0ecad66880b6",
+    "sync/v3_variants.py": "2c83536b32ef9574a7c14c68186ec146d6676cdc40dfed38858b49b7a63ef4db"
+  },
+  "original_v1_v2_replays": [
+    {
+      "run": "seed42_v1_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    },
+    {
+      "run": "seed42_v2_full",
+      "summary_equal": true,
+      "all_seven_traces_equal": true,
+      "constraint_violations": 0
+    }
+  ],
+  "native_mechanism_validation": {
+    "passed": [
+      "queue_allocation",
+      "causal_tail_close",
+      "deferred_preparation",
+      "rotated_J10_queue_allocation",
+      "early_opening_alignment",
+      "one_second_guard",
+      "two_second_guard"
+    ],
+    "unit_cases": 1,
+    "native_SUMO_cases": 6
+  }
+}

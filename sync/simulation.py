@@ -8,6 +8,7 @@ from .common import (traci, TLS, RECEIVERS, END, DEMAND, CHECKPOINT, GREEN_MIN, 
 from .v1 import J2Advance
 from .v2 import CopyGreen
 from .v3 import PreannouncedWindow
+from .v3_variants import WINDOW_CONTROLLERS
 from .metrics import FullObserver, validate_phases, summarize_copy, summarize_window
 from policy.agent import PPOAgent
 from policy.train import (_build_phase_lane_indices, _normalized_action_to_duration,
@@ -39,15 +40,16 @@ def build_agent():
 
 
 def run(seed, mode, travel_times=(11, 10, 10), gui=False, delay=100):
-    if seed not in range(42, 47) or mode not in ("v1", "v2", "v3"):
-        raise ValueError("Expected demand 42-46 and mode v1/v2/v3")
+    if seed not in range(42, 47) or mode not in ("v1", "v2", *WINDOW_CONTROLLERS):
+        raise ValueError("Expected demand 42-46 and an available synchronization mode")
+    causal_window = mode in WINDOW_CONTROLLERS
     if len(travel_times) != 3 or any(t <= 0 for t in travel_times):
         raise ValueError("Travel times must be three positive seconds")
     if mode != "v2" and tuple(travel_times) != (11, 10, 10):
         raise ValueError("Custom travel times are supported only by V2")
     route = DEMAND / f"seed_{seed}.rou.xml"
     cumulative = (travel_times[0], sum(travel_times[:2]), sum(travel_times))
-    delays = dict(zip(RECEIVERS, (12, 22, 32) if mode == "v3" else cumulative))
+    delays = dict(zip(RECEIVERS, (12, 22, 32) if causal_window else cumulative))
     with tempfile.TemporaryDirectory(prefix=f"sumo_sync_{mode}_") as tmp:
         net = Path(tmp) / "wave.net.xml"
         static_net(net)
@@ -67,7 +69,7 @@ def run(seed, mode, travel_times=(11, 10, 10), gui=False, delay=100):
             agent, phases, lanes, indices, metadata = build_agent()
             obs = FullObserver(route)
             controllers = {t: (CopyGreen(t, delays[t]) if mode == "v2" else J2Advance(delays[t], t, phase) if mode == "v1" else
-                PreannouncedWindow(obs.audit, t, phase, delays[t]))
+                WINDOW_CONTROLLERS[mode](obs.audit, t, phase, delays[t]))
                 for t, (phase, _, _) in RECEIVERS.items()}
             # Check rotated link ordering explicitly; J10 serves northbound in phase 4.
             for t, (phase, incoming, outgoing) in RECEIVERS.items():
@@ -87,12 +89,12 @@ def run(seed, mode, travel_times=(11, 10, 10), gui=False, delay=100):
                 actions.append({"phase_cursor": cursor, "phase_xml": phases[cursor]["index"],
                     "decision_at": start - 1, "start": start, "green": green,
                     "decided_green": decided, "action": float(np.asarray(action).item())})
-                if mode == "v3" and cursor == 0:
+                if causal_window and cursor == 0:
                     for ctrl in controllers.values():
                         ctrl.announce(start, decided)
                 if cursor == 1:
                     obs.begin_release(start, green)
-                    if mode == "v3":
+                    if causal_window:
                         for ctrl in controllers.values():
                             ctrl.prepare(start)
                 for second in range(green):
@@ -126,7 +128,7 @@ def run(seed, mode, travel_times=(11, 10, 10), gui=False, delay=100):
                         ctrl.tick()
                 j0_runs.append({"tls": "J0", "phase": phases[cursor]["index"] + 1,
                                "start": yellow_start, "duration": yellow, "partial": yellow != 4})
-                if mode == "v3" and cursor == 1 and yellow == 4:
+                if causal_window and cursor == 1 and yellow == 4:
                     for ctrl in controllers.values():
                         ctrl.release_finished(release_id)
                 cursor = (cursor + 1) % 4
