@@ -1,0 +1,417 @@
+{
+  "source_commit": "5b83cf81a0bebc5d349a21f89064d9d3a822a06d",
+  "execution_order": [
+    {
+      "mode": "plain",
+      "seed": 42,
+      "started_UTC": "2026-10-04T03:52:47.390503+00:00",
+      "finished_UTC": "2026-10-04T03:53:30.727730+00:00"
+    },
+    {
+      "mode": "plain",
+      "seed": 43,
+      "started_UTC": "2026-10-04T03:53:30.732258+00:00",
+      "finished_UTC": "2026-10-04T03:54:17.128867+00:00"
+    },
+    {
+      "mode": "plain",
+      "seed": 44,
+      "started_UTC": "2026-10-04T03:54:17.130833+00:00",
+      "finished_UTC": "2026-10-04T03:55:24.104390+00:00"
+    },
+    {
+      "mode": "plain",
+      "seed": 45,
+      "started_UTC": "2026-10-04T03:55:24.106400+00:00",
+      "finished_UTC": "2026-10-04T03:56:26.185259+00:00"
+    },
+    {
+      "mode": "plain",
+      "seed": 46,
+      "started_UTC": "2026-10-04T03:56:26.186815+00:00",
+      "finished_UTC": "2026-10-04T03:57:24.858876+00:00"
+    },
+    {
+      "mode": "plain_offset",
+      "seed": 42,
+      "started_UTC": "2026-10-04T03:57:24.861286+00:00",
+      "finished_UTC": "2026-10-04T03:58:14.961055+00:00"
+    },
+    {
+      "mode": "plain_offset",
+      "seed": 43,
+      "started_UTC": "2026-10-04T03:58:14.963068+00:00",
+      "finished_UTC": "2026-10-04T03:59:09.226065+00:00"
+    },
+    {
+      "mode": "plain_offset",
+      "seed": 44,
+      "started_UTC": "2026-10-04T03:59:09.229123+00:00",
+      "finished_UTC": "2026-10-04T04:00:06.259702+00:00"
+    },
+    {
+      "mode": "plain_offset",
+      "seed": 45,
+      "started_UTC": "2026-10-04T04:00:06.262857+00:00",
+      "finished_UTC": "2026-10-04T04:01:03.535839+00:00"
+    },
+    {
+      "mode": "plain_offset",
+      "seed": 46,
+      "started_UTC": "2026-10-04T04:01:03.535839+00:00",
+      "finished_UTC": "2026-10-04T04:02:01.939790+00:00"
+    },
+    {
+      "mode": "only_ppo",
+      "seed": 42,
+      "started_UTC": "2026-10-04T04:02:01.940789+00:00",
+      "finished_UTC": "2026-10-04T04:03:06.471287+00:00"
+    },
+    {
+      "mode": "only_ppo",
+      "seed": 43,
+      "started_UTC": "2026-10-04T04:03:06.473803+00:00",
+      "finished_UTC": "2026-10-04T04:04:02.690537+00:00"
+    },
+    {
+      "mode": "only_ppo",
+      "seed": 44,
+      "started_UTC": "2026-10-04T04:04:02.692446+00:00",
+      "finished_UTC": "2026-10-04T04:04:51.326080+00:00"
+    },
+    {
+      "mode": "only_ppo",
+      "seed": 45,
+      "started_UTC": "2026-10-04T04:04:51.328090+00:00",
+      "finished_UTC": "2026-10-04T04:05:33.832209+00:00"
+    },
+    {
+      "mode": "only_ppo",
+      "seed": 46,
+      "started_UTC": "2026-10-04T04:05:33.835721+00:00",
+      "finished_UTC": "2026-10-04T04:06:17.451923+00:00"
+    },
+    {
+      "mode": "v1",
+      "seed": 42,
+      "started_UTC": "2026-10-04T04:06:17.454938+00:00",
+      "finished_UTC": "2026-10-04T04:06:59.823181+00:00"
+    },
+    {
+      "mode": "v1",
+      "seed": 43,
+      "started_UTC": "2026-10-04T04:06:59.825187+00:00",
+      "finished_UTC": "2026-10-04T04:07:42.435733+00:00"
+    },
+    {
+      "mode": "v1",
+      "seed": 44,
+      "started_UTC": "2026-10-04T04:07:42.437703+00:00",
+      "finished_UTC": "2026-10-04T04:08:25.395998+00:00"
+    },
+    {
+      "mode": "v1",
+      "seed": 45,
+      "started_UTC": "2026-10-04T04:08:25.398000+00:00",
+      "finished_UTC": "2026-10-04T04:09:07.116082+00:00"
+    },
+    {
+      "mode": "v1",
+      "seed": 46,
+      "started_UTC": "2026-10-04T04:09:07.117979+00:00",
+      "finished_UTC": "2026-10-04T04:09:49.902402+00:00"
+    },
+    {
+      "mode": "v2",
+      "seed": 42,
+      "started_UTC": "2026-10-04T04:09:49.904403+00:00",
+      "finished_UTC": "2026-10-04T04:10:31.603985+00:00"
+    },
+    {
+      "mode": "v2",
+      "seed": 43,
+      "started_UTC": "2026-10-04T04:10:31.605986+00:00",
+      "finished_UTC": "2026-10-04T04:11:15.001241+00:00"
+    },
+    {
+      "mode": "v2",
+      "seed": 44,
+      "started_UTC": "2026-10-04T04:11:15.004689+00:00",
+      "finished_UTC": "2026-10-04T04:11:57.790519+00:00"
+    },
+    {
+      "mode": "v2",
+      "seed": 45,
+      "started_UTC": "2026-10-04T04:11:57.791965+00:00",
+      "finished_UTC": "2026-10-04T04:12:39.239865+00:00"
+    },
+    {
+      "mode": "v2",
+      "seed": 46,
+      "started_UTC": "2026-10-04T04:12:39.241874+00:00",
+      "finished_UTC": "2026-10-04T04:13:21.245721+00:00"
+    },
+    {
+      "mode": "v3",
+      "seed": 42,
+      "started_UTC": "2026-10-04T04:13:21.248231+00:00",
+      "finished_UTC": "2026-10-04T04:14:06.856995+00:00"
+    },
+    {
+      "mode": "v3",
+      "seed": 43,
+      "started_UTC": "2026-10-04T04:14:06.857934+00:00",
+      "finished_UTC": "2026-10-04T04:14:51.465418+00:00"
+    },
+    {
+      "mode": "v3",
+      "seed": 44,
+      "started_UTC": "2026-10-04T04:14:51.469359+00:00",
+      "finished_UTC": "2026-10-04T04:15:36.201284+00:00"
+    },
+    {
+      "mode": "v3",
+      "seed": 45,
+      "started_UTC": "2026-10-04T04:15:36.203204+00:00",
+      "finished_UTC": "2026-10-04T04:16:21.193053+00:00"
+    },
+    {
+      "mode": "v3",
+      "seed": 46,
+      "started_UTC": "2026-10-04T04:16:21.195206+00:00",
+      "finished_UTC": "2026-10-04T04:17:06.576517+00:00"
+    }
+  ],
+  "matched_vehicle_sets": true,
+  "protected_resources_unchanged": true,
+  "protected_code_sha256": {
+    "run_sync.py": "12a675752ba3f291292d7967c12b78e6c01cf07b734f225f6259f0c46e67760a",
+    "sync/__init__.py": "69222bdc589128bec0923d42ed3f4ca8d6fd0dffd42059e0b8afc47babaa8cb6",
+    "sync/common.py": "affb719edd791e7a8e93ee6a58acf0fd51a2ccd3e2d5a403ba24308254eab0a0",
+    "sync/metrics.py": "efb2817a29ab1d8b3368758e7373d8c1a328653e9050e7891c9da6f0b9b640aa",
+    "sync/simulation.py": "5e73247c830d4aeb0f356fd038b19382c2bfa7f623d1fcbce66bc53023b63f9c",
+    "sync/v1.py": "ddd49520e979bd8911752835727e57eacd9326a90c75610db098e44384190719",
+    "sync/v2.py": "4a3dd5e65cc8930f80b35eda9fb36f3cd42d9218ad0b47c6b8ed588150a2f56f",
+    "sync/v3.py": "51460a4b534be083246cd595c33edda466aedad20a341bcba0de0ecad66880b6",
+    "tests/__init__.py": "240d508b3a42f07bc87cdf306b171966c5b5dfcd4f9cd878485cabdad967c892",
+    "tests/check_copy.py": "f2d1240581b79f36a0fc5fa9b6bed80d665d056e15db29eb9e30360893ba9840",
+    "tests/check_preannounce.py": "0e7b1430abc96f51bb1a798c0e9a58a0098f3f7d8b1716807505a1489bfc96e6",
+    "tests/check_receivers.py": "d0cdadfa0a92ca32d8307f2732566f66e2a52466d66d38277160d3b1ea31da6a",
+    "tests/collect_validation.py": "57cb2e2f2940f8beb858d8703dbc5f953ddeca63f2e83ef8921c9cbb9bb08661",
+    "tests/smoke_original.py": "57a47dbe740131510eb23c5e0a6fc8ead4e78258a89a98a2112cd7e58d5a4c7c",
+    "tests/validate_sync.py": "c51233e043c8815ad0bb633c2c8107cf7ba5f8e82a4a39e78115426d6930338a"
+  },
+  "sync_runs_reference_equal": 15,
+  "runs": [
+    {
+      "mode": "plain",
+      "seed": 42,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "plain",
+      "seed": 43,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "plain",
+      "seed": 44,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "plain",
+      "seed": 45,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "plain",
+      "seed": 46,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "plain_offset",
+      "seed": 42,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "plain_offset",
+      "seed": 43,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "plain_offset",
+      "seed": 44,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "plain_offset",
+      "seed": 45,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "plain_offset",
+      "seed": 46,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "only_ppo",
+      "seed": 42,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "only_ppo",
+      "seed": 43,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "only_ppo",
+      "seed": 44,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "only_ppo",
+      "seed": 45,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "only_ppo",
+      "seed": 46,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v1",
+      "seed": 42,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v1",
+      "seed": 43,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v1",
+      "seed": 44,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v1",
+      "seed": 45,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v1",
+      "seed": 46,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v2",
+      "seed": 42,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v2",
+      "seed": 43,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v2",
+      "seed": 44,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v2",
+      "seed": 45,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v2",
+      "seed": 46,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v3",
+      "seed": 42,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v3",
+      "seed": 43,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v3",
+      "seed": 44,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v3",
+      "seed": 45,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    },
+    {
+      "mode": "v3",
+      "seed": 46,
+      "constraint_violations": 0,
+      "teleports": 0,
+      "corridor_pending": 0
+    }
+  ]
+}
