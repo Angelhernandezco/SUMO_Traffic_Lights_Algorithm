@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 import torch
 from .common import (traci, TLS, RECEIVERS, END, DEMAND, CHECKPOINT, GREEN_MIN, GREEN_MAX,
-                     static_net, sumo_binary)
+                     static_net, sumo_binary, resolve_demand)
 from .v1 import J2Advance
 from .v2 import CopyGreen
 from .v3 import PreannouncedWindow
@@ -39,15 +39,15 @@ def build_agent():
     return agent, phases, lanes, indices, metadata
 
 
-def run(seed, mode, travel_times=(11, 10, 10), gui=False, delay=100):
-    if seed not in range(42, 47) or mode not in ("v1", "v2", *WINDOW_CONTROLLERS):
-        raise ValueError("Expected demand 42-46 and an available synchronization mode")
+def run(seed, mode, travel_times=(11, 10, 10), gui=False, delay=100, *, route_path=None):
+    if mode not in ("v1", "v2", *WINDOW_CONTROLLERS):
+        raise ValueError("Expected an available synchronization mode")
     causal_window = mode in WINDOW_CONTROLLERS
     if len(travel_times) != 3 or any(t <= 0 for t in travel_times):
         raise ValueError("Travel times must be three positive seconds")
     if mode != "v2" and tuple(travel_times) != (11, 10, 10):
         raise ValueError("Custom travel times are supported only by V2")
-    route = DEMAND / f"seed_{seed}.rou.xml"
+    route = resolve_demand(seed, route_path)
     cumulative = (travel_times[0], sum(travel_times[:2]), sum(travel_times))
     delays = dict(zip(RECEIVERS, (12, 22, 32) if causal_window else cumulative))
     with tempfile.TemporaryDirectory(prefix=f"sumo_sync_{mode}_") as tmp:

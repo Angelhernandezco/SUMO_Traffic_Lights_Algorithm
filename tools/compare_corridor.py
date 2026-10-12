@@ -10,7 +10,7 @@ from pathlib import Path
 
 import numpy as np
 
-from sync.common import CHECKPOINT, DEMAND, END, NET, OFFSETS, ROOT, TLS, static_net, sumo_binary, traci
+from sync.common import CHECKPOINT, DEMAND, END, NET, OFFSETS, ROOT, TLS, static_net, sumo_binary, traci, resolve_demand
 from sync.metrics import FullObserver, add_audit, distribution, overlap, validate_phases, write_csv
 from sync.simulation import (build_agent, run, _normalized_action_to_duration,
                              _structured_snapshot, _yellow_state_from_green_state)
@@ -28,9 +28,11 @@ def utc():
     return datetime.now(timezone.utc).isoformat()
 
 
-def baseline(seed, mode):
+def baseline(seed, mode, *, route_path=None):
     """Observe fixed programs, or apply only the original deterministic J0 PPO."""
-    route = DEMAND / f"seed_{seed}.rou.xml"
+    if mode not in ("plain", "plain_offset", "only_ppo"):
+        raise ValueError("Expected a fixed baseline or only_ppo")
+    route = resolve_demand(seed, route_path)
     offsets = OFFSETS if mode == "plain_offset" else (0, 0, 0, 0)
     with tempfile.TemporaryDirectory(prefix=f"sumo_compare_{mode}_") as tmp:
         net = Path(tmp) / "wave.net.xml"
@@ -119,9 +121,9 @@ def baseline(seed, mode):
                        "checkpoint_sha256": hashlib.sha256(CHECKPOINT.read_bytes()).hexdigest() if mode == "only_ppo" else None,
                        "cohort": len(obs.cohort), "crossed": len(strict),
                        "no_stop": sum(not r["stopped_E1"] for r in strict.values()),
-                       "no_stop_pct": 100 * sum(not r["stopped_E1"] for r in strict.values()) / len(obs.cohort),
+                       "no_stop_pct": 100 * sum(not r["stopped_E1"] for r in strict.values()) / len(obs.cohort) if obs.cohort else None,
                        "waiting_E1_s": sum(r["E1_wait"] for r in strict.values()),
-                       "mean_E1_to_E5_s": statistics.mean(r["E5_start"] - r["E1_start"] for r in strict.values()),
+                       "mean_E1_to_E5_s": statistics.mean(r["E5_start"] - r["E1_start"] for r in strict.values()) if strict else None,
                        "secondary_wait_J2_s": obs.secondary_wait, "network_total_wait_s": obs.network_wait,
                        "tls_wait_s": obs.tls_wait, "arrived": len(obs.arrived), "departed": len(obs.departed),
                        "teleported": len(obs.teleports), "pending": {

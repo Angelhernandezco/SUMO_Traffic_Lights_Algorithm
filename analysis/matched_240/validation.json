@@ -1,0 +1,2166 @@
+{
+  "experiment_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5",
+  "status": "complete",
+  "completed_runs": 240,
+  "expected_runs": 240,
+  "matched_demands_and_programmed_cohorts": true,
+  "protected_hashes_unchanged": true,
+  "preflight": {
+    "demand_reproductions": [
+      {
+        "level": "bajo",
+        "seed": 42,
+        "equal": true,
+        "attempted_trips": 1800,
+        "generated_trips": 1800,
+        "generation_losses": 0,
+        "scheduled_vehicles": 1126,
+        "routing_losses": 674,
+        "route_sha256": "7bb6279e4197e932e1bfa06c81002433c7c9d3ec2e7448fbc9cf0c5e34efb02e",
+        "route_semantic_sha256": "39473fc9f58ec5637155e307f801abb9ebbe2dd6e67b5cf06fa6154d8ce34551",
+        "generation_command": [
+          "C:\\Users\\luuis\\GitHub\\SUMO_Traffic_Lights_Algorithm\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\luuis\\GitHub\\SUMO_Traffic_Lights_Algorithm\\tools\\randomTrips.py",
+          "-n",
+          "C:\\Users\\luuis\\GitHub\\SUMO_Traffic_Lights_Algorithm\\maps\\master_slave.net.xml",
+          "-b",
+          "0",
+          "-e",
+          "3600",
+          "-p",
+          "2.0",
+          "-s",
+          "42",
+          "-o",
+          "C:\\Users\\luuis\\GitHub\\SUMO_Traffic_Lights_Algorithm\\results\\sumo_matched_demand_vzcpzf0j\\demand.trips.xml",
+          "-r",
+          "C:\\Users\\luuis\\GitHub\\SUMO_Traffic_Lights_Algorithm\\results\\sumo_matched_demand_vzcpzf0j\\demand.rou.xml",
+          "--validate"
+        ],
+        "router_seed": "duarouter default (unchanged)"
+      },
+      {
+        "level": "alto",
+        "seed": 42,
+        "equal": true,
+        "attempted_trips": 7200,
+        "generated_trips": 7200,
+        "generation_losses": 0,
+        "scheduled_vehicles": 4501,
+        "routing_losses": 2699,
+        "route_sha256": "35e519db2e087907e7f698c4df41a146888f1a3f79136ac9ee10690d8b40ac01",
+        "route_semantic_sha256": "608e6cacbcdab8aebccccf61d76121fef1642ef9da3642919ee2bae446464562",
+        "generation_command": [
+          "C:\\Users\\luuis\\GitHub\\SUMO_Traffic_Lights_Algorithm\\.venv\\Scripts\\python.exe",
+          "C:\\Users\\luuis\\GitHub\\SUMO_Traffic_Lights_Algorithm\\tools\\randomTrips.py",
+          "-n",
+          "C:\\Users\\luuis\\GitHub\\SUMO_Traffic_Lights_Algorithm\\maps\\master_slave.net.xml",
+          "-b",
+          "0",
+          "-e",
+          "3600",
+          "-p",
+          "0.5",
+          "-s",
+          "42",
+          "-o",
+          "C:\\Users\\luuis\\GitHub\\SUMO_Traffic_Lights_Algorithm\\results\\sumo_matched_demand_j8dqz16y\\demand.trips.xml",
+          "-r",
+          "C:\\Users\\luuis\\GitHub\\SUMO_Traffic_Lights_Algorithm\\results\\sumo_matched_demand_j8dqz16y\\demand.rou.xml",
+          "--validate"
+        ],
+        "router_seed": "duarouter default (unchanged)"
+      }
+    ],
+    "historical_runs": [
+      {
+        "mode": "plain",
+        "equal": true,
+        "sources": [
+          "analysis/six_configurations/per_demand.csv",
+          "results/comparison_six_20261003/seed42_plain.json"
+        ],
+        "canonical_traces": {
+          "releases": {
+            "rows": 48,
+            "sha256": "d7bbe5914873c3847ee8f9ae6440536dc9ea8e591ff9f22423ffbe571cca4c28"
+          },
+          "vehicles": {
+            "rows": 62,
+            "sha256": "9027c9722bd585317283df68c7b7f7c1966484400e014081c12e2ecbf682fa14"
+          },
+          "events": {
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "timeline": {
+            "rows": 3600,
+            "sha256": "064d2866cf64e20813ac67f2603fd05625a65a2f041710380922a77c0025cc1b"
+          },
+          "actions": {
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "phases": {
+            "rows": 1516,
+            "sha256": "169d70446fb68c613925c4fca8a3cf651840e2e98abc45c9aec1e92d50ee5ca3"
+          },
+          "per_vehicle": {
+            "rows": 42,
+            "sha256": "e883f8daf0c65e61202ee29f4c7e1498d32b97771dc160bcfc1738eb6d703049"
+          }
+        }
+      },
+      {
+        "mode": "plain_offset",
+        "equal": true,
+        "sources": [
+          "analysis/six_configurations/per_demand.csv",
+          "results/comparison_six_20261003/seed42_plain_offset.json"
+        ],
+        "canonical_traces": {
+          "releases": {
+            "rows": 48,
+            "sha256": "3e0cb9e831a972ab85d789afcd4583474cd089c656223a06f6c4b4d286f8f471"
+          },
+          "vehicles": {
+            "rows": 62,
+            "sha256": "b98cc71f72719120af62415cf45dac4ca603419225f44c26572204746306c85c"
+          },
+          "events": {
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "timeline": {
+            "rows": 3600,
+            "sha256": "e8091f0b850fa564e9492ed81166f8b408f5246bbbd6b0a4a2eb291f1298f491"
+          },
+          "actions": {
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "phases": {
+            "rows": 1518,
+            "sha256": "8f689e0624e7e1397a301b15b8e827ecaae73eba52c40f642a0693b3525fc6b0"
+          },
+          "per_vehicle": {
+            "rows": 42,
+            "sha256": "630651c27e4e40e0be49a3a5cc4e208f0578b09367227c70cd93b42b8af87320"
+          }
+        }
+      },
+      {
+        "mode": "only_ppo",
+        "equal": true,
+        "sources": [
+          "analysis/six_configurations/per_demand.csv",
+          "results/comparison_six_20261003/seed42_only_ppo.json"
+        ],
+        "canonical_traces": {
+          "releases": {
+            "rows": 55,
+            "sha256": "5a1aaa9fa2782be73e1cc665174282a1cf8963cdf19991169cbf5f0d5447b39f"
+          },
+          "vehicles": {
+            "rows": 62,
+            "sha256": "e41dc06944763dbe49128488a0e78fb6f8bb6691725a3cd52c3f2116a90d567d"
+          },
+          "events": {
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "timeline": {
+            "rows": 3600,
+            "sha256": "064d2866cf64e20813ac67f2603fd05625a65a2f041710380922a77c0025cc1b"
+          },
+          "actions": {
+            "rows": 220,
+            "sha256": "7869c104def0438360348f35ce7a6711c175bec04a6e30e053d32c89051a26b1"
+          },
+          "phases": {
+            "rows": 1576,
+            "sha256": "1d96c4dc8cb7bb0379ed9c29b1da06137ec436b770e418ceec6be4f093f6f94d"
+          },
+          "per_vehicle": {
+            "rows": 42,
+            "sha256": "c1bac9af6052315a4ac84907873cf403b6e44cc1e0db87fcd4b34780e0f79625"
+          }
+        }
+      },
+      {
+        "mode": "v3",
+        "equal": true,
+        "sources": [
+          "analysis/six_configurations/per_demand.csv",
+          "analysis/corridor_full/reference.json",
+          "results/comparison_six_20261003/seed42_v3.json"
+        ],
+        "canonical_traces": {
+          "releases": {
+            "rows": 168,
+            "sha256": "6de4f5a3eeb1087fb618dc10026b93990220785f46dc52c26fc462f146185e13"
+          },
+          "vehicles": {
+            "rows": 62,
+            "sha256": "93971babfaad20d1aa969c91a9f9b3b013802c6df05076c335bad447ff86dfd7"
+          },
+          "events": {
+            "rows": 168,
+            "sha256": "7d471a8960ad9ac649efbb93c1f659d2b28d2d03d6d89a114bc227395e930939"
+          },
+          "timeline": {
+            "rows": 3600,
+            "sha256": "702ca75a692ac51944b993fcb6a2d5839af1615b3ff4ba5a2331d9bc2309e622"
+          },
+          "actions": {
+            "rows": 224,
+            "sha256": "24207330c19e932a602bd95960fc35ff1909fdd802c1f98ea2f15c10a538fa22"
+          },
+          "phases": {
+            "rows": 1786,
+            "sha256": "f2035c8654040e291ee5c6e48f61761b4b3654af2f52a34a00e91828ce8a78bd"
+          },
+          "per_vehicle": {
+            "rows": 42,
+            "sha256": "5adea04226c4c93409952b188482043a9f7668747704be409e19af922099089b"
+          }
+        }
+      }
+    ]
+  },
+  "flagged_runs": [
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1001:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1001:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1001:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1001:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1002:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1002:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1002:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1002:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1003:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1003:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1003:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1003:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1004:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1004:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1004:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1004:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1005:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1005:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1005:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1005:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1006:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1006:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1006:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1006:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1007:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1007:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1007:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1007:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1008:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1008:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1008:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1008:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1009:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1009:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1009:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1009:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1010:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1010:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1010:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1010:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1011:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1011:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1011:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1011:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1012:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1012:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1012:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1012:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1013:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1013:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1013:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1013:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1014:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1014:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1014:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1014:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1015:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1015:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1015:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1015:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1016:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1016:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1016:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1016:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1017:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1017:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1017:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1017:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1018:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1018:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1018:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1018:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1019:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1019:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1019:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1019:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1020:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1020:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1020:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1020:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1021:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1021:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1021:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1021:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1022:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1022:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1022:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1022:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1023:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1023:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1023:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1023:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1024:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1024:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1024:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1024:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1025:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1025:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1025:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1025:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1026:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1026:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1026:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1026:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1027:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1027:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1027:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1027:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1028:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1028:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1028:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1028:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1029:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1029:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1029:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1029:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1030:plain",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1030:plain_offset",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1030:only_ppo",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:bajo:1030:v3",
+      "flags": [
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2001:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2001:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2001:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2001:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2002:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2002:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2002:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2002:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2003:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2003:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2003:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2003:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2004:plain",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2004:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2004:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2004:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2005:plain",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2005:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2005:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2005:v3",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2006:plain",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2006:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2006:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2006:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2007:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2007:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2007:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2007:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2008:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2008:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2008:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2008:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2009:plain",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2009:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2009:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2009:v3",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2010:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2010:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2010:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2010:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2011:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2011:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2011:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2011:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2012:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2012:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2012:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2012:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2013:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2013:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2013:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2013:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2014:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2014:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2014:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2014:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2015:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2015:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2015:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2015:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2016:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2016:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2016:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2016:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2017:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2017:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2017:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2017:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2018:plain",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2018:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2018:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2018:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2019:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2019:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2019:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2019:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2020:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2020:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2020:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2020:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2021:plain",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2021:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2021:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2021:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2022:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2022:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2022:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2022:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2023:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2023:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2023:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2023:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2024:plain",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2024:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2024:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2024:v3",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2025:plain",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2025:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2025:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2025:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2026:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2026:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2026:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2026:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2027:plain",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2027:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2027:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2027:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2028:plain",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2028:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2028:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2028:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2029:plain",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2029:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2029:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2029:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2030:plain",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2030:plain_offset",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2030:only_ppo",
+      "flags": [
+        "teleports_observed",
+        "network_pending_at_end",
+        "censored_corridor_cohort"
+      ]
+    },
+    {
+      "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2030:v3",
+      "flags": [
+        "teleports_observed",
+        "vehicle_balance_residual_check_teleports_or_removals",
+        "network_pending_at_end"
+      ]
+    }
+  ],
+  "unfinished_runs": [],
+  "independent_final_audit": {
+    "matrix_keys_exact": true,
+    "demand_hashes_and_programmed_counts_exact": true,
+    "scheduled_cohorts_matched": true,
+    "preserved_historical_metrics": true,
+    "insertion_boundary_enrichment": {
+      "exporter_sha256": "d3c3a9bf1b3b3b4addf653c4f186e088a2f5c7845df4dc5f42b12ba867a5eb40",
+      "command": "python -m tools.finish_matched_experiment",
+      "definition": "ceil(XML depart / step) * step >= actual_end_s; historical insertion queue plus these not-yet-attempted vehicles",
+      "sources": [
+        "https://raw.githubusercontent.com/eclipse-sumo/sumo/v1_26_0/src/microsim/MSVehicleContainer.cpp",
+        "https://raw.githubusercontent.com/eclipse-sumo/sumo/v1_26_0/src/microsim/MSNet.cpp"
+      ]
+    },
+    "teleport_runs": 120,
+    "teleport_vehicle_ids_across_runs": 2786,
+    "unexplained_balance_runs": [
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2002:v3",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 49
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2004:v3",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 57
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2005:plain_offset",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 18
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2006:v3",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 58
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2007:plain",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 18
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2007:v3",
+        "programmed_residual": 0,
+        "pending_residual": 4,
+        "inserted_residual": 4,
+        "teleports": 50
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2011:v3",
+        "programmed_residual": 0,
+        "pending_residual": 2,
+        "inserted_residual": 2,
+        "teleports": 58
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2013:v3",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 59
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2014:v3",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 59
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2017:v3",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 34
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2018:v3",
+        "programmed_residual": 0,
+        "pending_residual": 2,
+        "inserted_residual": 2,
+        "teleports": 51
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2019:plain",
+        "programmed_residual": 0,
+        "pending_residual": 2,
+        "inserted_residual": 2,
+        "teleports": 20
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2019:v3",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 49
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2021:only_ppo",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 17
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2021:v3",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 56
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2022:plain",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 15
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2022:v3",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 59
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2023:v3",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 49
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2025:plain_offset",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 14
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2025:v3",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 54
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2027:v3",
+        "programmed_residual": 0,
+        "pending_residual": 3,
+        "inserted_residual": 3,
+        "teleports": 54
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2028:v3",
+        "programmed_residual": 0,
+        "pending_residual": 2,
+        "inserted_residual": 2,
+        "teleports": 54
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2029:v3",
+        "programmed_residual": 0,
+        "pending_residual": 2,
+        "inserted_residual": 2,
+        "teleports": 60
+      },
+      {
+        "run_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5:alto:2030:v3",
+        "programmed_residual": 0,
+        "pending_residual": 1,
+        "inserted_residual": 1,
+        "teleports": 45
+      }
+    ],
+    "rows_with_missing_metrics": 0,
+    "min_active_pending": 19,
+    "max_active_pending": 458
+  }
+}

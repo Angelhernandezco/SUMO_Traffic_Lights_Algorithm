@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from uuid import uuid4
 
-from sync.common import ROOT
+from sync.common import ROOT, resolve_demand
 from sync.metrics import write_csv
 from sync.simulation import run
 from sync.v3_variants import WINDOW_CONTROLLERS
@@ -31,7 +31,8 @@ def save_result(result, output, traces=False):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--mode", choices=("v1", "v2", *WINDOW_CONTROLLERS), required=True)
-    parser.add_argument("--seed", type=int, choices=range(42, 47), default=42)
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--route-file", type=Path, help="Explicit demand file for a new demand seed")
     parser.add_argument("--gui", action="store_true")
     parser.add_argument("--delay", type=int, default=100, help="GUI delay in milliseconds")
     parser.add_argument("--travel-times", nargs=3, type=int, default=(11, 10, 10),
@@ -39,6 +40,10 @@ def main():
     parser.add_argument("--traces", action="store_true", help="Export detailed CSV traces")
     parser.add_argument("--output-dir", type=Path)
     args = parser.parse_args()
+    try:
+        resolve_demand(args.seed, args.route_file)
+    except (ValueError, FileNotFoundError) as error:
+        parser.error(str(error))
     if args.delay < 0 or any(t <= 0 for t in args.travel_times):
         parser.error("Delay must be nonnegative and travel times positive")
     if args.mode != "v2" and tuple(args.travel_times) != (11, 10, 10):
@@ -48,7 +53,8 @@ def main():
     expected = output / f"seed{args.seed}_{args.mode}_full.json"
     if expected.exists():
         parser.error(f"Result already exists: {expected}")
-    result = run(args.seed, args.mode, args.travel_times, args.gui, args.delay)
+    result = run(args.seed, args.mode, args.travel_times, args.gui, args.delay,
+                 route_path=args.route_file)
     path = save_result(result, output, args.traces)
     print(json.dumps(result[0], indent=2))
     print(f"Saved: {path}")

@@ -402,7 +402,7 @@ def group_summary(obs, ids, last_tls="J16"):
         "waiting_total_s": sum(obs.trajectories[v][t]["waiting_s"] for v in ids for t in tls_list),
         "J0_to_J16_s": distribution(
             obs.trajectories[v][last_tls]["crossed_at"] - obs.audit.vehicles[v]["J0_cross_time"]
-            for v in complete),
+            for v in complete if obs.audit.vehicles.get(v, {}).get("J0_cross_time") is not None),
         "no_stop_per_tls": {t: sum(not obs.trajectories[v][t]["stopped"] for v in complete)
                             for t in tls_list}}
 
@@ -450,9 +450,9 @@ def summarize_copy(seed, route, obs, controllers, actions, j0_runs, programs, me
                "route_sha256": hashlib.sha256(route.read_bytes()).hexdigest(),
                "cohort": len(obs.cohort), "crossed": len(strict),
                "no_stop": sum(not r["stopped_E1"] for r in strict.values()),
-               "no_stop_pct": 100 * sum(not r["stopped_E1"] for r in strict.values()) / len(obs.cohort),
+               "no_stop_pct": 100 * sum(not r["stopped_E1"] for r in strict.values()) / len(obs.cohort) if obs.cohort else None,
                "waiting_E1_s": sum(r["E1_wait"] for r in strict.values()),
-               "mean_E1_to_E5_s": statistics.mean(r["E5_start"] - r["E1_start"] for r in strict.values()),
+               "mean_E1_to_E5_s": statistics.mean(r["E5_start"] - r["E1_start"] for r in strict.values()) if strict else None,
                "secondary_wait_J2_s": obs.secondary_wait,
                "network_total_wait_s": obs.network_wait, "tls_wait_s": obs.tls_wait,
                "pending": {"min_expected": traci.simulation.getMinExpectedNumber(),
@@ -469,7 +469,7 @@ def summarize_copy(seed, route, obs, controllers, actions, j0_runs, programs, me
             "exact_duration_copies": sum(e["receiver_green_executed"] == e["J0_green"] for e in copied),
             "start_targets_reachable": sum(e.get("start_target_reachable", False) for e in controller.events),
             "start_errors_s": distribution(e["target_error"] for e in controller.events),
-            "mean_window_coverage_pct": statistics.mean(e["window_coverage_pct"] for e in controller.events),
+            "mean_window_coverage_pct": statistics.mean(e["window_coverage_pct"] for e in controller.events) if controller.events else None,
             "unserved_at_horizon": sum(e["actual_start"] is None for e in controller.events),
             "terminal_censored_copies": sum(e.get("copy_censored", False) for e in controller.events),
         }
@@ -517,9 +517,9 @@ def summarize_window(seed, mode, route, obs, controllers, actions, j0_runs, prog
         "route_sha256": hashlib.sha256(route.read_bytes()).hexdigest(),
         "cohort": len(obs.cohort), "crossed": len(strict),
         "no_stop": sum(not r["stopped_E1"] for r in strict.values()),
-        "no_stop_pct": 100 * sum(not r["stopped_E1"] for r in strict.values()) / len(obs.cohort),
+        "no_stop_pct": 100 * sum(not r["stopped_E1"] for r in strict.values()) / len(obs.cohort) if obs.cohort else None,
         "waiting_E1_s": sum(r["E1_wait"] for r in strict.values()),
-        "mean_E1_to_E5_s": statistics.mean(r["E5_start"] - r["E1_start"] for r in strict.values()),
+        "mean_E1_to_E5_s": statistics.mean(r["E5_start"] - r["E1_start"] for r in strict.values()) if strict else None,
         "secondary_wait_J2_s": obs.secondary_wait, "network_total_wait_s": obs.network_wait,
         "tls_wait_s": obs.tls_wait, "arrived": len(obs.arrived), "departed": len(obs.departed),
         "teleported": len(obs.teleports), "pending": {

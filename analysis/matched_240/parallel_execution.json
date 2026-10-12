@@ -1,0 +1,128 @@
+{
+  "experiment_id": "3038583b1dbc616c67d0ed132ff4c7f538c5eaeb46fbbf30d6e263c5c21a72c5",
+  "coordinator_sha256": "ea4c50f9ab5fe2ac0bbae85a1fb557f0d5e5d40713fa6682f2789dc595f5117d",
+  "started_UTC": "2026-10-11T21:33:34.228073+00:00",
+  "benchmarks": [
+    {
+      "workers": 4,
+      "repeated_runs": 4,
+      "wall_s": 115.68799999996554,
+      "serial_reference_wall_s": 395.32899999999995,
+      "relative_throughput": 3.4171997095646716,
+      "runs_per_hour": 124.47271972896316,
+      "min_available_ram_gib": 1.5381813049316406,
+      "all_summaries_and_seven_signatures_equal": true,
+      "repetitions_excluded_from_main_csv": true,
+      "jobs": [
+        {
+          "seed": 1001,
+          "mode": "plain_offset",
+          "wall_s": 100.73499999998603
+        },
+        {
+          "seed": 1001,
+          "mode": "plain",
+          "wall_s": 104.57799999997951
+        },
+        {
+          "seed": 1001,
+          "mode": "only_ppo",
+          "wall_s": 113.23499999998603
+        },
+        {
+          "seed": 1001,
+          "mode": "v3",
+          "wall_s": 115.68799999996554
+        }
+      ],
+      "coordinator_sha256": "bd11846223025c9f600923215be1be13cf36bf8dca852fb46f12ceeebd739611"
+    },
+    {
+      "workers": 5,
+      "repeated_runs": 5,
+      "wall_s": 116.85900000005495,
+      "serial_reference_wall_s": 513.641,
+      "relative_throughput": 4.3953910267909055,
+      "runs_per_hour": 154.0317818909244,
+      "min_available_ram_gib": 1.4412803649902344,
+      "all_summaries_and_seven_signatures_equal": true,
+      "repetitions_excluded_from_main_csv": true,
+      "jobs": [
+        {
+          "seed": 1001,
+          "mode": "plain_offset",
+          "wall_s": 105.40599999995902
+        },
+        {
+          "seed": 1002,
+          "mode": "plain",
+          "wall_s": 107.96799999999348
+        },
+        {
+          "seed": 1001,
+          "mode": "plain",
+          "wall_s": 108.15599999995902
+        },
+        {
+          "seed": 1001,
+          "mode": "only_ppo",
+          "wall_s": 113.875
+        },
+        {
+          "seed": 1001,
+          "mode": "v3",
+          "wall_s": 116.85900000005495
+        }
+      ],
+      "coordinator_sha256": "bd11846223025c9f600923215be1be13cf36bf8dca852fb46f12ceeebd739611"
+    },
+    {
+      "workers": 6,
+      "repeated_runs": 6,
+      "wall_s": 114.48499999998603,
+      "serial_reference_wall_s": 644.813,
+      "relative_throughput": 5.632292440058337,
+      "runs_per_hour": 188.67100493516736,
+      "min_available_ram_gib": 2.438953399658203,
+      "all_summaries_and_seven_signatures_equal": true,
+      "repetitions_excluded_from_main_csv": true,
+      "jobs": [
+        {
+          "seed": 1001,
+          "mode": "plain_offset",
+          "wall_s": 102.85999999998603
+        },
+        {
+          "seed": 1002,
+          "mode": "plain_offset",
+          "wall_s": 103.01599999994505
+        },
+        {
+          "seed": 1002,
+          "mode": "plain",
+          "wall_s": 105.26599999994505
+        },
+        {
+          "seed": 1001,
+          "mode": "plain",
+          "wall_s": 105.92200000002049
+        },
+        {
+          "seed": 1001,
+          "mode": "only_ppo",
+          "wall_s": 111.90700000000652
+        },
+        {
+          "seed": 1001,
+          "mode": "v3",
+          "wall_s": 114.46899999992456
+        }
+      ],
+      "coordinator_sha256": "207dfa8bcfc420a79f670708738b0785ff0e096d43a0dbbccc0485ff7d2af8e6"
+    }
+  ],
+  "selected_workers": 10,
+  "note": "Historical sequential timing is an estimate under a different machine load; throughput, not single-run latency, selects concurrency.",
+  "finished_UTC": "2026-10-12T00:04:59.904862+00:00",
+  "complete": true
+}

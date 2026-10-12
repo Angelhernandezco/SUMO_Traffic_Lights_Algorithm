@@ -22,6 +22,20 @@ OFFSETS = (0, 0, 72, 24)
 GREEN_MIN, GREEN_MAX, YELLOW = 5, 45, 4
 CORRIDOR_PHASE, FLIGHT_TIME, END = 2, 12, 3600
 
+def resolve_demand(seed, route_path=None):
+    """Keep historical seed resolution; new demand seeds require an explicit file."""
+    if not isinstance(seed, int) or isinstance(seed, bool) or seed < 0:
+        raise ValueError("Demand seed must be a nonnegative integer")
+    if route_path is None:
+        if seed not in range(42, 47):
+            raise ValueError("Expected demand 42-46, or an explicit route file")
+        path = DEMAND / f"seed_{seed}.rou.xml"
+    else:
+        path = Path(route_path).resolve()
+    if not path.is_file():
+        raise FileNotFoundError(f"Demand does not exist: {path}")
+    return path
+
 def sumo_binary(gui=False):
     name = "sumo-gui" if gui else "sumo"
     found = shutil.which(name)
